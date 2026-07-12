@@ -37,6 +37,19 @@ def vehicle_image_path(instance: VehicleImage, filename: str) -> str:
     return f"vehicles/{instance.vehicle_id or 'new'}/{uuid4().hex}{suffix}"
 
 
+class VehicleQuerySet(models.QuerySet):
+    def marketplace_visible(self):
+        return self.filter(
+            approval_status=Vehicle.ApprovalStatus.APPROVED,
+            is_active=True,
+            availability_status=Vehicle.AvailabilityStatus.AVAILABLE,
+        )
+
+
+class VehicleManager(models.Manager.from_queryset(VehicleQuerySet)):
+    pass
+
+
 class Vehicle(models.Model):
     class VehicleType(models.TextChoices):
         CAR = "car", "Car"
@@ -97,6 +110,8 @@ class Vehicle(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = VehicleManager()
+
     class Meta:
         ordering = ["-created_at"]
         indexes = [
@@ -134,6 +149,9 @@ class Vehicle(models.Model):
 
     @property
     def primary_image(self) -> VehicleImage | None:
+        prefetched_images = self._prefetched_objects_cache.get("images") if hasattr(self, "_prefetched_objects_cache") else None
+        if prefetched_images is not None:
+            return next((image for image in prefetched_images if image.is_primary), None) or (prefetched_images[0] if prefetched_images else None)
         return self.images.filter(is_primary=True).first() or self.images.first()
 
     def __str__(self) -> str:

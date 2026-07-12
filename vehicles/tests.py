@@ -157,3 +157,70 @@ class VehicleModelTests(VehicleTestCase):
         vehicle.full_clean()
         vehicle.save()
         self.assertEqual(vehicle.approval_status, Vehicle.ApprovalStatus.APPROVED)
+
+
+class MarketplaceTests(VehicleTestCase):
+    def create_public_vehicle(self, **overrides):
+        vehicle = self.create_vehicle(**overrides)
+        vehicle.approval_status = Vehicle.ApprovalStatus.APPROVED
+        vehicle.is_active = True
+        vehicle.availability_status = Vehicle.AvailabilityStatus.AVAILABLE
+        vehicle.save(update_fields=["approval_status", "is_active", "availability_status", "updated_at"])
+        return vehicle
+
+    def test_marketplace_shows_only_publicly_visible_vehicles(self):
+        visible = self.create_public_vehicle(name="Visible Vehicle")
+        self.create_vehicle(name="Draft Vehicle", registration_number="BA 4 PA 1001")
+        self.create_public_vehicle(name="Inactive Vehicle", registration_number="BA 4 PA 1002", is_active=False)
+        Vehicle.objects.filter(name="Inactive Vehicle").update(is_active=False)
+        self.create_public_vehicle(name="Rented Vehicle", registration_number="BA 4 PA 1003", availability_status=Vehicle.AvailabilityStatus.RENTED)
+        Vehicle.objects.filter(name="Rented Vehicle").update(availability_status=Vehicle.AvailabilityStatus.RENTED)
+        response = self.client.get(reverse("vehicles:marketplace"))
+        self.assertContains(response, visible.name)
+        self.assertNotContains(response, "Draft Vehicle")
+        self.assertNotContains(response, "Inactive Vehicle")
+        self.assertNotContains(response, "Rented Vehicle")
+
+    def test_keyword_search_and_combined_filters(self):
+        matching = self.create_public_vehicle(
+            name="Electric City Ride", registration_number="BA 5 PA 1001", brand="Nissan", model="Leaf",
+            vehicle_type=Vehicle.VehicleType.CAR, fuel_type=Vehicle.FuelType.ELECTRIC,
+            transmission=Vehicle.Transmission.AUTOMATIC, seats=5, rental_price_per_day="4500.00",
+            manufacturing_year=2023, description="Silent city commuter", pickup_address="Pokhara Lakeside",
+        )
+        self.create_public_vehicle(name="Petrol SUV", registration_number="BA 5 PA 1002", vehicle_type=Vehicle.VehicleType.SUV)
+        response = self.client.get(reverse("vehicles:search"), {
+            "q": "Lakeside", "vehicle_type": "car", "fuel_type": "electric", "transmission": "automatic",
+            "seats": "5", "min_price": "4000", "max_price": "5000", "min_year": "2022",
+            "max_year": "2024", "brand": "Nissan", "availability": "available",
+        })
+        self.assertContains(response, matching.name)
+        self.assertNotContains(response, "Petrol SUV")
+
+    def test_sorting_and_pagination_preserve_query_parameters(self):
+        low = self.create_public_vehicle(name="Budget Car", registration_number="BA 6 PA 1000", rental_price_per_day="1000.00")
+        self.create_public_vehicle(name="Premium Car", registration_number="BA 6 PA 1001", rental_price_per_day="9000.00")
+        for number in range(1, 14):
+            self.create_public_vehicle(name=f"Toyota {number}", registration_number=f"BA 8 PA {number}")
+        response = self.client.get(reverse("vehicles:marketplace"), {"sort": "price_low", "brand": "Toyota"})
+        self.assertEqual(response.context["page_obj"].paginator.per_page, 12)
+        response = self.client.get(reverse("vehicles:marketplace"), {"sort": "price_low"})
+        self.assertEqual(response.context["vehicles"][0], low)
+        paged = self.client.get(reverse("vehicles:marketplace"), {"brand": "Toyota", "page": "2"})
+        self.assertEqual(paged.context["page_obj"].number, 2)
+        self.assertContains(paged, "brand=Toyota")
+
+    def test_public_detail_is_protected_and_related_vehicles_exclude_current(self):
+        self.owner.phone_number = "+977 9800000000"
+        self.owner.save()
+        current = self.create_public_vehicle(name="Toyota Corolla", registration_number="BA 7 PA 1001", brand="Toyota", vehicle_type=Vehicle.VehicleType.CAR)
+        related = self.create_public_vehicle(name="Toyota Yaris", registration_number="BA 7 PA 1002", brand="Toyota", vehicle_type=Vehicle.VehicleType.CAR)
+        unrelated = self.create_public_vehicle(name="Ford Ranger", registration_number="BA 7 PA 1003", brand="Ford", vehicle_type=Vehicle.VehicleType.PICKUP)
+        response = self.client.get(reverse("vehicles:public_detail", kwargs={"slug": current.slug}))
+        self.assertContains(response, related.name)
+        self.assertNotContains(response, unrelated.name)
+        self.assertNotContains(response, "+977 9800000000")
+        self.assertContains(response, "application/ld+json")
+        self.assertContains(response, "canonical")
+        draft = self.create_vehicle(name="Private Draft", registration_number="BA 7 PA 1004")
+        self.assertEqual(self.client.get(reverse("vehicles:public_detail", kwargs={"slug": draft.slug})).status_code, 404)
