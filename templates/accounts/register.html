@@ -1,0 +1,3 @@
+{% extends "base.html" %}
+{% block title %}Create account | RideNest{% endblock %}
+{% block content %}<section class="container auth-card"><h1>Create your account</h1><p>Choose Member to rent, or Owner to list vehicles in a later phase.</p><form method="post" novalidate>{% csrf_token %}{{ form.as_p }}<button class="button" type="submit">Create account</button></form><p>Already registered? <a href="{% url 'accounts:login' %}">Log in</a>.</p></section>{% endblock %}

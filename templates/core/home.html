@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}RideNest | Vehicle Rental{% endblock %}
+{% block content %}
+<section class="hero"><div class="container"><p class="eyebrow">Reliable rentals, local journeys</p><h1>Your next journey starts here.</h1><p class="hero-copy">RideNest connects verified members with quality vehicles and responsible local owners.</p><a class="button" href="{% url 'accounts:register' %}">Start exploring</a></div></section>
+<section class="container section"><h2>Built for simple, trusted rentals</h2><div class="feature-grid"><article><h3>Verified community</h3><p>Member and owner verification helps create confidence on every booking.</p></article><article><h3>Clear bookings</h3><p>Availability, dates, and pricing are handled transparently.</p></article><article><h3>Local discovery</h3><p>Find the right vehicle for commutes, trips, and everyday needs.</p></article></div></section>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Find dependable vehicles for every journey.">
+  <title>{% block title %}RideNest | Vehicle Rental{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="container nav" aria-label="Main navigation">
+      <a class="brand" href="{% url 'core:home' %}">RideNest</a>
+      <div class="nav-links">
+        {% if user.is_authenticated %}
+          <span class="nav-user">Hello, {{ user.full_name|default:user.username }}</span>
+          <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="link-button">Log out</button></form>
+        {% else %}
+          <a href="{% url 'accounts:login' %}">Log in</a>
+          <a class="button button-small" href="{% url 'accounts:register' %}">Create account</a>
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+  <main>
+    {% if messages %}<div class="container messages">{% for message in messages %}<p class="message {{ message.tags }}">{{ message }}</p>{% endfor %}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer"><div class="container">&copy; {% now "Y" %} RideNest. Travel with confidence.</div></footer>
+</body>
+</html>
