@@ -16,6 +16,7 @@
         {% if user.is_authenticated %}
           <a href="{% url 'accounts:profile' %}">Profile</a>
           <a href="{% url 'accounts:verification' %}">Verification</a>
+          {% if user.role == 'owner' %}<a href="{% url 'vehicles:mine' %}">My vehicles</a>{% endif %}
           <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="link-button">Log out</button></form>
         {% else %}
           <a href="{% url 'accounts:login' %}">Log in</a>
