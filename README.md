@@ -38,6 +38,8 @@ The project starts with SQLite. Keep `.env` private and use `.env.example` as th
 - `DJANGO_SECRET_KEY`: secret Django signing key. A development-only fallback exists; always set this in production.
 - `DJANGO_DEBUG`: `True` for local development and `False` in production.
 - `DJANGO_ALLOWED_HOSTS`: comma-separated permitted host names.
+- `DJANGO_EMAIL_BACKEND`: Django email backend. The console backend is used locally for password-reset links.
+- `DJANGO_DEFAULT_FROM_EMAIL`: sender address used for account emails.
 - `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_PORT`: set `POSTGRES_DB` to switch from SQLite to PostgreSQL.
 
 For a production deployment, provide a strong `DJANGO_SECRET_KEY`, set `DJANGO_DEBUG=False`, configure `DJANGO_ALLOWED_HOSTS`, and serve collected static files from `STATIC_ROOT`.

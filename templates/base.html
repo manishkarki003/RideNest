@@ -14,7 +14,8 @@
       <a class="brand" href="{% url 'core:home' %}">RideNest</a>
       <div class="nav-links">
         {% if user.is_authenticated %}
-          <span class="nav-user">Hello, {{ user.full_name|default:user.username }}</span>
+          <a href="{% url 'accounts:profile' %}">Profile</a>
+          <a href="{% url 'accounts:verification' %}">Verification</a>
           <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="link-button">Log out</button></form>
         {% else %}
           <a href="{% url 'accounts:login' %}">Log in</a>

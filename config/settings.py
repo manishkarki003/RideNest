@@ -83,6 +83,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
@@ -93,6 +96,8 @@ AUTH_USER_MODEL = "accounts.User"
 LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "core:home"
 LOGOUT_REDIRECT_URL = "core:home"
+EMAIL_BACKEND = os.environ.get("DJANGO_EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+DEFAULT_FROM_EMAIL = os.environ.get("DJANGO_DEFAULT_FROM_EMAIL", "noreply@ridenest.local")
 
 # Production deployments should serve only over HTTPS and provide a secure secret key.
 if not DEBUG:

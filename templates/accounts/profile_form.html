@@ -1,0 +1,3 @@
+{% extends "base.html" %}
+{% block title %}Edit profile | RideNest{% endblock %}
+{% block content %}<section class="container auth-card"><p class="eyebrow">Account profile</p><h1>Edit your details</h1><p>Your username, role, and verification status are protected and cannot be changed here.</p><form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}{{ form.non_field_errors }}{% for field in form %}<p>{{ field.label_tag }}{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{{ field.errors }}</p>{% endfor %}<button class="button" type="submit">Save changes</button></form></section>{% endblock %}
