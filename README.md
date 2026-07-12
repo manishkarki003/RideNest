@@ -25,9 +25,19 @@ Portfolio-quality Django vehicle rental platform, built in phases.
 ## Local setup
 
 ```powershell
+Copy-Item .env.example .env
 python -m pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
 ```
 
-For PostgreSQL, set `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, and `POSTGRES_PORT`.
+The project starts with SQLite. Keep `.env` private and use `.env.example` as the documented configuration template.
+
+### Environment variables
+
+- `DJANGO_SECRET_KEY`: secret Django signing key. A development-only fallback exists; always set this in production.
+- `DJANGO_DEBUG`: `True` for local development and `False` in production.
+- `DJANGO_ALLOWED_HOSTS`: comma-separated permitted host names.
+- `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_PORT`: set `POSTGRES_DB` to switch from SQLite to PostgreSQL.
+
+For a production deployment, provide a strong `DJANGO_SECRET_KEY`, set `DJANGO_DEBUG=False`, configure `DJANGO_ALLOWED_HOSTS`, and serve collected static files from `STATIC_ROOT`.
