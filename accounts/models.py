@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from pathlib import Path
+from typing import Any
 from uuid import uuid4
 from .storage import PrivateVerificationStorage
 
@@ -11,7 +12,7 @@ MAX_IMAGE_SIZE = 5 * 1024 * 1024
 ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 
 
-def validate_image_upload(image):
+def validate_image_upload(image: Any) -> None:
     """Reject oversized files and non-image file extensions before storage."""
     if image.size > MAX_IMAGE_SIZE:
         raise ValidationError("Image files must be 5 MB or smaller.")
@@ -19,11 +20,11 @@ def validate_image_upload(image):
         raise ValidationError("Upload a JPG, PNG, or WebP image file.")
 
 
-def profile_picture_path(instance, filename):
+def profile_picture_path(instance: models.Model, filename: str) -> str:
     return f"profiles/{uuid4().hex}{Path(filename).suffix.lower()}"
 
 
-def verification_document_path(instance, filename):
+def verification_document_path(instance: models.Model, filename: str) -> str:
     return f"verification_documents/{uuid4().hex}{Path(filename).suffix.lower()}"
 
 
@@ -49,8 +50,12 @@ class User(AbstractUser):
     )
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.MEMBER)
     is_verified = models.BooleanField(default=False)
+    email_verified = models.BooleanField(default=False)
+    email_verified_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
         if self.is_superuser:
             self.role = self.Role.ADMIN
         super().save(*args, **kwargs)
@@ -81,6 +86,8 @@ class MemberVerification(models.Model):
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
     submitted_at = models.DateTimeField(auto_now_add=True)
     reviewed_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-submitted_at"]

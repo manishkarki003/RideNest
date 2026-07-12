@@ -53,6 +53,13 @@ class RegistrationTests(AccountTestCase):
         self.assertContains(response, "already exists")
         self.assertEqual(User.objects.count(), 1)
 
+    def test_new_user_has_email_verification_and_audit_defaults(self):
+        user = self.create_user()
+        self.assertFalse(user.email_verified)
+        self.assertIsNone(user.email_verified_at)
+        self.assertIsNotNone(user.created_at)
+        self.assertIsNotNone(user.updated_at)
+
 
 class LoginLogoutTests(AccountTestCase):
     def setUp(self):
@@ -127,6 +134,8 @@ class VerificationTests(AccountTestCase):
         submission = MemberVerification.objects.get(user=self.user)
         self.assertEqual(submission.status, MemberVerification.Status.PENDING)
         self.assertNotEqual(submission.document_image.name, "citizenship.png")
+        self.assertIsNotNone(submission.created_at)
+        self.assertIsNotNone(submission.updated_at)
 
     def test_pending_verification_cannot_be_submitted_twice(self):
         MemberVerification.objects.create(
