@@ -1,45 +1,161 @@
-# RideNest Vehicle Rental System
+# 🚗 RideNest
 
-Portfolio-quality Django vehicle rental platform, built in phases.
+<p align="center">
 
-## Phase 1 roadmap and architecture
+![Python](https://img.shields.io/badge/Python-3.14-blue?style=for-the-badge&logo=python)
+![Django](https://img.shields.io/badge/Django-6.x-green?style=for-the-badge&logo=django)
+![SQLite](https://img.shields.io/badge/SQLite-Database-blue?style=for-the-badge&logo=sqlite)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-Frontend-purple?style=for-the-badge&logo=bootstrap)
+![GitHub](https://img.shields.io/badge/GitHub-Portfolio-black?style=for-the-badge&logo=github)
 
-1. Foundation: Django project, custom user model, authentication, shared layout, static/media support.
-2. Vehicles: owner listings, multi-image uploads, moderation, search and Leaflet locations.
-3. Bookings: availability calendar, conflict-safe booking workflow, rental price snapshots.
-4. Payments: Khalti gateway adapter and secure demo-payment fallback.
-5. Trust and operations: reviews, notifications, dashboards, SEO and deployment hardening.
+</p>
 
-### Data model plan
+<p align="center">
+A modern full-stack Vehicle Rental Platform built with Django.
+</p>
 
-`User` owns `Vehicle`; `Vehicle` has many `VehicleImage` records and `Booking` records. A `Booking` belongs to a member and has one `Payment`; eligible completed bookings can have one `Review`. `Notification` belongs to a user. Future foreign keys use server-side ownership checks and price snapshots to prevent IDOR and price manipulation.
+---
 
-### Folder structure
+# 📖 About
 
-- `config/`: project configuration, URLs, ASGI/WSGI.
-- `accounts/`: custom user model, registration, login and profile features.
-- `core/`: shared public pages and reusable site concerns.
-- `vehicles/`, `bookings/`, `payments/`, `reviews/`, `notifications/`, `dashboard/`: separate bounded feature apps.
-- `templates/`: global Django templates; `static/`: custom CSS and future JavaScript; `media/`: local user uploads (not committed).
+RideNest is a full-stack web application that allows users to browse, list, and rent vehicles through a secure booking platform.
 
-## Local setup
+The project focuses on providing a smooth rental experience with secure authentication, booking management, and vehicle administration.
 
-```powershell
-Copy-Item .env.example .env
-python -m pip install -r requirements.txt
+---
+
+# ✨ Features
+
+- 🔐 User Authentication
+- 🚘 Vehicle Listings
+- 📅 Vehicle Booking System
+- 👤 Owner Dashboard
+- 👥 Customer Dashboard
+- ⭐ Reviews & Ratings
+- 💳 Payment Ready Architecture
+- 📱 Responsive Design
+- 🔒 Secure Booking Workflow
+- ⚙️ Django Admin Panel
+
+---
+
+# 🛠 Tech Stack
+
+| Technology | Used |
+|------------|------|
+| Python | ✅ |
+| Django | ✅ |
+| HTML5 | ✅ |
+| CSS3 | ✅ |
+| Bootstrap | ✅ |
+| JavaScript | ✅ |
+| SQLite | ✅ |
+| Git | ✅ |
+| GitHub | ✅ |
+
+---
+
+# 📂 Project Structure
+
+```
+RideNest/
+│
+├── accounts/
+├── bookings/
+├── vehicles/
+├── dashboard/
+├── payments/
+├── notifications/
+├── reviews/
+├── templates/
+├── static/
+├── media/
+├── config/
+├── manage.py
+└── requirements.txt
+```
+
+---
+
+# 🚀 Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/manishkarki003/RideNest.git
+```
+
+Move into the project
+
+```bash
+cd RideNest
+```
+
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Run migrations
+
+```bash
 python manage.py migrate
+```
+
+Start the server
+
+```bash
 python manage.py runserver
 ```
 
-The project starts with SQLite. Keep `.env` private and use `.env.example` as the documented configuration template.
+Open
 
-### Environment variables
+```
+http://127.0.0.1:8000/
+```
 
-- `DJANGO_SECRET_KEY`: secret Django signing key. A development-only fallback exists; always set this in production.
-- `DJANGO_DEBUG`: `True` for local development and `False` in production.
-- `DJANGO_ALLOWED_HOSTS`: comma-separated permitted host names.
-- `DJANGO_EMAIL_BACKEND`: Django email backend. The console backend is used locally for password-reset links.
-- `DJANGO_DEFAULT_FROM_EMAIL`: sender address used for account emails.
-- `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_PORT`: set `POSTGRES_DB` to switch from SQLite to PostgreSQL.
+---
 
-For a production deployment, provide a strong `DJANGO_SECRET_KEY`, set `DJANGO_DEBUG=False`, configure `DJANGO_ALLOWED_HOSTS`, and serve collected static files from `STATIC_ROOT`.
+# 📸 Screenshots
+
+Coming Soon...
+
+---
+
+# 📌 Future Improvements
+
+- Online Payments
+- Email Notifications
+- Google Maps Integration
+- Vehicle Availability Calendar
+- Image Upload Optimization
+- Search & Filtering
+- Wishlist
+- Chat Between Owner & Customer
+- Admin Analytics Dashboard
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+Fork the repository and submit a Pull Request.
+
+---
+
+# 👨‍💻 Author
+
+**Manish Karki**
+
+Software Engineering Graduate
+
+GitHub:
+https://github.com/manishkarki003
+
+---
+
+# ⭐ Support
+
+If you like this project, consider giving it a ⭐ on GitHub.
