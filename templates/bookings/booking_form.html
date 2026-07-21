@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Request booking | RideNest{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/bookings.css' %}">{% endblock %}
+{% block content %}<section class="container booking-page"><p class="eyebrow">Booking request</p><h1>Request {{ vehicle.name }}</h1><div class="booking-layout"><form method="post" class="booking-card" novalidate>{% csrf_token %}{{ form.non_field_errors }}{% for field in form %}<p>{{ field.label_tag }}{{ field }}{{ field.errors }}</p>{% endfor %}<button class="button" type="submit">Request booking</button></form><aside class="price-breakdown"><h2>Price estimate</h2><p>Daily rate <strong>Rs. {{ vehicle.rental_price_per_day }}</strong></p><p>Security deposit <strong>Rs. {{ vehicle.security_deposit }}</strong></p><p class="muted">Your final total is calculated securely after you select dates.</p></aside></div></section>{% endblock %}
