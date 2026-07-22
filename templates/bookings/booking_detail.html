@@ -1,5 +1,71 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Booking {{ booking.short_reference }} | RideNest{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/bookings.css' %}">{% endblock %}
-{% block content %}<section class="container booking-page"><p><a href="{% if is_owner %}{% url 'bookings:manage' %}{% else %}{% url 'bookings:history' %}{% endif %}">Back to bookings</a></p><div class="booking-title"><div><p class="eyebrow">Booking reference {{ booking.short_reference }}</p><h1>{{ booking.vehicle.name }}</h1><p>{{ booking.pickup_date|date:"M j, Y" }} to {{ booking.return_date|date:"M j, Y" }}</p></div><span class="booking-status {{ booking.booking_status }}">{{ booking.get_booking_status_display }}</span></div><div class="booking-layout"><div><section class="booking-card"><h2>Booking details</h2><dl class="booking-details"><div><dt>Pickup date</dt><dd>{{ booking.pickup_date|date:"F j, Y" }}</dd></div><div><dt>Return date</dt><dd>{{ booking.return_date|date:"F j, Y" }}</dd></div><div><dt>Total days</dt><dd>{{ booking.total_days }}</dd></div><div><dt>Pickup location</dt><dd>{{ booking.vehicle.pickup_address }}</dd></div>{% if is_owner %}<div><dt>Renter</dt><dd>{{ booking.renter.full_name|default:booking.renter.username }}</dd></div>{% endif %}</dl>{% if booking.owner_notes %}<p class="callout"><strong>Owner note:</strong> {{ booking.owner_notes }}</p>{% endif %}{% if booking.cancellation_reason %}<p class="rejection"><strong>Cancellation reason:</strong> {{ booking.cancellation_reason }}</p>{% endif %}</section>{% if owner_action_form %}<section class="booking-card"><h2>Manage request</h2><form method="post">{% csrf_token %}{{ owner_action_form.non_field_errors }}<label>Owner notes{{ owner_action_form.owner_notes }}</label><div class="booking-actions"><button class="button" name="action" value="confirm" type="submit">Confirm</button><button class="danger-button" name="action" value="reject" type="submit">Reject</button></div><label>Reason if cancelling{{ owner_action_form.cancellation_reason }}</label><button class="button button-outline" name="action" value="cancel" type="submit">Cancel booking</button></form></section>{% endif %}{% if renter_cancellation_form %}<section class="booking-card"><h2>Need to cancel?</h2><form method="post">{% csrf_token %}{{ renter_cancellation_form.as_p }}<button class="danger-button" type="submit">Cancel pending request</button></form></section>{% endif %}</div><aside class="price-breakdown"><h2>Price breakdown</h2><p>Rs. {{ booking.rental_price_per_day }} × {{ booking.total_days }} days <strong>Rs. {{ booking.subtotal }}</strong></p><p>Security deposit <strong>Rs. {{ booking.security_deposit }}</strong></p><hr><p class="grand-total">Total amount <strong>Rs. {{ booking.total_amount }}</strong></p><p class="muted">Payment is not collected yet.</p></aside></div></section>{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/bookings.css' %}">{% endblock %}
+{% block content %}<section class="container booking-page">
+    <p><a href="{% if is_owner %}{% url 'bookings:manage' %}{% else %}{% url 'bookings:history' %}{% endif %}">Back to
+            bookings</a></p>
+    <div class="booking-title">
+        <div>
+            <p class="eyebrow">Booking reference {{ booking.short_reference }}</p>
+            <h1>{{ booking.vehicle.name }}</h1>
+            <p>{{ booking.pickup_date|date:"M j, Y" }} to {{ booking.return_date|date:"M j, Y" }}</p>
+        </div><span class="booking-status {{ booking.booking_status }}">{{ booking.get_booking_status_display }}</span>
+    </div>
+    <div class="booking-layout">
+        <div>
+            <section class="booking-card">
+                <h2>Booking details</h2>
+                <dl class="booking-details">
+                    <div>
+                        <dt>Pickup date</dt>
+                        <dd>{{ booking.pickup_date|date:"F j, Y" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Return date</dt>
+                        <dd>{{ booking.return_date|date:"F j, Y" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Total days</dt>
+                        <dd>{{ booking.total_days }}</dd>
+                    </div>
+                    <div>
+                        <dt>Pickup location</dt>
+                        <dd>{{ booking.vehicle.pickup_address }}</dd>
+                    </div>{% if is_owner %}<div>
+                        <dt>Renter</dt>
+                        <dd>{{ booking.renter.full_name|default:booking.renter.username }}</dd>
+                    </div>{% endif %}
+                </dl>{% if booking.owner_notes %}<p class="callout"><strong>Owner note:</strong> {{ booking.owner_notes
+                    }}</p>{% endif %}{% if booking.cancellation_reason %}<p class="rejection"><strong>Cancellation
+                        reason:</strong> {{ booking.cancellation_reason }}</p>{% endif %}
+            </section>{% if owner_action_form %}<section class="booking-card">
+                <h2>Manage request</h2>
+                <form method="post">{% csrf_token %}{{ owner_action_form.non_field_errors }}<label>Owner notes{{
+                        owner_action_form.owner_notes }}</label>
+                    <div class="booking-actions"><button class="button" name="action" value="confirm"
+                            type="submit">Confirm</button><button class="danger-button" name="action" value="reject"
+                            type="submit">Reject</button></div><label>Reason if cancelling{{
+                        owner_action_form.cancellation_reason }}</label><button class="button button-outline"
+                        name="action" value="cancel" type="submit">Cancel booking</button>
+                </form>
+            </section>{% endif %}{% if renter_cancellation_form %}<section class="booking-card">
+                <h2>Need to cancel?</h2>
+                <form method="post">{% csrf_token %}{{ renter_cancellation_form.as_p }}<button class="danger-button"
+                        type="submit">Cancel pending request</button></form>
+            </section>{% endif %}
+        </div>
+        <aside class="price-breakdown">
+            <h2>Price breakdown</h2>
+            <p>Rs. {{ booking.rental_price_per_day }} × {{ booking.total_days }} days <strong>Rs. {{ booking.subtotal
+                    }}</strong></p>
+            <p>Security deposit <strong>Rs. {{ booking.security_deposit }}</strong></p>
+            <hr>
+            <p class="grand-total">Total amount <strong>Rs. {{ booking.total_amount }}</strong></p>
+            <p class="muted">Payment is not collected yet.</p>
+        </aside>
+    </div>
+</section>
+
+{% endblock %}

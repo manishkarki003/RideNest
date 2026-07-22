@@ -1,3 +1,22 @@
 {% extends "base.html" %}
 {% block title %}{{ page_title }} | RideNest{% endblock %}
-{% block content %}<section class="container vehicle-form-page"><p class="eyebrow">Owner workspace</p><h1>{{ page_title }}</h1><p class="form-intro">Your listing remains a draft until you submit it for approval.</p><form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}{{ form.non_field_errors }}<div class="form-grid">{% for field in form %}<p class="{% if field.name == 'description' or field.name == 'pickup_address' %}full-width{% endif %}">{{ field.label_tag }}{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{{ field.errors }}</p>{% endfor %}</div><section class="image-formset"><h2>Vehicle images</h2><p>Add up to three images now. You can choose one primary image.</p>{{ image_formset.management_form }}{{ image_formset.non_form_errors }}{% for image_form in image_formset %}<div class="image-row">{{ image_form.id }}<p>{{ image_form.image.label_tag }}{{ image_form.image }}{{ image_form.image.errors }}</p><p>{{ image_form.is_primary }} {{ image_form.is_primary.label_tag }}</p>{% if image_form.instance.pk %}<p>{{ image_form.DELETE }} Remove image</p>{% endif %}</div>{% endfor %}</section><button class="button" type="submit">Save draft</button></form></section>{% endblock %}
+{% block content %}<section class="container vehicle-form-page">
+    <p class="eyebrow">Owner workspace</p>
+    <h1>{{ page_title }}</h1>
+    <p class="form-intro">Your listing remains a draft until you submit it for approval.</p>
+    <form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}{{ form.non_field_errors }}<div
+            class="form-grid">{% for field in form %}<p
+                class="{% if field.name == 'description' or field.name == 'pickup_address' %}full-width{% endif %}">{{
+                field.label_tag }}{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{{
+                field.errors }}</p>{% endfor %}</div>
+        <section class="image-formset">
+            <h2>Vehicle images</h2>
+            <p>Add up to three images now. You can choose one primary image.</p>{{ image_formset.management_form }}{{
+            image_formset.non_form_errors }}{% for image_form in image_formset %}<div class="image-row">{{ image_form.id
+                }}<p>{{ image_form.image.label_tag }}{{ image_form.image }}{{ image_form.image.errors }}</p>
+                <p>{{ image_form.is_primary }} {{ image_form.is_primary.label_tag }}</p>{% if image_form.instance.pk %}
+                <p>{{ image_form.DELETE }} Remove image</p>{% endif %}
+            </div>{% endfor %}
+        </section><button class="button" type="submit">Save draft</button>
+    </form>
+</section>{% endblock %}

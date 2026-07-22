@@ -1,12 +1,32 @@
 <article class="market-card">
-  <a class="market-card-image" href="{% url 'vehicles:public_detail' vehicle.slug %}">
-    {% if vehicle.primary_image %}<img src="{{ vehicle.primary_image.image.url }}" alt="{{ vehicle.name }}" loading="lazy">{% else %}<span>No image available</span>{% endif %}
-  </a>
-  <div class="market-card-body">
-    <span class="availability available">Available</span>
-    <h2><a href="{% url 'vehicles:public_detail' vehicle.slug %}">{{ vehicle.name }}</a></h2>
-    <p>{{ vehicle.brand }} {{ vehicle.model }} · {{ vehicle.manufacturing_year }}</p>
-    <p class="card-location">{{ vehicle.pickup_address }}</p>
-    <strong>Rs. {{ vehicle.rental_price_per_day }} <small>/ day</small></strong>
-  </div>
+    <a class="market-card-image" href="{% url 'vehicles:public_detail' vehicle.slug %}">
+        {% if vehicle.primary_image %}
+            <img
+                src="{{ vehicle.primary_image.image.url }}"
+                alt="{{ vehicle.name }}"
+                loading="lazy"
+            >
+        {% else %}
+            <span>No image available</span>
+        {% endif %}
+    </a>
+
+    <div class="market-card-body">
+        <span class="availability available">Available</span>
+
+        <h2>
+            <a href="{% url 'vehicles:public_detail' vehicle.slug %}">
+                {{ vehicle.name }}
+            </a>
+        </h2>
+
+        <p>{{ vehicle.brand }} {{ vehicle.model }} · {{ vehicle.manufacturing_year }}</p>
+
+        <p class="card-location">{{ vehicle.pickup_address }}</p>
+
+        <strong>
+            Rs. {{ vehicle.rental_price_per_day }}
+            <small>/ day</small>
+        </strong>
+    </div>
 </article>

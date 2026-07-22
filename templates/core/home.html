@@ -1,26 +1,43 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}RideNest | Rent cars and bikes across Nepal{% endblock %}
-{% block meta_description %}Find verified cars, SUVs, vans, motorcycles, and scooters for rent across Nepal with RideNest.{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block meta_description %}Find verified cars, SUVs, vans, motorcycles, and scooters for rent across Nepal with
+RideNest.{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
 {% block content %}
 <section class="hero-section">
   <div class="container">
     <div class="row align-items-center g-5">
       <div class="col-lg-6">
-        <p class="hero-badge"><i class="bi bi-patch-check-fill" aria-hidden="true"></i>Nepal's trusted vehicle rental platform</p>
+        <p class="hero-badge"><i class="bi bi-patch-check-fill" aria-hidden="true"></i>Nepal's trusted vehicle rental
+          platform</p>
         <h1 class="hero-title">Rent cars and bikes <span>across Nepal.</span></h1>
-        <p class="hero-description">RideNest connects travellers with verified local vehicle owners. Find the right ride for a city break, mountain adventure, or weekend away.</p>
+        <p class="hero-description">RideNest connects travellers with verified local vehicle owners. Find the right ride
+          for a city break, mountain adventure, or weekend away.</p>
         <div class="hero-buttons">
-          <a href="{% url 'vehicles:marketplace' %}" class="btn btn-primary btn-lg">Browse vehicles <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+          <a href="{% url 'vehicles:marketplace' %}" class="btn btn-primary btn-lg">Browse vehicles <i
+              class="bi bi-arrow-right" aria-hidden="true"></i></a>
           <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-lg">Become a host</a>
         </div>
         <dl class="hero-stats" aria-label="RideNest highlights">
-          <div><dt>30+</dt><dd>Vehicles</dd></div><div><dt>20+</dt><dd>Verified owners</dd></div><div><dt>4.9</dt><dd>Average rating</dd></div>
+          <div>
+            <dt>30+</dt>
+            <dd>Vehicles</dd>
+          </div>
+          <div>
+            <dt>20+</dt>
+            <dd>Verified owners</dd>
+          </div>
+          <div>
+            <dt>4.9</dt>
+            <dd>Average rating</dd>
+          </div>
         </dl>
       </div>
       <div class="col-lg-6">
-        <img src="{% static 'images/hero/hero-car.webp' %}" class="hero-image" alt="SUV available to rent through RideNest" fetchpriority="high">
+        <img src="{% static 'images/hero/hero-car.webp' %}" class="hero-image"
+          alt="SUV available to rent through RideNest" fetchpriority="high">
       </div>
     </div>
   </div>
@@ -29,48 +46,175 @@
 <section class="search-wrapper" aria-labelledby="quick-search-title">
   <div class="container">
     <form class="search-card" action="{% url 'vehicles:search' %}" method="get">
-      <div class="search-card-heading"><h2 id="quick-search-title">Find your next ride</h2><p>Search approved vehicles available today.</p></div>
+      <div class="search-card-heading">
+        <h2 id="quick-search-title">Find your next ride</h2>
+        <p>Search approved vehicles available today.</p>
+      </div>
       <div class="row g-3 align-items-end">
-        <div class="col-md-5"><label class="form-label" for="home-search-location">Pickup city</label><select class="form-select" id="home-search-location" name="q"><option value="">Anywhere in Nepal</option><option value="Kathmandu">Kathmandu</option><option value="Pokhara">Pokhara</option><option value="Chitwan">Chitwan</option><option value="Butwal">Butwal</option><option value="Dharan">Dharan</option></select></div>
-        <div class="col-md-4"><label class="form-label" for="home-search-type">Vehicle type</label><select class="form-select" id="home-search-type" name="vehicle_type"><option value="">Any vehicle type</option><option value="car">Car</option><option value="suv">SUV</option><option value="van">Van</option><option value="pickup">Pickup</option><option value="motorcycle">Motorcycle</option><option value="scooter">Scooter</option></select></div>
-        <div class="col-md-3 d-grid"><button class="btn btn-primary" type="submit"><i class="bi bi-search" aria-hidden="true"></i> Search vehicles</button></div>
+        <div class="col-md-5"><label class="form-label" for="home-search-location">Pickup city</label><select
+            class="form-select" id="home-search-location" name="q">
+            <option value="">Anywhere in Nepal</option>
+            <option value="Kathmandu">Kathmandu</option>
+            <option value="Pokhara">Pokhara</option>
+            <option value="Chitwan">Chitwan</option>
+            <option value="Butwal">Butwal</option>
+            <option value="Dharan">Dharan</option>
+          </select></div>
+        <div class="col-md-4"><label class="form-label" for="home-search-type">Vehicle type</label><select
+            class="form-select" id="home-search-type" name="vehicle_type">
+            <option value="">Any vehicle type</option>
+            <option value="car">Car</option>
+            <option value="suv">SUV</option>
+            <option value="van">Van</option>
+            <option value="pickup">Pickup</option>
+            <option value="motorcycle">Motorcycle</option>
+            <option value="scooter">Scooter</option>
+          </select></div>
+        <div class="col-md-3 d-grid"><button class="btn btn-primary" type="submit"><i class="bi bi-search"
+              aria-hidden="true"></i> Search vehicles</button></div>
       </div>
     </form>
   </div>
 </section>
 
 <section class="home-section" aria-labelledby="categories-title">
-  <div class="container"><div class="section-header"><p class="section-kicker">Categories</p><h2 id="categories-title">Choose your ride</h2><p>Find the perfect vehicle for every journey.</p></div>
+  <div class="container">
+    <div class="section-header">
+      <p class="section-kicker">Categories</p>
+      <h2 id="categories-title">Choose your ride</h2>
+      <p>Find the perfect vehicle for every journey.</p>
+    </div>
     <div class="row g-4">
-      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=suv"><i class="bi bi-car-front-fill" aria-hidden="true"></i><h3>SUV</h3><p>Comfortable family and adventure vehicles.</p><span>Explore SUVs <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a></div>
-      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=car"><i class="bi bi-car-front" aria-hidden="true"></i><h3>Cars</h3><p>Easy city travel and business trips.</p><span>Explore cars <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a></div>
-      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=van"><i class="bi bi-truck-front-fill" aria-hidden="true"></i><h3>Vans</h3><p>More room for groups and luggage.</p><span>Explore vans <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a></div>
-      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=pickup"><i class="bi bi-truck" aria-hidden="true"></i><h3>Pickups</h3><p>Capable vehicles for work and rough roads.</p><span>Explore pickups <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a></div>
-      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=motorcycle"><i class="bi bi-bicycle" aria-hidden="true"></i><h3>Motorcycles</h3><p>Freedom to explore every corner of Nepal.</p><span>Explore motorcycles <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a></div>
-      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=scooter"><i class="bi bi-scooter" aria-hidden="true"></i><h3>Scooters</h3><p>Simple, efficient urban transport.</p><span>Explore scooters <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a></div>
+      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=suv"><i
+            class="bi bi-car-front-fill" aria-hidden="true"></i>
+          <h3>SUV</h3>
+          <p>Comfortable family and adventure vehicles.</p><span>Explore SUVs <i class="bi bi-arrow-right"
+              aria-hidden="true"></i></span>
+        </a></div>
+      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=car"><i
+            class="bi bi-car-front" aria-hidden="true"></i>
+          <h3>Cars</h3>
+          <p>Easy city travel and business trips.</p><span>Explore cars <i class="bi bi-arrow-right"
+              aria-hidden="true"></i></span>
+        </a></div>
+      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=van"><i
+            class="bi bi-truck-front-fill" aria-hidden="true"></i>
+          <h3>Vans</h3>
+          <p>More room for groups and luggage.</p><span>Explore vans <i class="bi bi-arrow-right"
+              aria-hidden="true"></i></span>
+        </a></div>
+      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=pickup"><i
+            class="bi bi-truck" aria-hidden="true"></i>
+          <h3>Pickups</h3>
+          <p>Capable vehicles for work and rough roads.</p><span>Explore pickups <i class="bi bi-arrow-right"
+              aria-hidden="true"></i></span>
+        </a></div>
+      <div class="col-sm-6 col-lg-4"><a class="category-card"
+          href="{% url 'vehicles:search' %}?vehicle_type=motorcycle"><i class="bi bi-bicycle" aria-hidden="true"></i>
+          <h3>Motorcycles</h3>
+          <p>Freedom to explore every corner of Nepal.</p><span>Explore motorcycles <i class="bi bi-arrow-right"
+              aria-hidden="true"></i></span>
+        </a></div>
+      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=scooter"><i
+            class="bi bi-scooter" aria-hidden="true"></i>
+          <h3>Scooters</h3>
+          <p>Simple, efficient urban transport.</p><span>Explore scooters <i class="bi bi-arrow-right"
+              aria-hidden="true"></i></span>
+        </a></div>
     </div>
   </div>
 </section>
 
 <section class="home-section home-section-muted" aria-labelledby="featured-title">
-  <div class="container"><div class="section-header"><p class="section-kicker">Featured vehicles</p><h2 id="featured-title">Ready for your next trip</h2><p>Browse verified vehicles from local owners across Nepal.</p></div>
+  <div class="container">
+    <div class="section-header">
+      <p class="section-kicker">Featured vehicles</p>
+      <h2 id="featured-title">Ready for your next trip</h2>
+      <p>Browse verified vehicles from local owners across Nepal.</p>
+    </div>
     <div class="row g-4">
-      <div class="col-md-4"><article class="featured-card"><i class="bi bi-car-front-fill" aria-hidden="true"></i><p class="featured-card-kicker">Family travel</p><h3>Comfortable SUVs</h3><p>Extra room for people, gear, and open roads.</p><a href="{% url 'vehicles:search' %}?vehicle_type=suv">View available SUVs</a></article></div>
-      <div class="col-md-4"><article class="featured-card"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i><p class="featured-card-kicker">City friendly</p><h3>Efficient cars</h3><p>Practical rides for everyday journeys and business travel.</p><a href="{% url 'vehicles:search' %}?vehicle_type=car">View available cars</a></article></div>
-      <div class="col-md-4"><article class="featured-card"><i class="bi bi-compass-fill" aria-hidden="true"></i><p class="featured-card-kicker">Adventure ready</p><h3>Two-wheel escapes</h3><p>Explore with a motorcycle or scooter at your own pace.</p><a href="{% url 'vehicles:search' %}?vehicle_type=motorcycle">View motorcycles</a></article></div>
+      <div class="col-md-4">
+        <article class="featured-card"><i class="bi bi-car-front-fill" aria-hidden="true"></i>
+          <p class="featured-card-kicker">Family travel</p>
+          <h3>Comfortable SUVs</h3>
+          <p>Extra room for people, gear, and open roads.</p><a href="{% url 'vehicles:search' %}?vehicle_type=suv">View
+            available SUVs</a>
+        </article>
+      </div>
+      <div class="col-md-4">
+        <article class="featured-card"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+          <p class="featured-card-kicker">City friendly</p>
+          <h3>Efficient cars</h3>
+          <p>Practical rides for everyday journeys and business travel.</p><a
+            href="{% url 'vehicles:search' %}?vehicle_type=car">View available cars</a>
+        </article>
+      </div>
+      <div class="col-md-4">
+        <article class="featured-card"><i class="bi bi-compass-fill" aria-hidden="true"></i>
+          <p class="featured-card-kicker">Adventure ready</p>
+          <h3>Two-wheel escapes</h3>
+          <p>Explore with a motorcycle or scooter at your own pace.</p><a
+            href="{% url 'vehicles:search' %}?vehicle_type=motorcycle">View motorcycles</a>
+        </article>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="home-section" aria-labelledby="destinations-title">
-  <div class="container"><div class="section-header"><p class="section-kicker">Explore Nepal</p><h2 id="destinations-title">Popular destinations</h2><p>Start your search in the places travellers return to most.</p></div>
-    <div class="row g-4"><div class="col-md-4"><a class="destination-card destination-pokhara" href="{% url 'vehicles:search' %}?q=Pokhara"><span>Pokhara</span><small>Lake views and mountain roads</small></a></div><div class="col-md-4"><a class="destination-card destination-kathmandu" href="{% url 'vehicles:search' %}?q=Kathmandu"><span>Kathmandu</span><small>City breaks and heritage routes</small></a></div><div class="col-md-4"><a class="destination-card destination-mustang" href="{% url 'vehicles:search' %}?q=Mustang"><span>Mustang</span><small>For journeys beyond the ordinary</small></a></div></div>
+  <div class="container">
+    <div class="section-header">
+      <p class="section-kicker">Explore Nepal</p>
+      <h2 id="destinations-title">Popular destinations</h2>
+      <p>Start your search in the places travellers return to most.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4"><a class="destination-card destination-pokhara"
+          href="{% url 'vehicles:search' %}?q=Pokhara"><span>Pokhara</span><small>Lake views and mountain
+            roads</small></a></div>
+      <div class="col-md-4"><a class="destination-card destination-kathmandu"
+          href="{% url 'vehicles:search' %}?q=Kathmandu"><span>Kathmandu</span><small>City breaks and heritage
+            routes</small></a></div>
+      <div class="col-md-4"><a class="destination-card destination-mustang"
+          href="{% url 'vehicles:search' %}?q=Mustang"><span>Mustang</span><small>For journeys beyond the
+            ordinary</small></a></div>
+    </div>
   </div>
 </section>
 
 <section class="home-section home-section-muted" id="how-it-works" aria-labelledby="trust-title">
-  <div class="container"><div class="section-header"><p class="section-kicker">Why RideNest</p><h2 id="trust-title">Rent with confidence</h2><p>A simpler way to find dependable transport, wherever your trip takes you.</p></div>
-    <div class="row g-4"><div class="col-sm-6 col-lg-3"><article class="trust-card"><i class="bi bi-patch-check-fill" aria-hidden="true"></i><h3>Verified owners</h3><p>Community trust starts with accountable listings.</p></article></div><div class="col-sm-6 col-lg-3"><article class="trust-card"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i><h3>Secure bookings</h3><p>Clear request and approval steps for every rental.</p></article></div><div class="col-sm-6 col-lg-3"><article class="trust-card"><i class="bi bi-signpost-split-fill" aria-hidden="true"></i><h3>Travel Nepal</h3><p>Find the right vehicle for city, highway, or mountain roads.</p></article></div><div class="col-sm-6 col-lg-3"><article class="trust-card"><i class="bi bi-headset" aria-hidden="true"></i><h3>Helpful support</h3><p>Guidance when you need it, before your trip begins.</p></article></div></div>
+  <div class="container">
+    <div class="section-header">
+      <p class="section-kicker">Why RideNest</p>
+      <h2 id="trust-title">Rent with confidence</h2>
+      <p>A simpler way to find dependable transport, wherever your trip takes you.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-sm-6 col-lg-3">
+        <article class="trust-card"><i class="bi bi-patch-check-fill" aria-hidden="true"></i>
+          <h3>Verified owners</h3>
+          <p>Community trust starts with accountable listings.</p>
+        </article>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <article class="trust-card"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i>
+          <h3>Secure bookings</h3>
+          <p>Clear request and approval steps for every rental.</p>
+        </article>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <article class="trust-card"><i class="bi bi-signpost-split-fill" aria-hidden="true"></i>
+          <h3>Travel Nepal</h3>
+          <p>Find the right vehicle for city, highway, or mountain roads.</p>
+        </article>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <article class="trust-card"><i class="bi bi-headset" aria-hidden="true"></i>
+          <h3>Helpful support</h3>
+          <p>Guidance when you need it, before your trip begins.</p>
+        </article>
+      </div>
+    </div>
   </div>
 </section>
 {% endblock %}

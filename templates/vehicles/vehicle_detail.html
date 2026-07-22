@@ -1,3 +1,61 @@
 {% extends "base.html" %}
 {% block title %}{{ vehicle.name }} | RideNest{% endblock %}
-{% block content %}<section class="container vehicle-page"><div class="page-heading"><div><p class="eyebrow">Your vehicle</p><h1>{{ vehicle.name }}</h1><p>{{ vehicle.brand }} {{ vehicle.model }} · {{ vehicle.registration_number }}</p></div><span class="status {{ vehicle.approval_status }}">{{ vehicle.get_approval_status_display }}</span></div>{% if vehicle.rejection_reason %}<p class="rejection">Rejection reason: {{ vehicle.rejection_reason }}</p>{% endif %}<div class="vehicle-images">{% for vehicle_image in vehicle.images.all %}<img src="{{ vehicle_image.image.url }}" alt="{{ vehicle.name }}{% if vehicle_image.is_primary %} primary image{% endif %}">{% empty %}<div class="image-placeholder">No images added yet</div>{% endfor %}</div><div class="vehicle-actions">{% if vehicle.approval_status == 'draft' or vehicle.approval_status == 'rejected' %}<a class="button" href="{% url 'vehicles:edit' vehicle.slug %}">Edit vehicle</a><form method="post" action="{% url 'vehicles:submit' vehicle.slug %}">{% csrf_token %}<button class="button button-outline" type="submit">Submit for approval</button></form>{% endif %}{% if vehicle.approval_status == 'draft' %}<form method="post" action="{% url 'vehicles:delete' vehicle.slug %}" onsubmit="return confirm('Delete this draft vehicle?');">{% csrf_token %}<button class="danger-button" type="submit">Delete draft</button></form>{% endif %}</div><dl class="vehicle-details"><div><dt>Rental price</dt><dd>Rs. {{ vehicle.rental_price_per_day }} / day</dd></div><div><dt>Security deposit</dt><dd>Rs. {{ vehicle.security_deposit }}</dd></div><div><dt>Type</dt><dd>{{ vehicle.get_vehicle_type_display }}</dd></div><div><dt>Fuel / transmission</dt><dd>{{ vehicle.get_fuel_type_display }} · {{ vehicle.get_transmission_display }}</dd></div><div><dt>Seats</dt><dd>{{ vehicle.seats }}</dd></div><div><dt>Mileage</dt><dd>{{ vehicle.mileage }} km</dd></div><div><dt>Engine</dt><dd>{{ vehicle.engine_capacity }} cc</dd></div><div><dt>Pickup address</dt><dd>{{ vehicle.pickup_address }}</dd></div><div class="full-detail"><dt>Description</dt><dd>{{ vehicle.description|linebreaksbr }}</dd></div></dl></section>{% endblock %}
+{% block content %}<section class="container vehicle-page">
+    <div class="page-heading">
+        <div>
+            <p class="eyebrow">Your vehicle</p>
+            <h1>{{ vehicle.name }}</h1>
+            <p>{{ vehicle.brand }} {{ vehicle.model }} · {{ vehicle.registration_number }}</p>
+        </div><span class="status {{ vehicle.approval_status }}">{{ vehicle.get_approval_status_display }}</span>
+    </div>{% if vehicle.rejection_reason %}<p class="rejection">Rejection reason: {{ vehicle.rejection_reason }}</p>{%
+    endif %}<div class="vehicle-images">{% for vehicle_image in vehicle.images.all %}<img
+            src="{{ vehicle_image.image.url }}"
+            alt="{{ vehicle.name }}{% if vehicle_image.is_primary %} primary image{% endif %}">{% empty %}<div
+            class="image-placeholder">No images added yet</div>{% endfor %}</div>
+    <div class="vehicle-actions">{% if vehicle.approval_status == 'draft' or vehicle.approval_status == 'rejected' %}<a
+            class="button" href="{% url 'vehicles:edit' vehicle.slug %}">Edit vehicle</a>
+        <form method="post" action="{% url 'vehicles:submit' vehicle.slug %}">{% csrf_token %}<button
+                class="button button-outline" type="submit">Submit for approval</button></form>{% endif %}{% if
+        vehicle.approval_status == 'draft' %}<form method="post" action="{% url 'vehicles:delete' vehicle.slug %}"
+            onsubmit="return confirm('Delete this draft vehicle?');">{% csrf_token %}<button class="danger-button"
+                type="submit">Delete draft</button></form>{% endif %}
+    </div>
+    <dl class="vehicle-details">
+        <div>
+            <dt>Rental price</dt>
+            <dd>Rs. {{ vehicle.rental_price_per_day }} / day</dd>
+        </div>
+        <div>
+            <dt>Security deposit</dt>
+            <dd>Rs. {{ vehicle.security_deposit }}</dd>
+        </div>
+        <div>
+            <dt>Type</dt>
+            <dd>{{ vehicle.get_vehicle_type_display }}</dd>
+        </div>
+        <div>
+            <dt>Fuel / transmission</dt>
+            <dd>{{ vehicle.get_fuel_type_display }} · {{ vehicle.get_transmission_display }}</dd>
+        </div>
+        <div>
+            <dt>Seats</dt>
+            <dd>{{ vehicle.seats }}</dd>
+        </div>
+        <div>
+            <dt>Mileage</dt>
+            <dd>{{ vehicle.mileage }} km</dd>
+        </div>
+        <div>
+            <dt>Engine</dt>
+            <dd>{{ vehicle.engine_capacity }} cc</dd>
+        </div>
+        <div>
+            <dt>Pickup address</dt>
+            <dd>{{ vehicle.pickup_address }}</dd>
+        </div>
+        <div class="full-detail">
+            <dt>Description</dt>
+            <dd>{{ vehicle.description|linebreaksbr }}</dd>
+        </div>
+    </dl>
+</section>{% endblock %}

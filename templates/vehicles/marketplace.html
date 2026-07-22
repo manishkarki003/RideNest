@@ -1,7 +1,321 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}{% if search_results %}Search vehicles{% else %}Vehicle marketplace{% endif %} | RideNest{% endblock %}
-{% block meta_description %}Browse approved, available vehicles for rent on RideNest.{% endblock %}
-{% block canonical %}<link rel="canonical" href="{{ canonical_url }}">{% endblock %}
-{% block content %}<section class="container marketplace-page"><div class="marketplace-heading"><div><p class="eyebrow">Find your ride</p><h1>{% if search_results %}Search results{% else %}Vehicle marketplace{% endif %}</h1><p>Browse approved, active vehicles available for rent.</p></div></div><form class="search-bar" method="get" action="{% url 'vehicles:search' %}" id="marketplace-form"><label class="sr-only" for="id_q">Search vehicles</label><input id="id_q" name="q" value="{{ request.GET.q }}" placeholder="Search by vehicle, brand, or pickup location"><button class="button" type="submit">Search</button></form><div class="marketplace-layout"><aside class="filter-sidebar"><h2>Filters</h2><form method="get" action="{% url 'vehicles:search' %}" id="filter-form"><input type="hidden" name="q" value="{{ request.GET.q }}"><label>Vehicle type<select name="vehicle_type"><option value="">All types</option>{% for value, label in vehicle_types %}<option value="{{ value }}" {% if request.GET.vehicle_type == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label><label>Fuel type<select name="fuel_type"><option value="">All fuel types</option>{% for value, label in fuel_types %}<option value="{{ value }}" {% if request.GET.fuel_type == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label><label>Transmission<select name="transmission"><option value="">All transmissions</option>{% for value, label in transmissions %}<option value="{{ value }}" {% if request.GET.transmission == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label><label>Brand<select name="brand"><option value="">All brands</option>{% for value in brands %}<option value="{{ value }}" {% if request.GET.brand == value %}selected{% endif %}>{{ value }}</option>{% endfor %}</select></label><label>Seats<input name="seats" type="number" min="1" value="{{ request.GET.seats }}" placeholder="Any"></label><div class="range-fields"><label>Min price<input name="min_price" type="number" min="0" value="{{ request.GET.min_price }}"></label><label>Max price<input name="max_price" type="number" min="0" value="{{ request.GET.max_price }}"></label></div><div class="range-fields"><label>From year<input name="min_year" type="number" min="1900" value="{{ request.GET.min_year }}"></label><label>To year<input name="max_year" type="number" min="1900" value="{{ request.GET.max_year }}"></label></div><label>Availability<select name="availability"><option value="">All available</option>{% for value, label in availability_options %}<option value="{{ value }}" {% if request.GET.availability == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label><label>Sort by<select name="sort"><option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest</option><option value="oldest" {% if selected_sort == 'oldest' %}selected{% endif %}>Oldest</option><option value="price_low" {% if selected_sort == 'price_low' %}selected{% endif %}>Lowest price</option><option value="price_high" {% if selected_sort == 'price_high' %}selected{% endif %}>Highest price</option><option value="alphabetical" {% if selected_sort == 'alphabetical' %}selected{% endif %}>Alphabetical</option></select></label><button class="button" type="submit">Apply filters</button><a class="clear-filters" href="{% url 'vehicles:marketplace' %}">Clear filters</a></form></aside><div class="marketplace-results"><div class="results-bar"><p>{{ page_obj.paginator.count }} vehicle{{ page_obj.paginator.count|pluralize }} found{% if query %} for “{{ query }}”{% endif %}.</p></div><div class="loading-state" id="marketplace-loading" hidden aria-live="polite">Loading vehicles…</div>{% if vehicles %}<div class="market-card-grid">{% for vehicle in vehicles %}{% include "vehicles/_public_vehicle_card.html" %}{% endfor %}</div>{% else %}<div class="empty-state"><h2>No vehicles matched</h2><p>Try clearing a filter or using a broader search term.</p><a class="button" href="{% url 'vehicles:marketplace' %}">View all vehicles</a></div>{% endif %}{% if page_obj.paginator.num_pages > 1 %}<nav class="pagination" aria-label="Vehicle pages">{% if page_obj.has_previous %}<a href="?{% if page_querystring %}{{ page_querystring }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>{% endif %}<span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>{% if page_obj.has_next %}<a href="?{% if page_querystring %}{{ page_querystring }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Next</a>{% endif %}</nav>{% endif %}</div></div></section>{% endblock %}
-{% block extra_js %}<script src="{% static 'js/marketplace.js' %}" defer></script>{% endblock %}
+
+{% block title %}
+    {% if search_results %}Search vehicles{% else %}Vehicle marketplace{% endif %} | RideNest
+{% endblock %}
+
+{% block meta_description %}
+Browse approved, available vehicles for rent on RideNest.
+{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="{{ canonical_url }}">
+{% endblock %}
+
+{% block content %}
+<section class="container marketplace-page">
+
+    <div class="marketplace-heading">
+        <div>
+            <p class="eyebrow">Find your ride</p>
+            <h1>
+                {% if search_results %}
+                    Search results
+                {% else %}
+                    Vehicle marketplace
+                {% endif %}
+            </h1>
+            <p>Browse approved, active vehicles available for rent.</p>
+        </div>
+    </div>
+
+    <form class="search-bar"
+          method="get"
+          action="{% url 'vehicles:search' %}"
+          id="marketplace-form">
+
+        <label class="sr-only" for="id_q">Search vehicles</label>
+
+        <input
+            id="id_q"
+            name="q"
+            value="{{ request.GET.q }}"
+            placeholder="Search by vehicle, brand, or pickup location">
+
+        <button class="button" type="submit">
+            Search
+        </button>
+    </form>
+
+    <div class="marketplace-layout">
+
+        <aside class="filter-sidebar">
+
+            <h2>Filters</h2>
+
+            <form method="get"
+                  action="{% url 'vehicles:search' %}"
+                  id="filter-form">
+
+                <input
+                    type="hidden"
+                    name="q"
+                    value="{{ request.GET.q }}">
+
+                <label>
+                    Vehicle type
+                    <select name="vehicle_type">
+                        <option value="">All types</option>
+                        {% for value, label in vehicle_types %}
+                            <option value="{{ value }}"
+                                {% if request.GET.vehicle_type == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label>
+                    Fuel type
+                    <select name="fuel_type">
+                        <option value="">All fuel types</option>
+                        {% for value, label in fuel_types %}
+                            <option value="{{ value }}"
+                                {% if request.GET.fuel_type == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label>
+                    Transmission
+                    <select name="transmission">
+                        <option value="">All transmissions</option>
+                        {% for value, label in transmissions %}
+                            <option value="{{ value }}"
+                                {% if request.GET.transmission == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label>
+                    Brand
+                    <select name="brand">
+                        <option value="">All brands</option>
+                        {% for value in brands %}
+                            <option value="{{ value }}"
+                                {% if request.GET.brand == value %}selected{% endif %}>
+                                {{ value }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label>
+                    Seats
+                    <input
+                        name="seats"
+                        type="number"
+                        min="1"
+                        value="{{ request.GET.seats }}"
+                        placeholder="Any">
+                </label>
+
+                <div class="range-fields">
+
+                    <label>
+                        Min price
+                        <input
+                            name="min_price"
+                            type="number"
+                            min="0"
+                            value="{{ request.GET.min_price }}">
+                    </label>
+
+                    <label>
+                        Max price
+                        <input
+                            name="max_price"
+                            type="number"
+                            min="0"
+                            value="{{ request.GET.max_price }}">
+                    </label>
+
+                </div>
+
+                <div class="range-fields">
+
+                    <label>
+                        From year
+                        <input
+                            name="min_year"
+                            type="number"
+                            min="1900"
+                            value="{{ request.GET.min_year }}">
+                    </label>
+
+                    <label>
+                        To year
+                        <input
+                            name="max_year"
+                            type="number"
+                            min="1900"
+                            value="{{ request.GET.max_year }}">
+                    </label>
+
+                </div>
+
+                <label>
+                    Availability
+                    <select name="availability">
+                        <option value="">All available</option>
+                        {% for value, label in availability_options %}
+                            <option value="{{ value }}"
+                                {% if request.GET.availability == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label>
+                    Sort by
+                    <select name="sort">
+                        <option value="newest"
+                            {% if selected_sort == "newest" %}selected{% endif %}>
+                            Newest
+                        </option>
+
+                        <option value="oldest"
+                            {% if selected_sort == "oldest" %}selected{% endif %}>
+                            Oldest
+                        </option>
+
+                        <option value="price_low"
+                            {% if selected_sort == "price_low" %}selected{% endif %}>
+                            Lowest price
+                        </option>
+
+                        <option value="price_high"
+                            {% if selected_sort == "price_high" %}selected{% endif %}>
+                            Highest price
+                        </option>
+
+                        <option value="alphabetical"
+                            {% if selected_sort == "alphabetical" %}selected{% endif %}>
+                            Alphabetical
+                        </option>
+
+                    </select>
+                </label>
+
+                <button class="button" type="submit">
+                    Apply filters
+                </button>
+
+                <a class="clear-filters"
+                   href="{% url 'vehicles:marketplace' %}">
+                    Clear filters
+                </a>
+
+            </form>
+
+        </aside>
+
+        <div class="marketplace-results">
+
+            <div class="results-bar">
+                <p>
+                    {{ page_obj.paginator.count }}
+                    vehicle{{ page_obj.paginator.count|pluralize }}
+                    found
+                    {% if query %}
+                        for "{{ query }}"
+                    {% endif %}
+                    .
+                </p>
+            </div>
+
+            <div
+                class="loading-state"
+                id="marketplace-loading"
+                hidden
+                aria-live="polite">
+                Loading vehicles…
+            </div>
+
+            {% if vehicles %}
+
+                <div class="market-card-grid">
+
+                    {% for vehicle in vehicles %}
+
+                        {% include "vehicles/_public_vehicle_card.html" %}
+
+                    {% empty %}
+
+                        <p>No vehicles found.</p>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <h2>No vehicles matched</h2>
+
+                    <p>
+                        Try clearing a filter or using a broader search term.
+                    </p>
+
+                    <a class="button"
+                       href="{% url 'vehicles:marketplace' %}">
+                        View all vehicles
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+            {% if page_obj.paginator.num_pages > 1 %}
+
+                <nav class="pagination" aria-label="Vehicle pages">
+
+                    {% if page_obj.has_previous %}
+                        <a href="?{% if page_querystring %}{{ page_querystring }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">
+                            Previous
+                        </a>
+                    {% endif %}
+
+                    <span>
+                        Page {{ page_obj.number }}
+                        of
+                        {{ page_obj.paginator.num_pages }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?{% if page_querystring %}{{ page_querystring }}&amp;{% endif %}page={{ page_obj.next_page_number }}">
+                            Next
+                        </a>
+                    {% endif %}
+
+                </nav>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/marketplace.js' %}" defer></script>
+{% endblock %}

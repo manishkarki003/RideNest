@@ -1,5 +1,24 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Booking requests | RideNest{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/bookings.css' %}">{% endblock %}
-{% block content %}<section class="container booking-page"><div class="page-heading"><div><p class="eyebrow">Owner workspace</p><h1>Booking requests</h1></div></div>{% if bookings %}<div class="booking-list">{% for booking in bookings %}<article class="booking-list-item"><div><span class="booking-status {{ booking.booking_status }}">{{ booking.get_booking_status_display }}</span><h2><a href="{% url 'bookings:booking_detail' booking.booking_reference %}">{{ booking.vehicle.name }}</a></h2><p>{{ booking.renter.full_name|default:booking.renter.username }} · {{ booking.pickup_date|date:"M j" }}–{{ booking.return_date|date:"M j, Y" }} · {{ booking.short_reference }}</p></div><strong>Rs. {{ booking.total_amount }}</strong></article>{% endfor %}</div>{% else %}<div class="empty-state"><h2>No booking requests</h2><p>New requests for your vehicles will appear here.</p></div>{% endif %}</section>{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/bookings.css' %}">{% endblock %}
+{% block content %}<section class="container booking-page">
+    <div class="page-heading">
+        <div>
+            <p class="eyebrow">Owner workspace</p>
+            <h1>Booking requests</h1>
+        </div>
+    </div>{% if bookings %}<div class="booking-list">{% for booking in bookings %}<article class="booking-list-item">
+            <div><span class="booking-status {{ booking.booking_status }}">{{ booking.get_booking_status_display
+                    }}</span>
+                <h2><a href="{% url 'bookings:booking_detail' booking.booking_reference %}">{{ booking.vehicle.name
+                        }}</a></h2>
+                <p>{{ booking.renter.full_name|default:booking.renter.username }} · {{ booking.pickup_date|date:"M j"
+                    }}–{{ booking.return_date|date:"M j, Y" }} · {{ booking.short_reference }}</p>
+            </div><strong>Rs. {{ booking.total_amount }}</strong>
+        </article>{% endfor %}</div>{% else %}<div class="empty-state">
+        <h2>No booking requests</h2>
+        <p>New requests for your vehicles will appear here.</p>
+    </div>{% endif %}
+</section>{% endblock %}
