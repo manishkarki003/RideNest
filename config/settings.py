@@ -1,10 +1,14 @@
 """Settings for the Vehicle Rental System project."""
-from pathlib import Path
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 load_dotenv(BASE_DIR / ".env")
+
+# Supabase configuration
+SUPABASE_PUBLIC_URL = os.getenv("SUPABASE_PUBLIC_URL")
 
 # The fallback is for local development only. Production must provide DJANGO_SECRET_KEY.
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-development-only-change-me-before-production")
@@ -26,6 +30,7 @@ INSTALLED_APPS = [
     "reviews",
     "notifications",
     "dashboard",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -52,26 +57,44 @@ TEMPLATES = [{
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-# SQLite is used locally. Set POSTGRES_DB and related variables to use PostgreSQL.
+# Database
+
 if os.environ.get("POSTGRES_DB"):
-    DATABASES = {"default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ["POSTGRES_DB"],
-        "USER": os.environ.get("POSTGRES_USER", ""),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
-        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
-    }}
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ["POSTGRES_DB"],
+            "USER": os.environ["POSTGRES_USER"],
+            "PASSWORD": os.environ["POSTGRES_PASSWORD"],
+            "HOST": os.environ["POSTGRES_HOST"],
+            "PORT": os.environ.get("POSTGRES_PORT", "5432"),
+            "OPTIONS": {
+                "sslmode": "require",
+            },
+        }
+    }
 else:
-    DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}}
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
-
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Kathmandu"
 USE_I18N = True
@@ -84,13 +107,21 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "vehicles.storage.SupabasePublicStorage",
+        "OPTIONS": {
+            "access_key": os.getenv("SUPABASE_S3_ACCESS_KEY"),
+            "secret_key": os.getenv("SUPABASE_S3_SECRET_KEY"),
+            "bucket_name": "vehicle-images",
+            "endpoint_url": os.getenv("SUPABASE_S3_ENDPOINT"),
+            "region_name": os.getenv("SUPABASE_S3_REGION"),
+            "default_acl": None,
+            "querystring_auth": False,
+        },
     },
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 LOGIN_URL = "accounts:login"

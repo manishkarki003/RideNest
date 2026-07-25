@@ -1,18 +1,24 @@
 <article class="market-card">
+
     <a class="market-card-image" href="{% url 'vehicles:public_detail' vehicle.slug %}">
+
         {% if vehicle.primary_image %}
-            <img
-                src="{{ vehicle.primary_image.image.url }}"
-                alt="{{ vehicle.name }}"
-                loading="lazy"
-            >
+        <img src="{{ vehicle.primary_image.image.url }}" alt="{{ vehicle.name }}" loading="lazy">
         {% else %}
-            <span>No image available</span>
+        <span>No image available</span>
         {% endif %}
+
+        <button class="favorite-btn" type="button" aria-label="Save vehicle">
+            <i class="bi bi-heart"></i>
+        </button>
+
+        <span class="availability available">
+            Available
+        </span>
+
     </a>
 
     <div class="market-card-body">
-        <span class="availability available">Available</span>
 
         <h2>
             <a href="{% url 'vehicles:public_detail' vehicle.slug %}">
@@ -20,13 +26,54 @@
             </a>
         </h2>
 
-        <p>{{ vehicle.brand }} {{ vehicle.model }} · {{ vehicle.manufacturing_year }}</p>
+        <p class="vehicle-meta">
+            {{ vehicle.brand }}
+            •
+            {{ vehicle.manufacturing_year }}
+        </p>
 
-        <p class="card-location">{{ vehicle.pickup_address }}</p>
+        <p class="card-location">
+            <i class="bi bi-geo-alt"></i>
+            {{ vehicle.pickup_address }}
+        </p>
 
-        <strong>
-            Rs. {{ vehicle.rental_price_per_day }}
-            <small>/ day</small>
-        </strong>
+        <div class="vehicle-specs">
+
+            <span>
+                <i class="bi bi-gear"></i>
+                {{ vehicle.get_transmission_display }}
+            </span>
+
+            <span>
+                <i class="bi bi-fuel-pump"></i>
+                {{ vehicle.get_fuel_type_display }}
+            </span>
+
+            <span>
+                <i class="bi bi-people"></i>
+                {{ vehicle.seats }}
+            </span>
+
+        </div>
+
+        <div class="card-footer">
+
+            <div class="price">
+
+                <strong>
+                    Rs. {{ vehicle.rental_price_per_day }}
+                </strong>
+
+                <small>/ day</small>
+
+            </div>
+
+            <a class="details-btn" href="{% url 'vehicles:public_detail' vehicle.slug %}">
+                View Details
+            </a>
+
+        </div>
+
     </div>
+
 </article>
