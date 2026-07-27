@@ -7,9 +7,15 @@ RideNest.{% endblock %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
 {% block content %}
 <section class="hero-section">
+  <div class="hero-aurora" aria-hidden="true">
+    <span class="aurora-blob aurora-blob-a"></span>
+    <span class="aurora-blob aurora-blob-b"></span>
+    <span class="aurora-blob aurora-blob-c"></span>
+    <span class="aurora-grid"></span>
+  </div>
   <div class="container">
     <div class="row align-items-center g-5">
-      <div class="col-lg-6">
+      <div class="col-lg-6 reveal-el">
         <p class="hero-badge"><i class="bi bi-patch-check-fill" aria-hidden="true"></i>Nepal's trusted vehicle rental
           platform</p>
         <h1 class="hero-title">Rent cars and bikes <span>across Nepal.</span></h1>
@@ -22,22 +28,53 @@ RideNest.{% endblock %}
         </div>
         <dl class="hero-stats" aria-label="RideNest highlights">
           <div>
-            <dt>30+</dt>
+            <i class="bi bi-car-front-fill" aria-hidden="true"></i>
+            <dt data-count-to="30" data-count-suffix="+">30+</dt>
             <dd>Vehicles</dd>
           </div>
           <div>
-            <dt>20+</dt>
+            <i class="bi bi-patch-check-fill" aria-hidden="true"></i>
+            <dt data-count-to="20" data-count-suffix="+">20+</dt>
             <dd>Verified owners</dd>
           </div>
           <div>
-            <dt>4.9</dt>
+            <i class="bi bi-star-fill" aria-hidden="true"></i>
+            <dt data-count-to="4.9" data-count-decimal="1">4.9</dt>
             <dd>Average rating</dd>
+          </div>
+          <div>
+            <i class="bi bi-shield-lock-fill" aria-hidden="true"></i>
+            <dt data-count-to="100" data-count-suffix="%">100%</dt>
+            <dd>Secure booking</dd>
           </div>
         </dl>
       </div>
-      <div class="col-lg-6">
-        <img src="{% static 'images/hero/hero-car.webp' %}" class="hero-image"
-          alt="SUV available to rent through RideNest" fetchpriority="high">
+      <div class="col-lg-6 reveal-el" style="--reveal-delay:.1s">
+        <div class="hero-image-frame">
+          <span class="hero-image-glow" aria-hidden="true"></span>
+          <img src="{% static 'images/hero/hero-car.webp' %}" class="hero-image"
+            alt="SUV available to rent through RideNest" fetchpriority="high">
+
+          <span class="hero-floating-badge badge-top-left" aria-hidden="true">
+            <i class="bi bi-patch-check-fill" aria-hidden="true"></i>
+            Verified Owner
+          </span>
+
+          <span class="hero-floating-badge badge-top-right" aria-hidden="true">
+            <i class="bi bi-star-fill" aria-hidden="true"></i>
+            4.9 Rating
+          </span>
+
+          <span class="hero-floating-badge badge-bottom-left" aria-hidden="true">
+            <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+            Available Today
+          </span>
+
+          <span class="hero-floating-badge badge-bottom-right" aria-hidden="true">
+            <i class="bi bi-headset" aria-hidden="true"></i>
+            24/7 Support
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -45,7 +82,7 @@ RideNest.{% endblock %}
 
 <section class="search-wrapper" aria-labelledby="quick-search-title">
   <div class="container">
-    <form class="search-card" action="{% url 'vehicles:search' %}" method="get">
+    <form class="search-card reveal-el" action="{% url 'vehicles:search' %}" method="get">
       <div class="search-card-heading">
         <h2 id="quick-search-title">Find your next ride</h2>
         <p>Search approved vehicles available today.</p>
@@ -77,7 +114,7 @@ RideNest.{% endblock %}
   </div>
 </section>
 
-<section class="home-section" aria-labelledby="categories-title">
+<section class="home-section reveal-el" aria-labelledby="categories-title">
   <div class="container">
     <div class="section-header">
       <p class="section-kicker">Categories</p>
@@ -85,38 +122,38 @@ RideNest.{% endblock %}
       <p>Find the perfect vehicle for every journey.</p>
     </div>
     <div class="row g-4">
-      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=suv"><i
-            class="bi bi-car-front-fill" aria-hidden="true"></i>
+      <div class="col-sm-6 col-lg-4"><a class="category-card category-card-suv"
+          href="{% url 'vehicles:search' %}?vehicle_type=suv"><i class="bi bi-car-front-fill" aria-hidden="true"></i>
           <h3>SUV</h3>
           <p>Comfortable family and adventure vehicles.</p><span>Explore SUVs <i class="bi bi-arrow-right"
               aria-hidden="true"></i></span>
         </a></div>
-      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=car"><i
-            class="bi bi-car-front" aria-hidden="true"></i>
+      <div class="col-sm-6 col-lg-4"><a class="category-card category-card-car"
+          href="{% url 'vehicles:search' %}?vehicle_type=car"><i class="bi bi-car-front" aria-hidden="true"></i>
           <h3>Cars</h3>
           <p>Easy city travel and business trips.</p><span>Explore cars <i class="bi bi-arrow-right"
               aria-hidden="true"></i></span>
         </a></div>
-      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=van"><i
-            class="bi bi-truck-front-fill" aria-hidden="true"></i>
+      <div class="col-sm-6 col-lg-4"><a class="category-card category-card-van"
+          href="{% url 'vehicles:search' %}?vehicle_type=van"><i class="bi bi-truck-front-fill" aria-hidden="true"></i>
           <h3>Vans</h3>
           <p>More room for groups and luggage.</p><span>Explore vans <i class="bi bi-arrow-right"
               aria-hidden="true"></i></span>
         </a></div>
-      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=pickup"><i
-            class="bi bi-truck" aria-hidden="true"></i>
+      <div class="col-sm-6 col-lg-4"><a class="category-card category-card-pickup"
+          href="{% url 'vehicles:search' %}?vehicle_type=pickup"><i class="bi bi-truck" aria-hidden="true"></i>
           <h3>Pickups</h3>
           <p>Capable vehicles for work and rough roads.</p><span>Explore pickups <i class="bi bi-arrow-right"
               aria-hidden="true"></i></span>
         </a></div>
-      <div class="col-sm-6 col-lg-4"><a class="category-card"
+      <div class="col-sm-6 col-lg-4"><a class="category-card category-card-moto"
           href="{% url 'vehicles:search' %}?vehicle_type=motorcycle"><i class="bi bi-bicycle" aria-hidden="true"></i>
           <h3>Motorcycles</h3>
           <p>Freedom to explore every corner of Nepal.</p><span>Explore motorcycles <i class="bi bi-arrow-right"
               aria-hidden="true"></i></span>
         </a></div>
-      <div class="col-sm-6 col-lg-4"><a class="category-card" href="{% url 'vehicles:search' %}?vehicle_type=scooter"><i
-            class="bi bi-scooter" aria-hidden="true"></i>
+      <div class="col-sm-6 col-lg-4"><a class="category-card category-card-scooter"
+          href="{% url 'vehicles:search' %}?vehicle_type=scooter"><i class="bi bi-scooter" aria-hidden="true"></i>
           <h3>Scooters</h3>
           <p>Simple, efficient urban transport.</p><span>Explore scooters <i class="bi bi-arrow-right"
               aria-hidden="true"></i></span>
@@ -125,43 +162,90 @@ RideNest.{% endblock %}
   </div>
 </section>
 
-<section class="home-section home-section-muted" aria-labelledby="featured-title">
+<!-- ============ FEATURED VEHICLES ============
+     Assumes a `featured_vehicles` queryset is passed from the view.
+     Uses confirmed Vehicle model fields.
+     average_rating is optional.
+     Replace the detail-page URL with your actual URL.
+-->
+<section class="home-section home-section-muted reveal-el" aria-labelledby="featured-title">
   <div class="container">
     <div class="section-header">
       <p class="section-kicker">Featured vehicles</p>
       <h2 id="featured-title">Ready for your next trip</h2>
       <p>Browse verified vehicles from local owners across Nepal.</p>
     </div>
+
+    {% if featured_vehicles %}
     <div class="row g-4">
-      <div class="col-md-4">
-        <article class="featured-card"><i class="bi bi-car-front-fill" aria-hidden="true"></i>
-          <p class="featured-card-kicker">Family travel</p>
-          <h3>Comfortable SUVs</h3>
-          <p>Extra room for people, gear, and open roads.</p><a href="{% url 'vehicles:search' %}?vehicle_type=suv">View
-            available SUVs</a>
+      {% for vehicle in featured_vehicles %}
+      <div class="col-md-6 col-lg-4">
+        <article class="vehicle-card">
+
+          <div class="vehicle-card-image">
+            {% with vehicle.images.first as vehicle_image %}
+            {% if vehicle_image %}
+            <img src="{{ vehicle_image.image.url }}" alt="{{ vehicle.name }}">
+            {% else %}
+            <div class="vehicle-card-noimage">No image available</div>
+            {% endif %}
+            {% endwith %}
+
+            <span class="availability available">Available</span>
+
+            <button type="button" class="vehicle-fav-btn" aria-label="Save {{ vehicle.name }} to favourites"
+              data-favourite-btn>
+              <i class="bi bi-heart" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="vehicle-card-body">
+
+            <div class="vehicle-card-top">
+              <h3>{{ vehicle.name }}</h3>
+              {% if vehicle.average_rating %}
+              <span class="vehicle-rating">
+                <i class="bi bi-star-fill" aria-hidden="true"></i>
+                {{ vehicle.average_rating }}
+              </span>
+              {% endif %}
+            </div>
+
+            <p class="vehicle-location">
+              <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+              {{ vehicle.pickup_address }}
+            </p>
+
+            <div class="vehicle-specs">
+              <span><i class="bi bi-fuel-pump-fill" aria-hidden="true"></i> {{ vehicle.get_fuel_type_display }}</span>
+              <span><i class="bi bi-gear-fill" aria-hidden="true"></i> {{ vehicle.get_transmission_display }}</span>
+              <span><i class="bi bi-people-fill" aria-hidden="true"></i> {{ vehicle.seats }} seats</span>
+            </div>
+
+            <div class="vehicle-card-footer">
+              <p class="vehicle-price">
+                Rs. {{ vehicle.rental_price_per_day }}
+                <small>/ day</small>
+              </p>
+
+              <!-- Replace with your real vehicle detail URL -->
+              <a href="{{ vehicle.get_absolute_url }}" class="btn btn-primary">Book now</a>
+            </div>
+
+          </div>
+
         </article>
       </div>
-      <div class="col-md-4">
-        <article class="featured-card"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
-          <p class="featured-card-kicker">City friendly</p>
-          <h3>Efficient cars</h3>
-          <p>Practical rides for everyday journeys and business travel.</p><a
-            href="{% url 'vehicles:search' %}?vehicle_type=car">View available cars</a>
-        </article>
-      </div>
-      <div class="col-md-4">
-        <article class="featured-card"><i class="bi bi-compass-fill" aria-hidden="true"></i>
-          <p class="featured-card-kicker">Adventure ready</p>
-          <h3>Two-wheel escapes</h3>
-          <p>Explore with a motorcycle or scooter at your own pace.</p><a
-            href="{% url 'vehicles:search' %}?vehicle_type=motorcycle">View motorcycles</a>
-        </article>
-      </div>
+      {% endfor %}
     </div>
+    {% else %}
+    <p class="text-center text-muted">No featured vehicles available right now.</p>
+    {% endif %}
+
   </div>
 </section>
 
-<section class="home-section" aria-labelledby="destinations-title">
+<section class="home-section reveal-el" aria-labelledby="destinations-title">
   <div class="container">
     <div class="section-header">
       <p class="section-kicker">Explore Nepal</p>
@@ -182,7 +266,7 @@ RideNest.{% endblock %}
   </div>
 </section>
 
-<section class="home-section home-section-muted" id="how-it-works" aria-labelledby="trust-title">
+<section class="home-section home-section-muted reveal-el" id="trust-section" aria-labelledby="trust-title">
   <div class="container">
     <div class="section-header">
       <p class="section-kicker">Why RideNest</p>
@@ -198,23 +282,346 @@ RideNest.{% endblock %}
       </div>
       <div class="col-sm-6 col-lg-3">
         <article class="trust-card"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i>
-          <h3>Secure bookings</h3>
+          <h3>Secure payments</h3>
           <p>Clear request and approval steps for every rental.</p>
         </article>
       </div>
       <div class="col-sm-6 col-lg-3">
-        <article class="trust-card"><i class="bi bi-signpost-split-fill" aria-hidden="true"></i>
-          <h3>Travel Nepal</h3>
-          <p>Find the right vehicle for city, highway, or mountain roads.</p>
+        <article class="trust-card"><i class="bi bi-headset" aria-hidden="true"></i>
+          <h3>24/7 support</h3>
+          <p>Guidance when you need it, before your trip begins.</p>
         </article>
       </div>
       <div class="col-sm-6 col-lg-3">
-        <article class="trust-card"><i class="bi bi-headset" aria-hidden="true"></i>
-          <h3>Helpful support</h3>
-          <p>Guidance when you need it, before your trip begins.</p>
+        <article class="trust-card"><i class="bi bi-file-earmark-check-fill" aria-hidden="true"></i>
+          <h3>Insurance protection</h3>
+          <p>Peace of mind built into every booking.</p>
         </article>
       </div>
     </div>
   </div>
 </section>
+<!-- ===================== RENTAL REQUIREMENTS ===================== -->
+<section class="home-section reveal-el" aria-labelledby="requirements-title">
+  <div class="container">
+
+    <div class="section-header">
+      <p class="section-kicker">Booking requirements</p>
+      <h2 id="requirements-title">Everything you need before you book</h2>
+      <p>
+        Renting through RideNest is quick and secure. Make sure you have these
+        essentials ready before your journey begins.
+      </p>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- Driving Licence -->
+      <div class="col-md-6 col-lg-3">
+        <div class="requirements-card">
+          <i class="bi bi-card-heading"></i>
+          <h4>Valid Driving Licence</h4>
+          <p>
+            A valid Nepali driving licence or an accepted International Driving
+            Permit is required.
+          </p>
+        </div>
+      </div>
+
+      <!-- Minimum Age -->
+      <div class="col-md-6 col-lg-3">
+        <div class="requirements-card">
+          <i class="bi bi-person-check-fill"></i>
+          <h4>Minimum Age</h4>
+          <p>
+            Drivers must be at least <strong>21 years old</strong> for most
+            vehicles. Premium vehicles may have higher age requirements.
+          </p>
+        </div>
+      </div>
+
+      <!-- Verification -->
+      <div class="col-md-6 col-lg-3">
+        <div class="requirements-card">
+          <i class="bi bi-shield-check"></i>
+          <h4>Identity Verification</h4>
+          <p>
+            Complete your RideNest profile verification to enjoy faster booking
+            approvals and a trusted rental experience.
+          </p>
+        </div>
+      </div>
+
+      <!-- Deposit -->
+      <div class="col-md-6 col-lg-3">
+        <div class="requirements-card">
+          <i class="bi bi-wallet2"></i>
+          <h4>Security Deposit</h4>
+          <p>
+            Selected vehicles require a refundable security deposit before
+            pickup. The amount varies by vehicle.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Information Banner -->
+    <div class="mt-5">
+      <div class="p-4 rounded-4 bg-primary text-white d-lg-flex align-items-center justify-content-between">
+
+        <div>
+          <h4 class="mb-2">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Need help before booking?
+          </h4>
+
+          <p class="mb-0">
+            Our support team is here to guide you through verification,
+            payments, pickup, and everything you need for a smooth rental
+            experience.
+          </p>
+        </div>
+
+        <a href="{% url 'vehicles:search' %}" class="btn btn-light btn-lg">
+          Browse Vehicles
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  </div>
+</section>
+
+<!-- ===================== HOW RIDENEST WORKS ===================== -->
+<section class="home-section how-works-section reveal-el" id="how-it-works" aria-labelledby="process-title">
+  <div class="how-works-aurora" aria-hidden="true">
+    <span class="how-blob how-blob-a"></span>
+    <span class="how-blob how-blob-b"></span>
+  </div>
+  <div class="container">
+    <div class="section-header">
+      <p class="section-kicker">Getting started</p>
+      <h2 id="process-title">How RideNest works</h2>
+      <p>Three simple steps between you and your next journey.</p>
+    </div>
+
+    <div class="process-rhythm" aria-hidden="false">
+
+      <svg class="process-connector" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M 90 60 C 260 60, 260 190, 420 190 S 590 30, 760 30 S 900 160, 910 160" fill="none"
+          stroke="url(#processGradient)" stroke-width="2" stroke-dasharray="1 12" stroke-linecap="round" />
+        <defs>
+          <linearGradient id="processGradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#6366f1" />
+            <stop offset="50%" stop-color="#a855f7" />
+            <stop offset="100%" stop-color="#10b981" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <div class="process-step process-step-rhythm process-step-indigo process-step-offset-down">
+        <span class="process-step-number">01</span>
+        <span class="process-step-glow" aria-hidden="true"></span>
+        <span class="process-step-icon"><i class="bi bi-search" aria-hidden="true"></i></span>
+        <h3>Search</h3>
+        <p>Browse verified vehicles by city, type, and availability.</p>
+      </div>
+
+      <div class="process-step process-step-rhythm process-step-purple process-step-offset-up">
+        <span class="process-step-number">02</span>
+        <span class="process-step-glow" aria-hidden="true"></span>
+        <span class="process-step-icon"><i class="bi bi-calendar2-check-fill" aria-hidden="true"></i></span>
+        <h3>Book</h3>
+        <p>Send a request and get confirmation from the owner.</p>
+      </div>
+
+      <div class="process-step process-step-rhythm process-step-emerald process-step-offset-down">
+        <span class="process-step-number">03</span>
+        <span class="process-step-glow" aria-hidden="true"></span>
+        <span class="process-step-icon"><i class="bi bi-signpost-2-fill" aria-hidden="true"></i></span>
+        <h3>Drive</h3>
+        <p>Pick up your ride and head out on the road.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHAT RENTERS ARE SAYING ===================== -->
+<section class="home-section home-section-muted testimonials-section reveal-el" aria-labelledby="testimonials-title">
+  <div class="testimonials-aurora" aria-hidden="true">
+    <span class="testi-blob testi-blob-a"></span>
+    <span class="testi-blob testi-blob-b"></span>
+  </div>
+  <div class="container">
+    <div class="section-header">
+      <p class="section-kicker">Traveller stories</p>
+      <h2 id="testimonials-title">What renters are saying</h2>
+      <p>Early feedback from people exploring Nepal with RideNest.</p>
+
+      <div class="testimonial-trust-badges">
+        <span class="testimonial-trust-badge">
+          <i class="bi bi-google" aria-hidden="true"></i>
+          4.9<span class="muted-slash">/5</span> average rating
+        </span>
+        <span class="testimonial-trust-badge">
+          <i class="bi bi-people-fill" aria-hidden="true"></i>
+          500+ happy renters
+        </span>
+        <span class="testimonial-trust-badge">
+          <i class="bi bi-patch-check-fill" aria-hidden="true"></i>
+          Verified renters only
+        </span>
+      </div>
+    </div>
+
+    <div class="testimonial-premium-grid">
+
+      <article class="testimonial-card testimonial-card-featured testimonial-card-indigo">
+        <i class="bi bi-quote testimonial-quote-mark" aria-hidden="true"></i>
+
+        <div class="testimonial-rating testimonial-rating-lg" aria-label="5 out of 5 stars">
+          <i class="bi bi-star-fill" aria-hidden="true"></i><i class="bi bi-star-fill" aria-hidden="true"></i><i
+            class="bi bi-star-fill" aria-hidden="true"></i><i class="bi bi-star-fill" aria-hidden="true"></i><i
+            class="bi bi-star-fill" aria-hidden="true"></i>
+        </div>
+        <p>"We needed an SUV on short notice for a family trip and found one within minutes. The whole process felt
+          effortless from search to pickup."</p>
+        <div class="testimonial-author">
+          <span class="testimonial-avatar testimonial-avatar-lg" aria-hidden="true">S</span>
+          <div>
+            <strong>Suman K. <i class="bi bi-patch-check-fill testimonial-verified" aria-hidden="true"
+                title="Verified renter"></i></strong>
+            <span>Kathmandu</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="testimonial-card testimonial-card-compact testimonial-card-purple">
+        <i class="bi bi-quote testimonial-quote-mark" aria-hidden="true"></i>
+
+        <div class="testimonial-rating" aria-label="5 out of 5 stars">
+          <i class="bi bi-star-fill" aria-hidden="true"></i><i class="bi bi-star-fill" aria-hidden="true"></i><i
+            class="bi bi-star-fill" aria-hidden="true"></i><i class="bi bi-star-fill" aria-hidden="true"></i><i
+            class="bi bi-star-fill" aria-hidden="true"></i>
+        </div>
+        <p>"Booking a scooter for our Pokhara trip was simple, and the owner was easy to reach the whole time."</p>
+        <div class="testimonial-author">
+          <span class="testimonial-avatar" aria-hidden="true">A</span>
+          <div>
+            <strong>Anjali R. <i class="bi bi-patch-check-fill testimonial-verified" aria-hidden="true"
+                title="Verified renter"></i></strong>
+            <span>Pokhara</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="testimonial-card testimonial-card-compact testimonial-card-emerald">
+        <i class="bi bi-quote testimonial-quote-mark" aria-hidden="true"></i>
+
+        <div class="testimonial-rating" aria-label="5 out of 5 stars">
+          <i class="bi bi-star-fill" aria-hidden="true"></i><i class="bi bi-star-fill" aria-hidden="true"></i><i
+            class="bi bi-star-fill" aria-hidden="true"></i><i class="bi bi-star-fill" aria-hidden="true"></i><i
+            class="bi bi-star-fill" aria-hidden="true"></i>
+        </div>
+        <p>"As a first-time host, the listing process was clear and I had my first booking within a week."</p>
+        <div class="testimonial-author">
+          <span class="testimonial-avatar" aria-hidden="true">P</span>
+          <div>
+            <strong>Prakash T. <i class="bi bi-patch-check-fill testimonial-verified" aria-hidden="true"
+                title="Verified renter"></i></strong>
+            <span>Chitwan</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+<section class="cta-banner reveal-el" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="cta-banner-inner">
+      <h2 id="cta-title">Ready to hit the road?</h2>
+      <p>Join travellers and vehicle owners already using RideNest across Nepal.</p>
+      <a href="{% url 'vehicles:marketplace' %}" class="btn btn-light btn-lg">Browse vehicles <i
+          class="bi bi-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    "use strict";
+
+    var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // ---- Scroll reveal ----
+    var revealEls = document.querySelectorAll(".reveal-el");
+
+    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+      revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+    } else {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      revealEls.forEach(function (el) { observer.observe(el); });
+    }
+
+    // ---- Animated stat counters ----
+    if (!prefersReducedMotion) {
+      var counters = document.querySelectorAll("[data-count-to]");
+
+      var counterObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+
+          var el = entry.target;
+          var target = parseFloat(el.getAttribute("data-count-to"));
+          var suffix = el.getAttribute("data-count-suffix") || "";
+          var decimals = parseInt(el.getAttribute("data-count-decimal") || "0", 10);
+          var duration = 1100;
+          var start = null;
+
+          function step(timestamp) {
+            if (!start) start = timestamp;
+            var progress = Math.min((timestamp - start) / duration, 1);
+            var value = target * progress;
+            el.textContent = value.toFixed(decimals) + suffix;
+
+            if (progress < 1) {
+              window.requestAnimationFrame(step);
+            } else {
+              el.textContent = target.toFixed(decimals) + suffix;
+            }
+          }
+
+          window.requestAnimationFrame(step);
+          counterObserver.unobserve(el);
+        });
+      }, { threshold: 0.5 });
+
+      counters.forEach(function (el) { counterObserver.observe(el); });
+    }
+
+    // ---- Favourite button (visual toggle only, not persisted) ----
+    document.querySelectorAll("[data-favourite-btn]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var icon = btn.querySelector("i");
+        var active = btn.classList.toggle("is-active");
+        icon.classList.toggle("bi-heart", !active);
+        icon.classList.toggle("bi-heart-fill", active);
+      });
+    });
+  });
+</script>
 {% endblock %}

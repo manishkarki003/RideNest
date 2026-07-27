@@ -100,6 +100,12 @@ TIME_ZONE = "Asia/Kathmandu"
 USE_I18N = True
 USE_TZ = True
 
+
+
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
+SITE_URL = os.environ.get("SITE_URL", "http://127.0.0.1:8000")
+
+
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -128,7 +134,10 @@ LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "core:home"
 LOGOUT_REDIRECT_URL = "core:home"
 EMAIL_BACKEND = os.environ.get("DJANGO_EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
-DEFAULT_FROM_EMAIL = os.environ.get("DJANGO_DEFAULT_FROM_EMAIL", "noreply@ridenest.local")
+DEFAULT_FROM_EMAIL = os.environ.get(
+    "DJANGO_DEFAULT_FROM_EMAIL",
+    "RideNest <onboarding@resend.dev>",
+)
 
 # Production deployments should serve only over HTTPS and provide a secure secret key.
 if not DEBUG:
