@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/public_vehicle_detail.css' %}">
+{% endblock %}
 
 {% block title %}{{ vehicle.name }} for rent | RideNest{% endblock %}
 
@@ -23,12 +28,14 @@ Rent {{ vehicle.name }} in {{ vehicle.pickup_address }} from Rs. {{ vehicle.rent
 
 <section class="container public-detail">
 
-    <p>
+    <!-- ============ BREADCRUMB ============ -->
+    <nav class="detail-breadcrumb" aria-label="Breadcrumb">
         <a href="{% url 'vehicles:marketplace' %}">
             Back to marketplace
         </a>
-    </p>
+    </nav>
 
+    <!-- ============ HEADING ============ -->
     <div class="public-detail-heading">
         <div>
             <p class="eyebrow">
@@ -37,7 +44,7 @@ Rent {{ vehicle.name }} in {{ vehicle.pickup_address }} from Rs. {{ vehicle.rent
 
             <h1>{{ vehicle.name }}</h1>
 
-            <p>
+            <p class="detail-subline">
                 {{ vehicle.brand }}
                 {{ vehicle.model }}
                 ·
@@ -50,6 +57,7 @@ Rent {{ vehicle.name }} in {{ vehicle.pickup_address }} from Rs. {{ vehicle.rent
         </span>
     </div>
 
+    <!-- ============ GALLERY ============ -->
     <div class="public-gallery">
         {% for vehicle_image in vehicle.images.all %}
             <img
@@ -65,12 +73,12 @@ Rent {{ vehicle.name }} in {{ vehicle.pickup_address }} from Rs. {{ vehicle.rent
 
     <div class="public-detail-layout">
 
-        <div>
+        <div class="detail-main">
 
             <section class="detail-section">
                 <h2>About this vehicle</h2>
 
-                <p>
+                <p class="detail-description">
                     {{ vehicle.description|linebreaksbr }}
                 </p>
             </section>
@@ -123,50 +131,54 @@ Rent {{ vehicle.name }} in {{ vehicle.pickup_address }} from Rs. {{ vehicle.rent
 
         <aside class="rental-summary">
 
-            <p class="eyebrow">Rental details</p>
+            <div class="rental-summary-inner">
 
-            <p class="price">
-                Rs. {{ vehicle.rental_price_per_day }}
-                <small>/ day</small>
-            </p>
+                <p class="eyebrow">Rental details</p>
 
-            <p>
-                Security deposit:
-                <strong>Rs. {{ vehicle.security_deposit }}</strong>
-            </p>
+                <p class="price">
+                    Rs. {{ vehicle.rental_price_per_day }}
+                    <small>/ day</small>
+                </p>
 
-            <p>
-                Pickup location:
-                <strong>{{ vehicle.pickup_address }}</strong>
-            </p>
+                <p>
+                    Security deposit:
+                    <strong>Rs. {{ vehicle.security_deposit }}</strong>
+                </p>
 
-            <hr>
+                <p>
+                    Pickup location:
+                    <strong>{{ vehicle.pickup_address }}</strong>
+                </p>
 
-            <p class="owner-label">Listed by</p>
+                <hr>
 
-            <p>
-                <strong>
-                    {{ vehicle.owner.full_name|default:vehicle.owner.username }}
-                </strong>
-            </p>
+                <p class="owner-label">Listed by</p>
 
-            <p class="muted">
-                RideNest vehicle owner
-            </p>
+                <p>
+                    <strong>
+                        {{ vehicle.owner.full_name|default:vehicle.owner.username }}
+                    </strong>
+                </p>
 
-            {% if user.is_authenticated %}
-                {% if user != vehicle.owner %}
+                <p class="muted">
+                    RideNest vehicle owner
+                </p>
+
+                {% if user.is_authenticated %}
+                    {% if user != vehicle.owner %}
+                        <a class="button"
+                           href="{% url 'bookings:request' vehicle.slug %}">
+                            Request booking
+                        </a>
+                    {% endif %}
+                {% else %}
                     <a class="button"
-                       href="{% url 'bookings:request' vehicle.slug %}">
-                        Request booking
+                       href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}">
+                        Log in to request
                     </a>
                 {% endif %}
-            {% else %}
-                <a class="button"
-                   href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}">
-                    Log in to request
-                </a>
-            {% endif %}
+
+            </div>
 
         </aside>
 
