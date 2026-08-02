@@ -450,14 +450,20 @@ body{
     box-shadow:0 0 0 4px rgba(37,99,235,.13);
 
 }
-
 .filter-sidebar .range-fields{
-
     display:grid;
-
-    grid-template-columns:1fr 1fr;
-
+    grid-template-columns:repeat(2, minmax(0, 1fr));
     gap:14px;
+}
+
+.filter-sidebar .range-fields label{
+    min-width:0;
+}
+
+.filter-sidebar .range-fields input{
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
 
 }
 
@@ -565,11 +571,10 @@ body{
 
 /* ============ RESULTS ============ */
 
-.marketplace-results{
-
+.market-results{
     min-width:0;
-
 }
+
 
 .results-bar{
 
