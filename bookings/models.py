@@ -4,6 +4,7 @@ from __future__ import annotations
 from datetime import date
 from typing import Any
 import uuid
+from django.utils import timezone
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -129,6 +130,22 @@ class Booking(models.Model):
             self.owner_notes = owner_notes
         self.save(update_fields=["booking_status", "cancellation_reason", "owner_notes", "updated_at"])
         self._sync_vehicle_availability()
+        
+
+    @property
+    def display_status(self):
+        today = timezone.localdate()
+
+        if self.booking_status == self.Status.CANCELLED:
+            return "cancelled"
+
+        if self.booking_status == self.Status.COMPLETED:
+            return "completed"
+
+        if self.pickup_date <= today <= self.return_date:
+            return "current"
+
+        return "upcoming"
 
     def __str__(self) -> str:
         return f"Booking {self.short_reference} for {self.vehicle.name}"

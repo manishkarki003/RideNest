@@ -1,44 +1,75 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block title %}Request booking | RideNest{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/bookings.css' %}">
-{% endblock %}
-
-{% block content %}
 <section class="container booking-page">
-    <p class="eyebrow">Booking request</p>
-    <h1>Request {{ vehicle.name }}</h1>
 
-    <div class="booking-layout">
-        <form method="post" class="booking-card" novalidate>
-            {% csrf_token %}
+    <div class="page-heading">
+        <div>
+            <p class="eyebrow">Booking request</p>
+            <h1>Request {{ vehicle.name }}</h1>
+            <p class="page-subtitle">
+                Complete the details below to request this vehicle.
+            </p>
+        </div>
+    </div>
 
-            {{ form.non_field_errors }}
+    <div class="booking-request-layout">
 
-            {% for field in form %}
-                <p>
+        <!-- LEFT -->
+        <div class="booking-request-card">
+
+            <form method="post" novalidate>
+
+                {% csrf_token %}
+
+                {{ form.non_field_errors }}
+
+                {% for field in form %}
+                <div class="form-group">
                     {{ field.label_tag }}
                     {{ field }}
                     {{ field.errors }}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="btn-request">
+                    Request Booking
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- RIGHT -->
+        <aside class="booking-summary">
+
+            {% if vehicle.primary_image %}
+            <img src="{{ vehicle.primary_image.image.url }}"
+                 alt="{{ vehicle.name }}"
+                 class="vehicle-image">
+            {% endif %}
+
+            <div class="summary-body">
+
+                <h3>{{ vehicle.name }}</h3>
+
+                <div class="price-item">
+                    <span>Daily Rate</span>
+                    <strong>Rs. {{ vehicle.rental_price_per_day }}</strong>
+                </div>
+
+                <div class="price-item">
+                    <span>Security Deposit</span>
+                    <strong>Rs. {{ vehicle.security_deposit }}</strong>
+                </div>
+
+                <hr>
+
+                <p class="summary-note">
+                    Final price will be calculated after selecting your rental dates.
                 </p>
-            {% endfor %}
 
-            <button class="button" type="submit">
-                Request booking
-            </button>
-        </form>
+            </div>
 
-        <aside class="price-breakdown">
-            <h2>Price estimate</h2>
-            <p>Daily rate <strong>Rs. {{ vehicle.rental_price_per_day }}</strong></p>
-            <p>Security deposit <strong>Rs. {{ vehicle.security_deposit }}</strong></p>
-            <p class="muted">
-                Your final total is calculated securely after you select dates.
-            </p>
         </aside>
+
     </div>
+
 </section>
-{% endblock %}

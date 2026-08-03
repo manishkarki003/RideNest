@@ -343,3 +343,35 @@
     .brand-mark{ width:36px; height:36px; }
     .brand-wordmark{ font-size:1.12rem; }
 }
+
+/* ==========================================
+   Footer Credit
+========================================== */
+
+.footer-credit {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-text-muted, #9ca3af);
+    letter-spacing: 0.02em;
+}
+
+.footer-credit a {
+    color: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color .3s ease, text-decoration-color .3s ease;
+}
+
+.footer-credit a:hover,
+.footer-credit a:focus-visible {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.footer-credit a:focus-visible {
+    outline: none;
+}

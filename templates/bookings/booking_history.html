@@ -2,24 +2,199 @@
 {% load static %}
 {% block title %}My bookings | RideNest{% endblock %}
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/bookings.css' %}">{% endblock %}
-{% block content %}<section class="container booking-page">
+<link rel="stylesheet" href="{% static 'css/bookings.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+{% endblock %}
+{% block content %}
+<section class="container booking-page">
+
     <div class="page-heading">
         <div>
             <p class="eyebrow">Renter workspace</p>
             <h1>My bookings</h1>
-        </div><a class="button" href="{% url 'vehicles:marketplace' %}">Browse vehicles</a>
-    </div>{% if bookings %}<div class="booking-list">{% for booking in bookings %}<article class="booking-list-item">
-            <div><span class="booking-status {{ booking.booking_status }}">{{ booking.get_booking_status_display
-                    }}</span>
-                <h2><a href="{% url 'bookings:booking_detail' booking.booking_reference %}">{{ booking.vehicle.name
-                        }}</a></h2>
-                <p>Reference {{ booking.short_reference }} · {{ booking.pickup_date|date:"M j" }}–{{
-                    booking.return_date|date:"M j, Y" }}</p>
-            </div><strong>Rs. {{ booking.total_amount }}</strong>
-        </article>{% endfor %}</div>{% else %}<div class="empty-state">
+            <p class="page-subtitle">Manage all your current, upcoming and past vehicle reservations.</p>
+        </div>
+        <a class="button btn-primary-lg" href="{% url 'vehicles:marketplace' %}">
+            <i class="bi bi-compass" aria-hidden="true"></i> Browse vehicles
+        </a>
+    </div>
+
+    {% if stats %}
+    <div class="stats-row" role="list">
+        <div class="stat-card" role="listitem">
+            <span class="stat-icon" aria-hidden="true"><i class="bi bi-calendar-event"></i></span>
+            <span class="stat-count">{{ stats.upcoming }}</span>
+            <span class="stat-label">Upcoming</span>
+        </div>
+        <div class="stat-card" role="listitem">
+            <span class="stat-icon" aria-hidden="true"><i class="bi bi-car-front"></i></span>
+            <span class="stat-count">{{ stats.current }}</span>
+            <span class="stat-label">Current</span>
+        </div>
+        <div class="stat-card" role="listitem">
+            <span class="stat-icon" aria-hidden="true"><i class="bi bi-check-circle"></i></span>
+            <span class="stat-count">{{ stats.completed }}</span>
+            <span class="stat-label">Completed</span>
+        </div>
+        <div class="stat-card" role="listitem">
+            <span class="stat-icon" aria-hidden="true"><i class="bi bi-x-circle"></i></span>
+            <span class="stat-count">{{ stats.cancelled }}</span>
+            <span class="stat-label">Cancelled</span>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if bookings %}
+
+    <div class="filter-tabs" role="tablist" aria-label="Filter bookings">
+        <button type="button" class="filter-tab is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button type="button" class="filter-tab" data-filter="upcoming" role="tab" aria-selected="false">Upcoming</button>
+        <button type="button" class="filter-tab" data-filter="current" role="tab" aria-selected="false">Current</button>
+        <button type="button" class="filter-tab" data-filter="completed" role="tab" aria-selected="false">Completed</button>
+        <button type="button" class="filter-tab" data-filter="cancelled" role="tab" aria-selected="false">Cancelled</button>
+    </div>
+
+    <div class="booking-list" id="bookingList">
+        {% for booking in bookings %}
+        <article class="booking-card" data-status="{{ booking.display_status }}" style="animation-delay: {{ forloop.counter0|add:0 }}0ms">
+
+            <div class="booking-card-media">
+                <div class="booking-card-image-wrap">
+                    {% if booking.vehicle.primary_image %}
+                    <img src="{{ booking.vehicle.primary_image.image.url }}" alt="{{ booking.vehicle.name }}" loading="lazy">
+                    {% else %}
+                    <div class="booking-card-media-fallback" aria-hidden="true">
+                        <i class="bi bi-car-front-fill"></i>
+                    </div>
+                    {% endif %}
+                    <span class="booking-status booking-status-{{ booking.booking_status }}">{{ booking.get_booking_status_display }}</span>
+                </div>
+            </div>
+
+            <div class="booking-card-body">
+                <h2 class="booking-card-title">
+                    <a href="{% url 'bookings:booking_detail' booking.booking_reference %}">{{ booking.vehicle.name }}</a>
+                </h2>
+                <p class="booking-card-ref">Reference {{ booking.booking_reference }}</p>
+
+                <dl class="booking-card-meta">
+                    <div class="meta-item">
+                        <dt><i class="bi bi-box-arrow-in-right"></i> Pickup</dt>
+                        <dd>{{ booking.pickup_date|date:"M j, Y" }}</dd>
+                    </div>
+                    <div class="meta-item">
+                        <dt><i class="bi bi-box-arrow-left"></i> Return</dt>
+                        <dd>{{ booking.return_date|date:"M j, Y" }}</dd>
+                    </div>
+                    <div class="meta-item">
+                        <dt><i class="bi bi-hourglass-split"></i> Duration</dt>
+                        <dd>{{ booking.total_days }} days</dd>
+                    </div>
+                    {% if booking.vehicle.owner %}
+                    <div class="meta-item">
+                        <dt><i class="bi bi-person"></i> Owner</dt>
+                        <dd>{{ booking.vehicle.owner.get_full_name|default:booking.vehicle.owner.username }}</dd>
+                    </div>
+                    {% endif %}
+                </dl>
+
+                <div class="booking-timeline booking-timeline-{{ booking.booking_status }}" aria-hidden="true">
+                    <div class="timeline-step {% if booking.booking_status != 'cancelled' %}is-complete{% endif %}">
+                        <span class="timeline-dot"></span><span class="timeline-label">Requested</span>
+                    </div>
+                    <div class="timeline-track"></div>
+                    <div class="timeline-step {% if booking.booking_status == 'confirmed' or booking.booking_status == 'completed' %}is-complete{% endif %}">
+                        <span class="timeline-dot"></span><span class="timeline-label">Confirmed</span>
+                    </div>
+                    <div class="timeline-track"></div>
+                    <div class="timeline-step {% if booking.booking_status == 'completed' %}is-complete{% endif %} {% if booking.booking_status == 'cancelled' %}is-cancelled{% endif %}">
+                        <span class="timeline-dot"></span>
+                        <span class="timeline-label">{% if booking.booking_status == 'cancelled' %}Cancelled{% else %}Completed{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="booking-card-side">
+                <div class="booking-card-price">
+                    <span class="price-row">
+                        <span class="price-label">Daily Rate</span>
+                        <span>Rs. {{ booking.rental_price_per_day }}</span>
+                    </span>
+                    <span class="price-row">
+                        <span class="price-label">Rental Days</span>
+                        <span>{{ booking.total_days }} days</span>
+                    </span>
+                    <span class="price-row">
+                        <span class="price-label">Security Deposit</span>
+                        <span>Rs. {{ booking.security_deposit }}</span>
+                    </span>
+                    <span class="price-row price-row-total">
+                        <span class="price-label">Total</span>
+                        <strong>Rs. {{ booking.total_amount }}</strong>
+                    </span>
+                </div>
+                <div class="booking-card-actions">
+                    <a class="btn-action btn-action-primary" href="{% url 'bookings:booking_detail' booking.booking_reference %}">
+                        <i class="bi bi-eye"></i> View booking
+                    </a>
+                    <button class="btn-action btn-action-ghost" type="button" disabled title="Coming soon">
+                        <i class="bi bi-chat-dots"></i> Message owner
+                    </button>
+                </div>
+            </div>
+
+        </article>
+        {% endfor %}
+    </div>
+
+    <p class="no-results-message d-none" id="noResultsMessage">No bookings match this filter.</p>
+
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-illustration" aria-hidden="true">
+            <i class="bi bi-car-front"></i>
+        </div>
         <h2>No booking requests yet</h2>
-        <p>Browse available vehicles and request the one that suits your trip.</p><a class="button"
-            href="{% url 'vehicles:marketplace' %}">Browse vehicles</a>
-    </div>{% endif %}
-</section>{% endblock %}
+        <p>Browse available vehicles and request the one that suits your trip.</p>
+        <a class="button btn-primary-lg" href="{% url 'vehicles:marketplace' %}">
+            <i class="bi bi-compass"></i> Browse vehicles
+        </a>
+    </div>
+    {% endif %}
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var tabs = document.querySelectorAll('.filter-tab');
+    var cards = document.querySelectorAll('.booking-card');
+    var noResults = document.getElementById('noResultsMessage');
+
+    tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            tabs.forEach(function (t) {
+                t.classList.remove('is-active');
+                t.setAttribute('aria-selected', 'false');
+            });
+            tab.classList.add('is-active');
+            tab.setAttribute('aria-selected', 'true');
+
+            var filter = tab.dataset.filter;
+            var visibleCount = 0;
+
+            cards.forEach(function (card) {
+                var match = filter === 'all' || card.dataset.status === filter;
+                card.classList.toggle('is-hidden', !match);
+                if (match) visibleCount++;
+            });
+
+            if (noResults) {
+                noResults.classList.toggle('d-none', visibleCount !== 0);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

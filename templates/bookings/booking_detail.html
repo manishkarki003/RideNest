@@ -2,70 +2,254 @@
 {% load static %}
 {% block title %}Booking {{ booking.short_reference }} | RideNest{% endblock %}
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/bookings.css' %}">{% endblock %}
-{% block content %}<section class="container booking-page">
-    <p><a href="{% if is_owner %}{% url 'bookings:manage' %}{% else %}{% url 'bookings:history' %}{% endif %}">Back to
-            bookings</a></p>
-    <div class="booking-title">
-        <div>
+<link rel="stylesheet" href="{% static 'css/bookings.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+{% endblock %}
+{% block content %}
+<section class="container booking-page booking-detail-page">
+    <p class="back-link">
+        <a href="{% if is_owner %}{% url 'bookings:manage' %}{% else %}{% url 'bookings:history' %}{% endif %}"><i
+                class="bi bi-arrow-left"></i> Back to bookings</a>
+    </p>
+
+    <div class="booking-detail-header">
+        <div class="booking-detail-header-copy">
             <p class="eyebrow">Booking reference {{ booking.short_reference }}</p>
             <h1>{{ booking.vehicle.name }}</h1>
-            <p>{{ booking.pickup_date|date:"M j, Y" }} to {{ booking.return_date|date:"M j, Y" }}</p>
-        </div><span class="booking-status {{ booking.booking_status }}">{{ booking.get_booking_status_display }}</span>
-    </div>
-    <div class="booking-layout">
-        <div>
-            <section class="booking-card">
-                <h2>Booking details</h2>
-                <dl class="booking-details">
-                    <div>
-                        <dt>Pickup date</dt>
-                        <dd>{{ booking.pickup_date|date:"F j, Y" }}</dd>
-                    </div>
-                    <div>
-                        <dt>Return date</dt>
-                        <dd>{{ booking.return_date|date:"F j, Y" }}</dd>
-                    </div>
-                    <div>
-                        <dt>Total days</dt>
-                        <dd>{{ booking.total_days }}</dd>
-                    </div>
-                    <div>
-                        <dt>Pickup location</dt>
-                        <dd>{{ booking.vehicle.pickup_address }}</dd>
-                    </div>{% if is_owner %}<div>
-                        <dt>Renter</dt>
-                        <dd>{{ booking.renter.full_name|default:booking.renter.username }}</dd>
-                    </div>{% endif %}
-                </dl>{% if booking.owner_notes %}<p class="callout"><strong>Owner note:</strong> {{ booking.owner_notes
-                    }}</p>{% endif %}{% if booking.cancellation_reason %}<p class="rejection"><strong>Cancellation
-                        reason:</strong> {{ booking.cancellation_reason }}</p>{% endif %}
-            </section>{% if owner_action_form %}<section class="booking-card">
-                <h2>Manage request</h2>
-                <form method="post">{% csrf_token %}{{ owner_action_form.non_field_errors }}<label>Owner notes{{
-                        owner_action_form.owner_notes }}</label>
-                    <div class="booking-actions"><button class="button" name="action" value="confirm"
-                            type="submit">Confirm</button><button class="danger-button" name="action" value="reject"
-                            type="submit">Reject</button></div><label>Reason if cancelling{{
-                        owner_action_form.cancellation_reason }}</label><button class="button button-outline"
-                        name="action" value="cancel" type="submit">Cancel booking</button>
-                </form>
-            </section>{% endif %}{% if renter_cancellation_form %}<section class="booking-card">
-                <h2>Need to cancel?</h2>
-                <form method="post">{% csrf_token %}{{ renter_cancellation_form.as_p }}<button class="danger-button"
-                        type="submit">Cancel pending request</button></form>
-            </section>{% endif %}
+            <p class="booking-title-dates">{{ booking.pickup_date|date:"M j, Y" }} → {{ booking.return_date|date:"M j, Y" }}</p>
+            <div class="booking-detail-chips">
+                <span class="detail-chip detail-chip-primary">{{ booking.vehicle.get_vehicle_type_display }}</span>
+                <span class="detail-chip">{{ booking.get_booking_status_display }}</span>
+            </div>
         </div>
-        <aside class="price-breakdown">
-            <h2>Price breakdown</h2>
-            <p>Rs. {{ booking.rental_price_per_day }} × {{ booking.total_days }} days <strong>Rs. {{ booking.subtotal
-                    }}</strong></p>
-            <p>Security deposit <strong>Rs. {{ booking.security_deposit }}</strong></p>
-            <hr>
-            <p class="grand-total">Total amount <strong>Rs. {{ booking.total_amount }}</strong></p>
-            <p class="muted">Payment is not collected yet.</p>
+        <span class="booking-status booking-status-{{ booking.booking_status }}">{{ booking.get_booking_status_display }}</span>
+    </div>
+
+    <div class="booking-detail-layout">
+        <div class="booking-detail-main">
+            <section class="detail-hero">
+                {% if booking.vehicle.primary_image %}
+                <div class="detail-hero-media">
+                    <img src="{{ booking.vehicle.primary_image.image.url }}" alt="{{ booking.vehicle.name }}">
+                    <div class="detail-hero-overlay"></div>
+                    <div class="detail-hero-content">
+                        <div class="detail-hero-topline">
+                            <span class="detail-chip detail-chip-light">Reserved vehicle</span>
+                            <span class="detail-chip detail-chip-dark">{{ booking.vehicle.get_vehicle_type_display }}</span>
+                        </div>
+                        <h2>{{ booking.vehicle.name }}</h2>
+                        <p class="detail-hero-meta">{{ booking.pickup_date|date:"M j, Y" }} to {{ booking.return_date|date:"M j, Y" }}</p>
+                        <p class="detail-hero-location"><i class="bi bi-geo-alt"></i> {{ booking.vehicle.pickup_address }}</p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="detail-hero-fallback">
+                    <div class="detail-hero-fallback-icon"><i class="bi bi-car-front-fill"></i></div>
+                    <div class="detail-hero-content detail-hero-content-static">
+                        <div class="detail-hero-topline">
+                            <span class="detail-chip detail-chip-light">Reserved vehicle</span>
+                            <span class="detail-chip detail-chip-dark">{{ booking.vehicle.get_vehicle_type_display }}</span>
+                        </div>
+                        <h2>{{ booking.vehicle.name }}</h2>
+                        <p class="detail-hero-meta">{{ booking.pickup_date|date:"M j, Y" }} to {{ booking.return_date|date:"M j, Y" }}</p>
+                        <p class="detail-hero-location"><i class="bi bi-geo-alt"></i> {{ booking.vehicle.pickup_address }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </section>
+
+            <section class="detail-panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="panel-kicker">Trip overview</p>
+                        <h2>Booking details</h2>
+                    </div>
+                </div>
+                <div class="detail-card-grid">
+                    <article class="info-card">
+                        <div class="info-card-icon"><i class="bi bi-box-arrow-in-right"></i></div>
+                        <div>
+                            <p class="info-card-label">Pickup date</p>
+                            <p class="info-card-value">{{ booking.pickup_date|date:"F j, Y" }}</p>
+                        </div>
+                    </article>
+                    <article class="info-card">
+                        <div class="info-card-icon"><i class="bi bi-box-arrow-left"></i></div>
+                        <div>
+                            <p class="info-card-label">Return date</p>
+                            <p class="info-card-value">{{ booking.return_date|date:"F j, Y" }}</p>
+                        </div>
+                    </article>
+                    <article class="info-card">
+                        <div class="info-card-icon"><i class="bi bi-hourglass-split"></i></div>
+                        <div>
+                            <p class="info-card-label">Rental duration</p>
+                            <p class="info-card-value">{{ booking.total_days }} day{{ booking.total_days|pluralize }}</p>
+                        </div>
+                    </article>
+                    <article class="info-card info-card-wide">
+                        <div class="info-card-icon"><i class="bi bi-geo-alt"></i></div>
+                        <div>
+                            <p class="info-card-label">Pickup location</p>
+                            <p class="info-card-value">{{ booking.vehicle.pickup_address }}</p>
+                        </div>
+                    </article>
+                    {% if is_owner %}
+                    <article class="info-card info-card-wide">
+                        <div class="info-card-icon"><i class="bi bi-person"></i></div>
+                        <div>
+                            <p class="info-card-label">Renter</p>
+                            <p class="info-card-value">{{ booking.renter.full_name|default:booking.renter.username }}</p>
+                        </div>
+                    </article>
+                    {% endif %}
+                </div>
+            </section>
+
+            <section class="detail-panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="panel-kicker">Reservation flow</p>
+                        <h2>Booking progress</h2>
+                    </div>
+                </div>
+                <div class="progress-scroll" aria-label="Booking progress">
+                    <div class="booking-progress booking-progress-{{ booking.booking_status }}" aria-hidden="true">
+                        <div class="progress-step is-complete">
+                            <span class="progress-dot"></span>
+                            <span class="progress-label">Requested</span>
+                        </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step {% if booking.booking_status == 'confirmed' or booking.booking_status == 'completed' %}is-complete{% endif %}{% if booking.booking_status == 'cancelled' %}is-cancelled{% endif %}">
+                            <span class="progress-dot"></span>
+                            <span class="progress-label">{% if booking.booking_status == 'cancelled' %}Cancelled{% else %}Confirmed{% endif %}</span>
+                        </div>
+                        {% if booking.booking_status != 'cancelled' %}
+                        <div class="progress-line"></div>
+                        <div class="progress-step {% if booking.booking_status == 'completed' %}is-complete{% endif %}">
+                            <span class="progress-dot"></span>
+                            <span class="progress-label">Completed</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+
+            {% if booking.owner_notes %}
+            <section class="detail-callout detail-callout-info">
+                <div class="callout-icon"><i class="bi bi-chat-left-text"></i></div>
+                <div>
+                    <p class="callout-label">Owner notes</p>
+                    <p class="callout-value">{{ booking.owner_notes }}</p>
+                </div>
+            </section>
+            {% endif %}
+
+            {% if booking.cancellation_reason %}
+            <section class="detail-callout detail-callout-danger">
+                <div class="callout-icon"><i class="bi bi-exclamation-triangle"></i></div>
+                <div>
+                    <p class="callout-label">Cancellation reason</p>
+                    <p class="callout-value">{{ booking.cancellation_reason }}</p>
+                </div>
+            </section>
+            {% endif %}
+
+            {% if owner_action_form %}
+            <section class="detail-panel detail-form-panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="panel-kicker">Owner controls</p>
+                        <h2>Manage request</h2>
+                    </div>
+                </div>
+                <form class="booking-form" method="post">
+                    {% csrf_token %}
+                    {{ owner_action_form.non_field_errors }}
+                    <div class="booking-form-grid">
+                        <div class="form-group">
+                            <label for="{{ owner_action_form.owner_notes.id_for_label }}">Owner notes</label>
+                            {{ owner_action_form.owner_notes }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ owner_action_form.cancellation_reason.id_for_label }}">Reason if cancelling</label>
+                            {{ owner_action_form.cancellation_reason }}
+                        </div>
+                    </div>
+                    <div class="booking-actions">
+                        <button class="btn-action btn-action-primary" name="action" value="confirm" type="submit"><i class="bi bi-check-lg"></i> Confirm</button>
+                        <button class="btn-action btn-action-danger" name="action" value="reject" type="submit"><i class="bi bi-x-lg"></i> Reject</button>
+                        <button class="btn-action btn-action-ghost" name="action" value="cancel" type="submit"><i class="bi bi-slash-circle"></i> Cancel booking</button>
+                    </div>
+                </form>
+            </section>
+            {% endif %}
+
+            {% if renter_cancellation_form %}
+            <section class="detail-panel detail-form-panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="panel-kicker">Renter controls</p>
+                        <h2>Need to cancel?</h2>
+                    </div>
+                </div>
+                <form class="booking-form" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ renter_cancellation_form.cancellation_reason.id_for_label }}">Cancellation reason</label>
+                        {{ renter_cancellation_form.cancellation_reason }}
+                    </div>
+                    <button class="btn-action btn-action-danger" type="submit"><i class="bi bi-x-circle"></i> Cancel pending request</button>
+                </form>
+            </section>
+            {% endif %}
+        </div>
+
+        <aside class="booking-summary-card booking-summary-sticky">
+            <div class="summary-header">
+                <div>
+                    <p class="panel-kicker">Price breakdown</p>
+                    <h3>Summary</h3>
+                </div>
+                <span class="booking-status booking-status-{{ booking.booking_status }}">{{ booking.get_booking_status_display }}</span>
+            </div>
+
+            <dl class="summary-list">
+                <div class="summary-row">
+                    <dt>Daily price</dt>
+                    <dd>Rs. {{ booking.rental_price_per_day }}</dd>
+                </div>
+                <div class="summary-row">
+                    <dt>Rental days</dt>
+                    <dd>{{ booking.total_days }} day{{ booking.total_days|pluralize }}</dd>
+                </div>
+                <div class="summary-row">
+                    <dt>Subtotal</dt>
+                    <dd>Rs. {{ booking.subtotal }}</dd>
+                </div>
+                <div class="summary-row">
+                    <dt>Security deposit</dt>
+                    <dd>Rs. {{ booking.security_deposit }}</dd>
+                </div>
+            </dl>
+
+            <div class="summary-divider"></div>
+
+            <div class="summary-total">
+                <span>Total amount</span>
+                <strong>Rs. {{ booking.total_amount }}</strong>
+            </div>
+
+            <div class="payment-status-card">
+                <span class="payment-status-label">Payment status</span>
+                <strong>Not collected yet</strong>
+            </div>
+
+            <div class="summary-actions">
+                <a class="btn-action btn-action-primary" href="{% url 'vehicles:public_detail' booking.vehicle.slug %}"><i class="bi bi-eye"></i> View Vehicle</a>
+                <button class="btn-action btn-action-ghost" type="button" disabled title="Coming soon"><i class="bi bi-chat-dots"></i> Message Owner</button>
+            </div>
         </aside>
     </div>
 </section>
-
 {% endblock %}
