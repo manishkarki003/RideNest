@@ -1,9 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": null,
   "functions": {
     "config/wsgi.py": {
-      "runtime": "python3.12",
       "maxDuration": 30
     }
   },
