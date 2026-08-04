@@ -1,0 +1,571 @@
+/* ==========================================================
+   RIDENEST - HOST REGISTRATION
+========================================================== */
+
+:root{
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+    --dark:#0f172a;
+    --text:#1e293b;
+    --muted:#64748b;
+    --border:#e2e8f0;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --success:#16a34a;
+    --danger:#dc2626;
+
+    --radius-sm:12px;
+    --radius-md:18px;
+    --radius-lg:28px;
+
+    --shadow-sm:0 8px 20px rgba(15,23,42,.08);
+    --shadow-md:0 18px 45px rgba(15,23,42,.12);
+    --shadow-lg:0 28px 70px rgba(15,23,42,.18);
+
+    --transition:.28s ease;
+}
+
+*,
+*::before,
+*::after{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    font-family:"Inter",sans-serif;
+    color:var(--text);
+}
+
+/* ==========================================================
+   PAGE LAYOUT
+========================================================== */
+
+.host-register{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:42% 58%;
+    background:var(--bg);
+}
+
+/* ==========================================================
+   HERO
+========================================================== */
+
+.host-hero{
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:flex-start;   
+    justify-content:center;
+    padding:64px 70px 70px;
+    isolation:isolate;
+}
+.hero-image{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-3;
+}
+
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(15,23,42,.88),
+            rgba(37,99,235,.72)
+        );
+    z-index:-2;
+}
+
+.hero-overlay::before{
+    content:"";
+    position:absolute;
+    width:420px;
+    height:420px;
+    background:#60a5fa;
+    border-radius:50%;
+    filter:blur(120px);
+    top:-150px;
+    right:-120px;
+    opacity:.25;
+}
+
+.hero-overlay::after{
+    content:"";
+    position:absolute;
+    width:350px;
+    height:350px;
+    background:#ffffff;
+    border-radius:50%;
+    filter:blur(120px);
+    bottom:-160px;
+    left:-150px;
+    opacity:.08;
+}
+
+/* ==========================================================
+   HERO CONTENT
+========================================================== */
+
+.hero-content{
+    max-width:540px;
+    color:#fff;
+    position:relative;
+}
+
+.hero-badge{
+    display:inline-flex;
+    align-items:center;
+    padding:10px 18px;
+    border-radius:999px;
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.18);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom:28px;
+}
+
+.hero-content h1{
+    font-size:54px;
+    line-height:1.08;
+    font-weight:800;
+    margin:0 0 24px;
+}
+
+.hero-content>p{
+    font-size:18px;
+    line-height:1.8;
+    color:rgba(255,255,255,.85);
+    margin-bottom:42px;
+}
+
+/* ==========================================================
+   FEATURES
+========================================================== */
+
+.hero-features{
+    display:grid;
+    gap:18px;
+}
+
+.feature-card{
+    display:flex;
+    align-items:flex-start;
+    gap:18px;
+    padding:20px 22px;
+    border-radius:18px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
+    backdrop-filter:blur(16px);
+    transition:var(--transition);
+}
+
+.feature-card:hover{
+    transform:translateY(-5px);
+    background:rgba(255,255,255,.12);
+}
+
+.feature-icon{
+    width:46px;
+    height:46px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#fff;
+    color:var(--primary);
+    font-weight:700;
+}
+
+.feature-card h4{
+    margin:0 0 6px;
+    font-size:16px;
+    color:#fff;
+}
+
+.feature-card p{
+    margin:0;
+    color:rgba(255,255,255,.78);
+    font-size:14px;
+}
+
+/* ==========================================================
+   EARNINGS CARD
+========================================================== */
+
+.earnings-card{
+    margin-top:42px;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.18);
+    backdrop-filter:blur(20px);
+    border-radius:24px;
+    padding:26px;
+    box-shadow:var(--shadow-lg);
+}
+
+.earnings-card small{
+    display:block;
+    color:#dbeafe;
+    font-size:13px;
+    margin-bottom:8px;
+}
+
+.earnings-card h2{
+    font-size:42px;
+    color:#fff;
+    margin:0;
+}
+
+.earnings-card p{
+    margin:8px 0 22px;
+    color:#dbeafe;
+}
+
+.earn-stats{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.earn-stats div{
+    display:flex;
+    flex-direction:column;
+}
+
+.earn-stats strong{
+    font-size:24px;
+    color:#fff;
+}
+
+.earn-stats span{
+    font-size:13px;
+    color:#dbeafe;
+}
+
+/* ==========================================================
+   RIGHT SIDE — REGISTRATION FORM
+   (this whole section was missing — added below)
+========================================================== */
+
+.register-side{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:60px 48px;
+}
+
+.register-card{
+    width:100%;
+    max-width:560px;
+    background:var(--card);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-lg);
+    padding:48px;
+    animation:card-in .5s ease both;
+}
+
+.card-header .mini-badge{
+    display:inline-block;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--primary);
+    background:#eff6ff;
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:20px;
+}
+
+.card-header h2{
+    font-size:30px;
+    font-weight:800;
+    letter-spacing:-.01em;
+    color:var(--dark);
+    margin:0 0 10px;
+}
+
+.card-header>p{
+    font-size:15px;
+    color:var(--muted);
+    margin:0 0 32px;
+}
+
+/* ---- Form fields ---- */
+
+.register-form{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    color:var(--dark);
+    margin-bottom:6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    height:54px;
+    padding:0 16px;
+    font-family:"Inter",sans-serif;
+    font-size:15px;
+    color:var(--text);
+    background:#fff;
+    border:1.5px solid var(--border);
+    border-radius:var(--radius-sm);
+    outline:none;
+    transition:var(--transition);
+}
+
+.form-group textarea{
+    height:auto;
+    min-height:110px;
+    padding-top:14px;
+    resize:vertical;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder{
+    color:#94a3b8;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+}
+
+.form-group.has-error input,
+.form-group.has-error select,
+.form-group.has-error textarea{
+    border-color:var(--danger);
+}
+
+.field-help{
+    display:block;
+    margin-top:6px;
+    font-size:13px;
+    color:var(--muted);
+}
+
+/* ---- Error messages (Django's default .errorlist) ---- */
+
+.form-errors,
+.form-group .errorlist{
+    list-style:none;
+    margin:8px 0 0;
+    padding:10px 14px;
+    background:#fef2f2;
+    border:1px solid #fecaca;
+    border-radius:10px;
+    color:#b91c1c;
+    font-size:13px;
+}
+
+.form-errors ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.form-group .errorlist li + li,
+.form-errors li + li{
+    margin-top:4px;
+}
+
+/* ---- Password requirements card ---- */
+
+.password-card{
+    margin-top:10px;
+    padding:16px 18px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
+}
+
+.password-title{
+    font-size:13px;
+    font-weight:700;
+    color:var(--dark);
+    margin-bottom:8px;
+}
+
+.password-help ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.password-help li{
+    position:relative;
+    padding-left:22px;
+    font-size:13px;
+    line-height:1.5;
+    color:var(--muted);
+}
+
+.password-help li::before{
+    content:"✓";
+    position:absolute;
+    left:0;
+    top:0;
+    color:var(--success);
+    font-weight:700;
+}
+
+/* ---- Submit button ---- */
+
+.register-btn{
+    width:100%;
+    height:56px;
+    margin-top:8px;
+    border:none;
+    border-radius:var(--radius-sm);
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;
+    font-family:"Inter",sans-serif;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    box-shadow:0 10px 25px -8px rgba(37,99,235,.55);
+    transition:var(--transition);
+}
+
+.register-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 16px 32px -10px rgba(37,99,235,.6);
+}
+
+.register-btn:active{
+    transform:translateY(0);
+}
+
+.register-btn:focus-visible{
+    outline:3px solid #bfdbfe;
+    outline-offset:2px;
+}
+
+/* ---- Trust badges ---- */
+
+.secure-info{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px 18px;
+    margin-top:20px;
+}
+
+.secure-item{
+    font-size:12.5px;
+    color:var(--muted);
+}
+
+/* ---- Login link ---- */
+
+.login-box{
+    margin-top:28px;
+    text-align:center;
+}
+
+.login-box p{
+    margin:0 0 4px;
+    font-size:14px;
+    color:var(--muted);
+}
+
+.login-link{
+    color:var(--primary);
+    font-weight:700;
+    text-decoration:none;
+    font-size:15px;
+}
+
+.login-link:hover{
+    text-decoration:underline;
+}
+
+.login-link:focus-visible,
+.register-btn:focus-visible{
+    outline:2px solid var(--primary);
+    outline-offset:2px;
+}
+
+@keyframes card-in{
+    from{
+        opacity:0;
+        transform:translateY(16px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* ==========================================================
+   RESPONSIVE
+   (also missing before — the layout never stacked on mobile)
+========================================================== */
+
+@media (max-width: 1080px){
+    .host-register{
+        grid-template-columns:1fr;
+    }
+    .host-hero{
+        padding:48px 32px;
+    }
+    .hero-content h1{
+        font-size:38px;
+    }
+    .register-side{
+        padding:40px 24px 56px;
+    }
+}
+
+@media (max-width: 480px){
+    .host-hero{
+        padding:36px 20px;
+    }
+    .hero-content h1{
+        font-size:30px;
+    }
+    .register-card{
+        padding:28px 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .register-card{
+        animation:none;
+    }
+    .register-btn:hover,
+    .feature-card:hover{
+        transform:none;
+    }
+}

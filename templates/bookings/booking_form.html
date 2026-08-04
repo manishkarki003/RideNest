@@ -1,4 +1,19 @@
-<section class="container booking-page">
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/bookings.css' %}?v=20260803-2">
+{% endblock %}
+
+{% block title %}Request {{ vehicle.name }} | RideNest{% endblock %}
+
+{% block meta_description %}
+Request {{ vehicle.name }} for your trip on RideNest.
+{% endblock %}
+
+{% block content %}
+
+<section class="container booking-page booking-request-page">
 
     <div class="page-heading">
         <div>
@@ -73,3 +88,5 @@
     </div>
 
 </section>
+
+{% endblock %}

@@ -10,6 +10,7 @@ from django.views import View
 
 from accounts.models import User
 from vehicles.models import Vehicle, VehicleImage
+from .emails import send_booking_received_email, send_owner_booking_notification
 from .forms import BookingRequestForm, OwnerBookingActionForm, RenterCancellationForm
 from .models import Booking
 
@@ -109,6 +110,9 @@ class BookingRequestView(LoginRequiredMixin, View):
                     return_date=return_date,
                 )
                 booking.save()
+                
+                transaction.on_commit(lambda: send_booking_received_email(booking))
+                transaction.on_commit(lambda: send_owner_booking_notification(booking))
 
         except ValidationError as error:
             form.add_error(None, error)
@@ -124,13 +128,12 @@ class BookingRequestView(LoginRequiredMixin, View):
         messages.success(
             request,
             f"Booking request {booking.short_reference} has been submitted.",
-        )
+)
 
         return redirect(
-            "bookings:booking_detail",
+            "payments:payment_page",
             booking_reference=booking.booking_reference,
-        )
-
+) 
 
 class BookingHistoryView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest) -> HttpResponse:
@@ -348,7 +351,7 @@ class BookingDetailView(LoginRequiredMixin, View):
                 booking_reference=booking.booking_reference,
             )
 
-        return redirect(
-            "bookings:booking_detail",
-            booking_reference=booking.booking_reference,
-        )
+            return redirect(
+               "payments:payment_page",
+                booking_reference=booking.booking_reference,
+            )

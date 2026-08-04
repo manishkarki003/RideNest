@@ -1,0 +1,409 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Payment | Booking {{ booking.short_reference }} | RideNest
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/payment.css' %}">
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+{% endblock %}
+
+{% block content %}
+
+<section class="payment-hero">
+
+    <div class="container payment-page">
+
+        <div class="payment-header">
+
+            <div class="payment-header-left">
+
+                <span class="payment-tag">
+                    <i class="bi bi-shield-lock-fill"></i>
+                    Secure Checkout
+                </span>
+
+                <h1>Complete Your Payment</h1>
+
+                <p>
+                    You're just one step away from confirming your booking.
+                    Select your preferred payment method and continue securely.
+                </p>
+
+            </div>
+
+            <div class="payment-total-preview">
+
+                <span>Total Amount</span>
+
+                <strong>Rs. {{ booking.total_amount }}</strong>
+
+            </div>
+
+        </div>
+
+
+        <form
+            method="post"
+            action="{% url 'payments:initiate' booking.booking_reference %}"
+            id="paymentForm">
+
+            {% csrf_token %}
+
+            <div class="payment-layout">
+
+                <!-- LEFT -->
+
+                <div class="payment-main">
+
+                    <!-- Booking -->
+
+                    <section class="pay-card">
+
+                        <div class="card-title-row">
+
+                            <h2>
+                                <i class="bi bi-car-front-fill"></i>
+                                Booking Details
+                            </h2>
+
+                            <span class="booking-reference">
+                                {{ booking.short_reference }}
+                            </span>
+
+                        </div>
+
+                        <div class="detail-grid">
+
+                            <div class="detail-item">
+
+                                <i class="bi bi-car-front"></i>
+
+                                <div>
+
+                                    <dt>Vehicle</dt>
+
+                                    <dd>{{ booking.vehicle.name }}</dd>
+
+                                </div>
+
+                            </div>
+
+                            <div class="detail-item">
+
+                                <i class="bi bi-calendar-event"></i>
+
+                                <div>
+
+                                    <dt>Pickup</dt>
+
+                                    <dd>{{ booking.pickup_date|date:"F j, Y" }}</dd>
+
+                                </div>
+
+                            </div>
+
+                            <div class="detail-item">
+
+                                <i class="bi bi-calendar-check"></i>
+
+                                <div>
+
+                                    <dt>Return</dt>
+
+                                    <dd>{{ booking.return_date|date:"F j, Y" }}</dd>
+
+                                </div>
+
+                            </div>
+
+                            <div class="detail-item">
+
+                                <i class="bi bi-clock-history"></i>
+
+                                <div>
+
+                                    <dt>Rental Days</dt>
+
+                                    <dd>{{ booking.total_days }} days</dd>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- Payment Method -->
+
+                    <section class="pay-card">
+
+                        <h2 class="section-title">
+
+                            Choose Payment Method
+
+                        </h2>
+
+                        <div class="payment-methods">
+
+                            <label class="payment-method-card esewa">
+
+                                <input
+                                    type="radio"
+                                    name="gateway"
+                                    value="esewa">
+
+                                <div class="pm-logo">
+
+                                    <i class="bi bi-wallet2"></i>
+
+                                </div>
+
+                                <div class="pm-info">
+
+                                    <h3>eSewa</h3>
+
+                                    <p>
+                                        Pay instantly using your
+                                        eSewa wallet.
+                                    </p>
+
+                                </div>
+
+                                <div class="pm-check">
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                </div>
+
+                            </label>
+
+
+                            <label class="payment-method-card khalti">
+
+                                <input
+                                    type="radio"
+                                    name="gateway"
+                                    value="khalti">
+
+                                <div class="pm-logo">
+
+                                    <i class="bi bi-credit-card-2-front"></i>
+
+                                </div>
+
+                                <div class="pm-info">
+
+                                    <h3>Khalti</h3>
+
+                                    <p>
+
+                                        Fast and secure digital payment.
+
+                                    </p>
+
+                                </div>
+
+                                <div class="pm-check">
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                </div>
+
+                            </label>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- Price -->
+
+                    <section class="pay-card">
+
+                        <h2 class="section-title">
+
+                            Payment Breakdown
+
+                        </h2>
+
+                        <div class="price-list">
+
+                            <div class="price-row">
+
+                                <span>Rental Charge</span>
+
+                                <strong>
+                                    Rs. {{ booking.subtotal }}
+                                </strong>
+
+                            </div>
+
+                            <div class="price-row">
+
+                                <span>Security Deposit</span>
+
+                                <strong>
+                                    Rs. {{ booking.security_deposit }}
+                                </strong>
+
+                            </div>
+
+                            <hr>
+
+                            <div class="price-row total">
+
+                                <span>Total Amount</span>
+
+                                <strong>
+                                    Rs. {{ booking.total_amount }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- Security -->
+
+                    <section class="security-box">
+
+                        <i class="bi bi-shield-check"></i>
+
+                        <div>
+
+                            <strong>100% Secure Payment</strong>
+
+                            <p>
+
+                                RideNest encrypts every payment using
+                                industry standard security.
+
+                            </p>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- RIGHT -->
+
+                <aside class="payment-sidebar">
+
+                    <div class="summary-card">
+
+                        <h3>Order Summary</h3>
+
+                        <div class="summary-total">
+
+                            Rs. {{ booking.total_amount }}
+
+                        </div>
+
+                        <p>
+
+                            Total payable today
+
+                        </p>
+
+                        <button
+
+                            class="btn-pay"
+
+                            id="payButton"
+
+                            disabled
+
+                            type="submit">
+
+                            <i class="bi bi-lock-fill"></i>
+
+                            Proceed to Payment
+
+                        </button>
+
+                        <div class="summary-footer">
+
+                            <i class="bi bi-shield-lock-fill"></i>
+
+                            Secure checkout powered by RideNest
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded",function(){
+
+const cards=document.querySelectorAll(".payment-method-card");
+
+const radios=document.querySelectorAll("input[name='gateway']");
+
+const button=document.getElementById("payButton");
+
+function refresh(){
+
+let selected=false;
+
+cards.forEach(card=>card.classList.remove("selected"));
+
+radios.forEach(radio=>{
+
+if(radio.checked){
+
+selected=true;
+
+radio.closest(".payment-method-card").classList.add("selected");
+
+}
+
+});
+
+button.disabled=!selected;
+
+}
+
+cards.forEach(card=>{
+
+card.addEventListener("click",function(){
+
+card.querySelector("input").checked=true;
+
+refresh();
+
+});
+
+});
+
+refresh();
+
+});
+
+</script>
+
+{% endblock %}

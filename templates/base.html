@@ -65,10 +65,13 @@
     {% block content %}{% endblock %}
   </main>
   <footer class="site-footer">
-    <div class="container">&copy; {% now "Y" %} RideNest. Travel with confidence.</div>
-    <div class="footer-credit">
-      Made by
-      <a href="https://portfolio-pearl-nu-78.vercel.app/" target="_blank" rel="noopener noreferrer">Manish</a>
+    <div class="container site-footer-inner">
+      <span>&copy; {% now "Y" %}  RideNest. Travel with confidence.</span>
+      <span class="footer-center">All rights reserved</span>
+      <span class="footer-credit">
+        Made by
+        <a href="https://portfolio-pearl-nu-78.vercel.app/" target="_blank" rel="noopener noreferrer">Manish</a>
+      </span>
     </div>
   </footer>
   {% block extra_js %}{% endblock %}

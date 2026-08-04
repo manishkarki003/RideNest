@@ -10,6 +10,7 @@ import logging
 
 import resend
 from django.conf import settings
+from django.template.loader import render_to_string
 from django.urls import reverse
 
 logger = logging.getLogger(__name__)
@@ -83,6 +84,9 @@ def send_booking_confirmation_email(booking) -> None:
     Never raises. Any failure (missing API key, network error, bad
     payload, etc.) is logged and swallowed so the caller — the booking
     confirmation signal — is never affected.
+
+    Left untouched: this is for the future booking.confirm() workflow,
+    not the booking-created flow below.
     """
     try:
         renter_email = getattr(booking.renter, "email", None)
@@ -141,7 +145,6 @@ def _render_confirmation_html(booking) -> str:
                style="max-width:560px;background-color:#ffffff;border-radius:12px;
                       overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.06);">
 
-          <!-- Header -->
           <tr>
             <td style="background-color:#111827;padding:24px 32px;">
               <span style="font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-0.5px;">
@@ -150,7 +153,6 @@ def _render_confirmation_html(booking) -> str:
             </td>
           </tr>
 
-          <!-- Success banner -->
           <tr>
             <td style="padding:32px 32px 0 32px;text-align:center;">
               <div style="width:56px;height:56px;line-height:56px;border-radius:50%;
@@ -163,14 +165,12 @@ def _render_confirmation_html(booking) -> str:
             </td>
           </tr>
 
-          <!-- Vehicle image -->
           <tr>
             <td style="padding:0 32px;">
               {image_block}
             </td>
           </tr>
 
-          <!-- Booking details card -->
           <tr>
             <td style="padding:0 32px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
@@ -227,7 +227,6 @@ def _render_confirmation_html(booking) -> str:
             </td>
           </tr>
 
-          <!-- Owner info -->
           <tr>
             <td style="padding:20px 32px 0 32px;">
               <p style="margin:0 0 4px 0;font-size:13px;color:#6b7280;">Vehicle owner</p>
@@ -240,7 +239,6 @@ def _render_confirmation_html(booking) -> str:
             </td>
           </tr>
 
-          <!-- CTA -->
           <tr>
             <td style="padding:28px 32px;text-align:center;">
               <a href="{booking_url}"
@@ -252,7 +250,6 @@ def _render_confirmation_html(booking) -> str:
             </td>
           </tr>
 
-          <!-- Support -->
           <tr>
             <td style="padding:0 32px 24px 32px;text-align:center;">
               <p style="margin:0;font-size:12px;color:#9ca3af;">
@@ -262,7 +259,6 @@ def _render_confirmation_html(booking) -> str:
             </td>
           </tr>
 
-          <!-- Footer -->
           <tr>
             <td style="background-color:#f9fafb;padding:20px 32px;text-align:center;
                        border-top:1px solid #e5e7eb;">
@@ -280,3 +276,111 @@ def _render_confirmation_html(booking) -> str:
 </body>
 </html>
 """
+
+
+# ---------------------------------------------------------------------------
+# NEW — booking-created emails (renter "received" + owner "notification")
+# ---------------------------------------------------------------------------
+
+def _booking_email_context(booking) -> dict:
+    """Shared context for both new template-based emails. Not duplicated
+    between the two send functions below."""
+    return {
+        "booking": booking,
+        "vehicle": booking.vehicle,
+        "renter": booking.renter,
+        "owner": booking.owner,
+        "vehicle_image_url": _vehicle_image_url(booking.vehicle),
+        "booking_url": _booking_detail_url(booking),
+    }
+
+def send_booking_received_email(booking):
+    print("=" * 60)
+    print("BOOKING EMAIL FUNCTION STARTED")
+
+    try:
+        renter_email = getattr(booking.renter, "email", None)
+        print("Recipient:", renter_email)
+
+        if not renter_email:
+            print("No renter email")
+            return
+
+        print("Checking Resend API...")
+        if not _resend_client_ready():
+            print("Resend not ready")
+            return
+
+        print("Rendering template...")
+
+        html = render_to_string(
+            "emails/booking_received.html",
+            _booking_email_context(booking),
+        )
+
+        print("Template rendered.")
+
+        payload = {
+            "from": settings.DEFAULT_FROM_EMAIL,
+            "to": [renter_email],
+            "subject": "Your RideNest booking has been received 🚗",
+            "html": html,
+        }
+
+        print("Sending email...")
+        print(payload)
+
+        response = resend.Emails.send(payload)
+
+        print("SUCCESS!")
+        print(response)
+
+    except Exception as e:
+        import traceback
+
+        print("EMAIL FAILED")
+        traceback.print_exc()
+        raise
+      
+def send_owner_booking_notification(booking) -> None:
+    """
+    Sends a 'new booking request' notification to the vehicle owner via
+    Resend, using the owner_booking_notification.html template.
+
+    Never raises: any failure is logged and swallowed so booking
+    creation is never affected by email delivery issues.
+    """
+    try:
+        owner_email = getattr(booking.owner, "email", None)
+        if not owner_email:
+            logger.warning(
+                "Booking %s owner has no email address; skipping owner notification.",
+                booking.booking_reference,
+            )
+            return
+
+        if not _resend_client_ready():
+            return
+
+        html = render_to_string(
+            "emails/owner_booking_notification.html",
+            _booking_email_context(booking),
+        )
+
+        resend.Emails.send({
+            "from": settings.DEFAULT_FROM_EMAIL,
+            "to": [owner_email],
+            "subject": "You have received a new booking request",
+            "html": html,
+        })
+
+        logger.info(
+            "Owner booking notification sent for booking %s to %s.",
+            booking.booking_reference,
+            owner_email,
+        )
+    except Exception:
+        logger.exception(
+            "Failed to send owner booking notification for booking %s.",
+            booking.booking_reference,
+        )

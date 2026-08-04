@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Status{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <div class="card shadow border-0 rounded-4">
+
+        <div class="card-body p-5 text-center">
+
+            <h2 class="mb-3">
+                Payment Initialized
+            </h2>
+
+            <p>
+                Booking:
+                <strong>{{ payment.booking.short_reference }}</strong>
+            </p>
+
+            <p>
+                Gateway:
+                <strong>{{ payment.get_gateway_display }}</strong>
+            </p>
+
+            <p>
+                Status:
+                <span class="badge bg-warning">
+                    {{ payment.get_status_display }}
+                </span>
+            </p>
+
+            <h3 class="mt-4">
+                NPR {{ payment.amount }}
+            </h3>
+
+            <hr>
+
+            <p class="text-muted">
+                Gateway integration will redirect users from this page in the next step.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
