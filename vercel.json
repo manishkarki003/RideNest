@@ -4,11 +4,5 @@
     "config/wsgi.py": {
       "maxDuration": 30
     }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/config/wsgi.py"
-    }
-  ]
+  }
 }
