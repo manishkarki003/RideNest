@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import ValidationError
@@ -13,6 +15,28 @@ from vehicles.models import Vehicle, VehicleImage
 from .emails import send_booking_received_email, send_owner_booking_notification
 from .forms import BookingRequestForm, OwnerBookingActionForm, RenterCancellationForm
 from .models import Booking
+
+logger = logging.getLogger(__name__)
+
+
+def send_booking_email_safely(booking):
+    try:
+        send_booking_received_email(booking)
+    except Exception:
+        logger.exception(
+            "Booking confirmation email failed for %s",
+            booking.booking_reference,
+        )
+
+
+def send_owner_notification_safely(booking):
+    try:
+        send_owner_booking_notification(booking)
+    except Exception:
+        logger.exception(
+            "Owner notification email failed for %s",
+            booking.booking_reference,
+        )
 
 
 class OwnerRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -110,9 +134,13 @@ class BookingRequestView(LoginRequiredMixin, View):
                     return_date=return_date,
                 )
                 booking.save()
-                
-                transaction.on_commit(lambda: send_booking_received_email(booking))
-                transaction.on_commit(lambda: send_owner_booking_notification(booking))
+
+                transaction.on_commit(
+                    lambda: send_booking_email_safely(booking)
+                )
+                transaction.on_commit(
+                    lambda: send_owner_notification_safely(booking)
+                )
 
         except ValidationError as error:
             form.add_error(None, error)
@@ -346,12 +374,7 @@ class BookingDetailView(LoginRequiredMixin, View):
         except ValidationError as error:
             messages.error(request, error.messages[0])
 
-            return redirect(
-                "bookings:booking_detail",
-                booking_reference=booking.booking_reference,
-            )
-
-            return redirect(
-               "payments:payment_page",
-                booking_reference=booking.booking_reference,
-            )
+        return redirect(
+            "bookings:booking_detail",
+            booking_reference=booking.booking_reference,
+        )

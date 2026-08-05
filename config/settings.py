@@ -5,7 +5,13 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(BASE_DIR / ".env")
+env_local = BASE_DIR / ".env.local"
+env = BASE_DIR / ".env"
+
+if env_local.exists():
+    load_dotenv(env_local)
+else:
+    load_dotenv(env)
 
 # Supabase configuration
 SUPABASE_PUBLIC_URL = os.getenv("SUPABASE_PUBLIC_URL")

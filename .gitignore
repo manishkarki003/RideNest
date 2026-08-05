@@ -7,3 +7,6 @@ media/
 private_media/
 staticfiles/
 .env
+# Local environment
+.env.local
+!.env.example
