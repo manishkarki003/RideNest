@@ -47,8 +47,6 @@ INSTALLED_APPS = [
     "bookings",
     "payments",
     "reviews",
-    "notifications",
-    "dashboard",
     "storages",
 ]
 
