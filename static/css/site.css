@@ -18,26 +18,25 @@
     /* ------------------------------------------------------
        BACKGROUNDS
     ------------------------------------------------------ */
-
-    --color-bg: #f8fafc;
+    --color-bg: #f9fafb;
     --color-surface: #ffffff;
-    --color-surface-soft: #f1f5f9;
+    --color-surface-soft: #f3f4f6;
 
     /* ------------------------------------------------------
        TEXT
     ------------------------------------------------------ */
 
-    --color-text: #0f172a;
-    --color-text-secondary: #334155;
-    --color-muted: #64748b;
-    --color-light: #94a3b8;
+    --color-text: #111827;
+    --color-text-secondary: #374151;
+    --color-muted: #6b7280;
+    --color-light: #9ca3af;
 
     /* ------------------------------------------------------
        BORDERS
     ------------------------------------------------------ */
 
-    --color-border: #e2e8f0;
-    --color-border-dark: #cbd5e1;
+    --color-border: #e5e7eb;
+    --color-border-dark: #d1d5db;
 
     /* ------------------------------------------------------
        STATUS

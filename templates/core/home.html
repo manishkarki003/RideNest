@@ -9,51 +9,41 @@ RideNest.{% endblock %}
 {% block content %}
 
 <section class="hero-section">
+  <div class="hero-media" data-hero-bg="{% static 'images/hero/ridenest.png' %}" role="img"
+    aria-label="Car and motorcycle on a mountain road in Nepal, available to rent through RideNest"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+
   <div class="container">
-    <div class="row align-items-center g-5">
-      <div class="col-lg-6 reveal-el">
-        <p class="hero-badge"><i class="bi bi-patch-check-fill" aria-hidden="true"></i>Nepal's trusted vehicle rental
-          platform</p>
-        <h1 class="hero-title">Rent cars and bikes <span>across Nepal.</span></h1>
-        <p class="hero-description">RideNest connects travellers with verified local vehicle owners. Find the right
-          ride for a city break, mountain adventure, or weekend away.</p>
-        <div class="hero-buttons">
-          <a href="{% url 'vehicles:marketplace' %}" class="btn btn-primary btn-lg">Browse vehicles <i
-              class="bi bi-arrow-right" aria-hidden="true"></i></a>
-          <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-lg">Become a host</a>
-        </div>
-        <dl class="hero-stats" aria-label="RideNest highlights">
-          <div>
-            <dt data-count-to="30" data-count-suffix="+">30+</dt>
-            <dd>Vehicles</dd>
-          </div>
-          <div>
-            <dt data-count-to="20" data-count-suffix="+">20+</dt>
-            <dd>Verified owners</dd>
-          </div>
-          <div>
-            <dt data-count-to="4.9" data-count-decimal="1">4.9</dt>
-            <dd>Average rating</dd>
-          </div>
-          <div>
-            <dt data-count-to="100" data-count-suffix="%">100%</dt>
-            <dd>Secure booking</dd>
-          </div>
-        </dl>
+    <div class="hero-content reveal-el">
+      <p class="hero-badge"><i class="bi bi-patch-check-fill" aria-hidden="true"></i>Nepal's trusted vehicle rental
+        platform</p>
+      <h1 class="hero-title">Rent cars and bikes <span>across Nepal.</span></h1>
+      <p class="hero-description">Find the right ride for city escapes, mountain adventures, and everything in
+        between.</p>
+      <div class="hero-buttons">
+        <a href="{% url 'vehicles:marketplace' %}" class="btn btn-primary btn-lg">Browse vehicles <i
+            class="bi bi-arrow-right" aria-hidden="true"></i></a>
+        <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-lg">Become a host</a>
       </div>
-      <div class="col-lg-6 reveal-el" style="--reveal-delay:.1s">
-        <div class="hero-image-frame">
-          <img src="{% static 'images/hero/hero-car.webp' %}" class="hero-image"
-            alt="SUV available to rent through RideNest" fetchpriority="high">
-          <span class="hero-floating-badge">
-            <i class="bi bi-patch-check-fill" aria-hidden="true"></i>
-            <span class="hero-floating-badge-text">
-              <strong>Verified owner</strong>
-              <small>Identity checked</small>
-            </span>
-          </span>
+
+      <dl class="hero-stats" aria-label="RideNest highlights">
+        <div>
+          <dt data-count-to="30" data-count-suffix="+">30+</dt>
+          <dd>Vehicles</dd>
         </div>
-      </div>
+        <div>
+          <dt data-count-to="20" data-count-suffix="+">20+</dt>
+          <dd>Verified owners</dd>
+        </div>
+        <div>
+          <dt data-count-to="4.9" data-count-decimal="1">4.9</dt>
+          <dd>Average rating</dd>
+        </div>
+        <div>
+          <dt data-count-to="100" data-count-suffix="%">100%</dt>
+          <dd>Secure booking</dd>
+        </div>
+      </dl>
     </div>
   </div>
 </section>
@@ -234,8 +224,8 @@ RideNest.{% endblock %}
     <div class="row g-4">
       <div class="col-md-4">
         <a class="destination-card" href="{% url 'vehicles:search' %}?q=Pokhara">
-          <img src="{% static 'images/destinations/pokhara.webp' %}"
-            alt="Phewa Lake and Annapurna Mountains in Pokhara" loading="lazy" class="destination-image">
+          <img src="{% static 'images/destinations/pokhara.webp' %}" alt="Phewa Lake and Annapurna Mountains in Pokhara"
+            loading="lazy" class="destination-image">
           <div class="destination-overlay"></div>
           <div class="destination-content">
             <h3><i class="bi bi-geo-alt-fill" aria-hidden="true"></i> Pokhara</h3>
@@ -500,6 +490,10 @@ RideNest.{% endblock %}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     "use strict";
+    var heroMedia = document.querySelector('.hero-media');
+    if (heroMedia && heroMedia.dataset.heroBg) {
+      heroMedia.style.backgroundImage = 'url("' + heroMedia.dataset.heroBg + '")';
+    }
 
     var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
