@@ -127,6 +127,40 @@ Rent {{ vehicle.name }} in {{ vehicle.pickup_address }} from Rs. {{ vehicle.rent
 
             </section>
 
+                        <section class="detail-section" id="reviews">
+                <h2>
+                    Reviews
+                    {% if review_count %}
+                        <span class="review-summary">{{ review_average }} ★ · {{ review_count }} review{{ review_count|pluralize }}</span>
+                    {% endif %}
+                </h2>
+
+                {% if reviewable_booking %}
+                    <a class="button" href="{% url 'reviews:create_review' reviewable_booking.booking_reference %}">
+                        Leave a review
+                    </a>
+                {% endif %}
+
+                {% if reviews %}
+                    <ul class="review-list">
+                        {% for review in reviews %}
+                            <li class="review-item">
+                                <div class="review-item-header">
+                                    <strong>{{ review.reviewer.full_name|default:review.reviewer.username }}</strong>
+                                    <span class="review-rating">{{ review.rating }} ★</span>
+                                </div>
+                                {% if review.comment %}
+                                    <p class="review-comment">{{ review.comment|linebreaksbr }}</p>
+                                {% endif %}
+                                <p class="review-date muted">{{ review.created_at|date:"M j, Y" }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="muted">No reviews yet for this vehicle.</p>
+                {% endif %}
+            </section>
+
         </div>
 
         <aside class="rental-summary">

@@ -12,6 +12,8 @@ import json
 from accounts.models import User
 from .forms import VehicleForm, VehicleImageFormSet
 from .models import Vehicle, VehicleImage
+from bookings.models import Booking
+from reviews.models import Review
 
 
 PUBLIC_PAGE_SIZE = 12
@@ -138,12 +140,29 @@ class PublicVehicleDetailView(View):
             "offers": {"@type": "Offer", "price": str(vehicle.rental_price_per_day), "priceCurrency": "NPR", "availability": "https://schema.org/InStock"},
         }
         schema_json = json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
+
+        reviews = Review.objects.for_vehicle(vehicle).select_related("reviewer")
+        review_stats = Review.objects.vehicle_stats(vehicle)
+
+        reviewable_booking = None
+        if request.user.is_authenticated:
+            reviewable_booking = Booking.objects.filter(
+                vehicle=vehicle,
+                renter=request.user,
+                booking_status=Booking.Status.COMPLETED,
+                review__isnull=True,
+            ).order_by("-return_date").first()
+
         return render(request, "vehicles/public_vehicle_detail.html", {
             "vehicle": vehicle,
             "related_vehicles": related,
             "canonical_url": request.build_absolute_uri(request.path),
             "og_image_url": request.build_absolute_uri(primary_image.image.url) if primary_image else "",
             "vehicle_schema": schema_json,
+            "reviews": reviews,
+            "review_average": review_stats["average"],
+            "review_count": review_stats["total"],
+            "reviewable_booking": reviewable_booking,
         })
 
 

@@ -94,7 +94,8 @@
     isolation: isolate;
     display: flex;
     align-items: center;
-    min-height: 700px;
+    min-height: 100vh;
+    min-height: 100svh;
     padding: 130px 0;
     overflow: hidden;
     color: #fff;
@@ -105,7 +106,7 @@
     inset: 0;
     z-index: 0;
     background-color: #182236;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -114,9 +115,49 @@
     position: absolute;
     inset: 0;
     z-index: 1;
-    background:
-        linear-gradient(100deg, rgba(8, 15, 34, 0.9) 0%, rgba(8, 15, 34, 0.68) 42%, rgba(8, 15, 34, 0.32) 70%, rgba(8, 15, 34, 0.14) 100%),
-        linear-gradient(0deg, rgba(8, 15, 34, 0.55) 0%, rgba(8, 15, 34, 0) 32%);
+    background: rgba(0, 0, 0, 0.36);
+}
+/* Keep the homepage hero flush with the viewport while the navbar overlays it. */
+body:has(.hero-section) .site-header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    background: linear-gradient(to bottom, rgba(8, 15, 34, 0.7) 0%, rgba(8, 15, 34, 0.3) 60%, rgba(8, 15, 34, 0) 100%);
+    border-bottom: none;
+    box-shadow: none;
+}
+body:has(.hero-section) .brand-wordmark__ride,
+body:has(.hero-section) .nav-center a,
+body:has(.hero-section) .nav-link {
+    color: #fff;
+}
+
+body:has(.hero-section) .nav-center a:hover,
+body:has(.hero-section) .nav-center a:focus-visible,
+body:has(.hero-section) .nav-link:hover,
+body:has(.hero-section) .nav-link:focus-visible {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+body:has(.hero-section) .nav-toggle {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: #fff;
+}
+
+@media (max-width: 992px) {
+    body:has(.hero-section) .nav-menu .nav-center a,
+    body:has(.hero-section) .nav-menu .nav-link {
+        color: var(--color-text-secondary);
+    }
+
+    body:has(.hero-section) .nav-menu .nav-center a:hover,
+    body:has(.hero-section) .nav-menu .nav-center a:focus-visible,
+    body:has(.hero-section) .nav-menu .nav-link:hover,
+    body:has(.hero-section) .nav-menu .nav-link:focus-visible {
+        background: var(--color-surface-soft);
+    }
 }
 
 .hero-content {
@@ -246,7 +287,11 @@
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.72rem;
 }
-
+@media (max-width: 768px) {
+    .hero-media {
+        background-position: center 25%;
+    }
+}
 /* ==========================================================
    SEARCH
 ========================================================== */
@@ -1032,7 +1077,8 @@
     }
 
        .hero-section {
-        min-height: 620px;
+        min-height: 100vh;
+        min-height: 100svh;
         padding: 100px 0 110px;
         text-align: center;
     }
@@ -1091,8 +1137,13 @@
     }
 
       .hero-section {
-        min-height: 560px;
+        min-height: 100vh;
+        min-height: 100svh;
         padding: 90px 0 100px;
+    }
+
+    .hero-media {
+        background-position: 62% center;
     }
 
     .hero-title {
@@ -1157,8 +1208,13 @@
 @media (max-width: 480px) {
 
     .hero-section {
-        min-height: 520px;
+        min-height: 100vh;
+        min-height: 100svh;
         padding: 80px 0 90px;
+    }
+
+    .hero-media {
+        background-position: 66% center;
     }
 
     .hero-title {

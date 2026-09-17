@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Review your rental | RideNest{% endblock %}
+
+{% block content %}
+<section class="container">
+    <h1>Review your rental of {{ booking.vehicle.name }}</h1>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="form-group">
+            {{ form.rating.label_tag }}
+            {{ form.rating }}
+            {{ form.rating.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.comment.label_tag }}
+            {{ form.comment }}
+            {{ form.comment.errors }}
+        </div>
+
+        <button type="submit" class="button">Submit review</button>
+    </form>
+</section>
+{% endblock %}
