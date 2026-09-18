@@ -1,0 +1,257 @@
+/* ==========================================================
+   RideNest — Minimal (Google-style) Login
+   ========================================================== */
+
+.minimal-auth-page{
+    min-height:calc(100vh - 80px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff;
+    padding:40px 20px;
+}
+
+.minimal-auth-card{
+    width:100%;
+    max-width:450px;
+    padding:48px 40px 36px;
+    border:1px solid #dadce0;
+    border-radius:28px;
+    text-align:center;
+}
+
+.minimal-brand{
+    display:inline-flex;
+    margin-bottom:20px;
+}
+
+.minimal-brand .brand-mark{
+    width:56px;
+    height:56px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#2563eb;
+    box-shadow:0 8px 20px rgba(37,99,235,.22);
+}
+
+.minimal-brand .brand-mark svg{
+    width:30px;
+    height:30px;
+}
+
+.minimal-auth-card h1{
+    font-size:1.65rem;
+    font-weight:500;
+    color:#202124;
+    margin:0 0 8px;
+    letter-spacing:0;
+}
+
+.minimal-subtitle{
+    color:#5f6368;
+    font-size:.95rem;
+    margin:0 0 32px;
+}
+
+.minimal-alert{
+    background:#fce8e6;
+    border:1px solid #f6aea9;
+    color:#c5221f;
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:.86rem;
+    margin-bottom:20px;
+    text-align:left;
+}
+
+.minimal-form{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    text-align:left;
+}
+
+.minimal-field{
+    display:flex;
+    flex-direction:column;
+}
+
+.minimal-input-shell{
+    position:relative;
+}
+
+.minimal-input-shell input{
+    width:100%;
+    height:56px;
+    padding:20px 16px 6px;
+    border:1px solid #dadce0;
+    border-radius:8px;
+    font-size:16px;
+    color:#202124;
+    background:transparent;
+    transition:border-color .15s ease, box-shadow .15s ease;
+}
+
+.minimal-input-shell input:hover{
+    border-color:#202124;
+}
+
+.minimal-input-shell input:focus{
+    outline:none;
+    border-color:#2563eb;
+    border-width:2px;
+    padding:19px 15px 5px;
+    box-shadow:none;
+}
+
+.minimal-input-shell label{
+    position:absolute;
+    left:16px;
+    top:18px;
+    color:#5f6368;
+    font-size:16px;
+    pointer-events:none;
+    transition:all .15s ease;
+    background:transparent;
+    padding:0 4px;
+}
+
+.minimal-input-shell input:focus + label,
+.minimal-input-shell input:not(:placeholder-shown) + label,
+.minimal-input-shell input:not(:invalid) + label{
+    top:-9px;
+    left:12px;
+    font-size:12px;
+    background:#fff;
+}
+
+.minimal-input-shell input:focus + label{
+    color:#2563eb;
+}
+
+.field-password .minimal-input-shell input,
+.minimal-field:has(.minimal-toggle) .minimal-input-shell input{
+    padding-right:46px;
+}
+
+.minimal-toggle{
+    position:absolute;
+    right:12px;
+    top:50%;
+    transform:translateY(-50%);
+    width:32px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:none;
+    background:transparent;
+    color:#5f6368;
+    cursor:pointer;
+    border-radius:50%;
+    transition:background .15s ease;
+}
+
+.minimal-toggle:hover{
+    background:#f1f3f4;
+}
+
+.minimal-toggle svg{
+    width:20px;
+    height:20px;
+}
+
+.minimal-error{
+    color:#c5221f;
+    font-size:.78rem;
+    margin:6px 0 0 4px;
+}
+
+.has-error .minimal-input-shell input{
+    border-color:#c5221f;
+}
+
+.minimal-checkbox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:.9rem;
+    color:#202124;
+    cursor:pointer;
+}
+
+.minimal-checkbox input{
+    width:18px;
+    height:18px;
+    accent-color:#2563eb;
+}
+
+.minimal-row-between{
+    display:flex;
+    justify-content:flex-start;
+    margin-top:-8px;
+}
+
+.minimal-link{
+    color:#2563eb;
+    font-size:.85rem;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.minimal-link:hover{
+    text-decoration:underline;
+}
+
+.minimal-actions{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:16px;
+}
+
+.minimal-btn-text{
+    color:#2563eb;
+    font-size:.9rem;
+    font-weight:600;
+    text-decoration:none;
+    padding:10px 8px;
+    border-radius:6px;
+    transition:background .15s ease;
+}
+
+.minimal-btn-text:hover{
+    background:#eff6ff;
+}
+
+.minimal-btn-primary{
+    height:42px;
+    padding:0 26px;
+    border:none;
+    border-radius:20px;
+    background:#2563eb;
+    color:#fff;
+    font-size:.92rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .15s ease, box-shadow .15s ease;
+}
+
+.minimal-btn-primary:hover{
+    background:#1d4ed8;
+    box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+
+.minimal-btn-primary:disabled{
+    opacity:.7;
+    cursor:not-allowed;
+}
+
+@media (max-width:480px){
+    .minimal-auth-card{
+        padding:36px 24px 28px;
+        border-radius:20px;
+    }
+}

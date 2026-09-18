@@ -156,11 +156,10 @@
                                 </span>
                                 {{ field }}
                             </div>
-                            {% if field.help_text %}<p class="field-help">{{ field.help_text|safe }}</p>{% endif %}
                             {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
                         </div>
                         {% endwith %}
-
+                        
                     </div>
 
                     {% with field=form.email %}

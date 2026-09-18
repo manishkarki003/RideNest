@@ -295,52 +295,40 @@ def _booking_email_context(booking) -> dict:
     }
 
 def send_booking_received_email(booking):
-    print("=" * 60)
-    print("BOOKING EMAIL FUNCTION STARTED")
-
     try:
         renter_email = getattr(booking.renter, "email", None)
-        print("Recipient:", renter_email)
-
         if not renter_email:
-            print("No renter email")
+            logger.warning(
+                "Booking %s renter has no email address; skipping booking-received email.",
+                booking.booking_reference,
+            )
             return
 
-        print("Checking Resend API...")
         if not _resend_client_ready():
-            print("Resend not ready")
             return
-
-        print("Rendering template...")
 
         html = render_to_string(
             "emails/booking_received.html",
             _booking_email_context(booking),
         )
 
-        print("Template rendered.")
-
-        payload = {
+        resend.Emails.send({
             "from": settings.DEFAULT_FROM_EMAIL,
             "to": [renter_email],
             "subject": "Your RideNest booking has been received 🚗",
             "html": html,
-        }
+        })
 
-        print("Sending email...")
-        print(payload)
-
-        response = resend.Emails.send(payload)
-
-        print("SUCCESS!")
-        print(response)
-
-    except Exception as e:
-        import traceback
-
-        print("EMAIL FAILED")
-        traceback.print_exc()
-        raise
+        logger.info(
+            "Booking received email sent for booking %s to %s.",
+            booking.booking_reference,
+            renter_email,
+        )
+    except Exception:
+        logger.exception(
+            "Failed to send booking received email for booking %s.",
+            booking.booking_reference,
+        )
       
 def send_owner_booking_notification(booking) -> None:
     """

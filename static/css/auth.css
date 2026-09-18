@@ -642,48 +642,94 @@
     }
 }
 
-/* ============ REGISTRATION FORM EXTRAS ============ */
+/* ============ REGISTRATION FORM POLISH ============ */
 
 .auth-card-wide{
     max-width:560px;
+    padding:44px 44px;
+}
+
+.auth-form{
+    gap:22px;
 }
 
 .form-row-2{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:16px;
+    gap:18px;
 }
 
-.input-shell-textarea{
-    align-items:flex-start;
+.form-field label{
+    margin-bottom:2px;
+}
+
+.form-field input,
+.form-field textarea{
+    transition:border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
 }
 
 .input-shell-textarea textarea{
+    line-height:1.5;
     resize:vertical;
     min-height:52px;
-    padding-top:14px;
+    padding:14px 16px 14px 46px;
+    border-radius:14px;
+    border:1.5px solid #e2e8f0;
+    background:#f8fafc;
+    font-size:15.5px;
+    font-weight:500;
+    color:#0f172a;
+    width:100%;
+    transition:border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
 }
 
-.brand-switch-note{
-    margin-top:8px;
-    color:rgba(226,232,240,.78);
-    font-size:.92rem;
+.input-shell-textarea textarea:hover{
+    border-color:#cbd5e1;
+    background:#fff;
 }
 
-.brand-switch-note a{
-    color:#93c5fd;
-    font-weight:700;
-    text-decoration:none;
+.input-shell-textarea textarea:focus{
+    outline:none;
+    border-color:#2563eb;
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(37,99,235,.13);
+}
+.password-card{
+    margin-top:12px;
 }
 
-.brand-switch-note a:hover{
-    text-decoration:underline;
+.password-help ul{
+    gap:8px;
 }
 
-@media (max-width:640px){
-    .form-row-2{
-        grid-template-columns:1fr;
-    }
+.auth-submit{
+    margin-top:6px;
+}
+
+/* Tighter, calmer error state so it doesn't dominate the form */
+.field-error{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-top:2px;
+}
+
+.field-error::before{
+    content:"⚠";
+    font-size:.85em;
+}
+
+/* Subtle depth so the card reads clearly against the dark brand panel */
+.auth-card-wide{
+    box-shadow:
+        0 1px 2px rgba(15,23,42,.04),
+        0 30px 70px rgba(15,23,42,.12);
+}
+.form-row-2 .form-field{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-row-2 .field-help{
+    margin-top:6px;
 }
 /* Fix the "Ride" wordmark being invisible on the dark hero panel */
 .auth-brand .brand-wordmark__ride{

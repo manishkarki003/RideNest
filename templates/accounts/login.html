@@ -2,252 +2,104 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+<link rel="stylesheet" href="{% static 'css/auth-minimal.css' %}">
 {% endblock %}
 
 {% block title %}Log in | RideNest{% endblock %}
 
 {% block content %}
-<section class="auth-page">
+<section class="minimal-auth-page">
 
-    <div class="auth-shell">
+    <div class="minimal-auth-card">
 
-        <!-- ============ LEFT: BRANDING PANEL ============ -->
-        <aside class="auth-brand">
+        <a href="{% url 'vehicles:marketplace' %}" class="minimal-brand" aria-label="RideNest home">
+            <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                    <rect x="5" y="4" width="2.6" height="16" rx="1.3" fill="#fff" />
+                    <path d="M7.6 5.4 H11.2 A3 3 0 0 1 11.2 11.4 H7.6" fill="none" stroke="#fff" stroke-width="2.6"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                    <rect x="16.4" y="7.4" width="2.6" height="12.6" rx="1.3" fill="#fff" />
+                    <polygon points="7.8,11.2 10.2,11.2 17.6,20 15.2,20" fill="#fff" />
+                </svg>
+            </span>
+        </a>
 
-            <div class="auth-brand-bg" aria-hidden="true">
-                <div class="blob blob-a"></div>
-                <div class="blob blob-b"></div>
-                <div class="brand-grid"></div>
-            </div>
+        <h1>Sign in</h1>
+        <p class="minimal-subtitle">Use your RideNest account</p>
 
-            <div class="auth-brand-content">
-
-                <a href="{% url 'vehicles:marketplace' %}" class="brand-logo brand">
-                    <span class="brand-mark" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                            <rect x="5" y="4" width="2.6" height="16" rx="1.3" fill="#fff" />
-                            <path d="M7.6 5.4 H11.2 A3 3 0 0 1 11.2 11.4 H7.6" fill="none" stroke="#fff" stroke-width="2.6"
-                              stroke-linecap="round" stroke-linejoin="round" />
-                            <rect x="16.4" y="7.4" width="2.6" height="12.6" rx="1.3" fill="#fff" />
-                            <polygon points="7.8,11.2 10.2,11.2 17.6,20 15.2,20" fill="#fff" />
-                        </svg>
-                    </span>
-                    <span class="brand-wordmark"><span class="brand-wordmark__ride">Ride</span><span class="brand-wordmark__nest">Nest</span></span>
-                </a>
-
-                <div class="brand-copy">
-                    <h2>Travel anywhere in Nepal</h2>
-                    <p>
-                        Rent verified cars, SUVs and motorcycles from trusted local
-                        owners — book in minutes, drive with confidence.
-                    </p>
-                </div>
-
-                <ul class="brand-features">
-
-                    <li>
-                        <span class="feature-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M9 12l2 2 4-4"></path>
-                                <circle cx="12" cy="12" r="9"></circle>
-                            </svg>
-                        </span>
-                        <div>
-                            <strong>Verified vehicle owners</strong>
-                            <span>Every listing manually reviewed</span>
-                        </div>
-                    </li>
-
-                    <li>
-                        <span class="feature-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="4" y="10" width="16" height="10" rx="2"></rect>
-                                <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
-                            </svg>
-                        </span>
-                        <div>
-                            <strong>Secure booking</strong>
-                            <span>Protected payments, every time</span>
-                        </div>
-                    </li>
-
-                    <li>
-                        <span class="feature-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="9"></circle>
-                                <path d="M12 7v5l3 3"></path>
-                            </svg>
-                        </span>
-                        <div>
-                            <strong>24/7 customer support</strong>
-                            <span>We're here whenever you need us</span>
-                        </div>
-                    </li>
-
-                </ul>
-
-            </div>
-
-        </aside>
-
-        <!-- ============ RIGHT: LOGIN CARD ============ -->
-        <div class="auth-form-side">
-
-            <div class="auth-card">
-
-                <div class="auth-card-header">
-                    <p class="auth-eyebrow">Secure access</p>
-                    <h1>Welcome back</h1>
-                    <p class="auth-subtitle">Sign in to continue your journey</p>
-                </div>
-
-                {% if form.non_field_errors %}
-                <div class="form-alert" role="alert">
-                    {% for error in form.non_field_errors %}
-                    <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-                {% endif %}
-
-                <form method="post" novalidate class="auth-form" id="login-form">
-                    {% csrf_token %}
-
-                    {% if request.GET.next %}
-                    <input type="hidden" name="next" value="{{ request.GET.next }}">
-                    {% endif %}
-
-                    {% for field in form %}
-
-                    {% if field.field.widget.input_type == 'checkbox' %}
-
-                    <div class="form-field field-checkbox {% if field.errors %}has-error{% endif %}">
-                        <label class="checkbox-label" for="{{ field.id_for_label }}">
-                            {{ field }}
-                            <span class="checkbox-box" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </span>
-                            <span class="checkbox-text">{{ field.label }}</span>
-                        </label>
-
-                        {% if field.help_text %}
-                        <p class="field-help">{{ field.help_text|safe }}</p>
-                        {% endif %}
-
-                        {% for error in field.errors %}
-                        <p class="field-error">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-
-                    {% elif field.field.widget.input_type == 'password' %}
-
-                    <div class="form-field field-password {% if field.errors %}has-error{% endif %}">
-                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-
-                        <div class="input-shell">
-                            <span class="input-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="4" y="10" width="16" height="10" rx="2"></rect>
-                                    <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
-                                </svg>
-                            </span>
-
-                            {{ field }}
-
-                            <button type="button" class="password-toggle" aria-label="Show password"
-                                aria-pressed="false" data-password-toggle>
-                                <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path
-                                        d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z">
-                                    </path>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                                <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden>
-                                    <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a20.6 20.6 0 0 1 5.06-5.94M9.9 4.24A10.6 10.6 0 0 1 12 4c7 0 11 7 11 7a20.6 20.6 0 0 1-3.22 4.32M14.12 14.12a3 3 0 1 1-4.24-4.24">
-                                    </path>
-                                    <line x1="1" y1="1" x2="23" y2="23"></line>
-                                </svg>
-                            </button>
-                        </div>
-
-                        {% if field.help_text %}
-                        <p class="field-help">{{ field.help_text|safe }}</p>
-                        {% endif %}
-
-                        {% for error in field.errors %}
-                        <p class="field-error">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-
-                    {% else %}
-
-                    <div class="form-field {% if field.errors %}has-error{% endif %}">
-                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-
-                        <div class="input-shell">
-                            <span class="input-icon" aria-hidden="true">
-                                {% if field.name == 'username' or field.name == 'email' %}
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
-                                {% else %}
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="9"></circle>
-                                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                                </svg>
-                                {% endif %}
-                            </span>
-
-                            {{ field }}
-                        </div>
-
-                        {% if field.help_text %}
-                        <p class="field-help">{{ field.help_text|safe }}</p>
-                        {% endif %}
-
-                        {% for error in field.errors %}
-                        <p class="field-error">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-
-                    {% endif %}
-
-                    {% endfor %}
-
-                    <div class="form-row-between">
-                        <a class="forgot-link" href="{% url 'accounts:password_reset' %}">
-                            Forgot your password?
-                        </a>
-                    </div>
-
-                    <button class="auth-submit" type="submit" id="login-submit">
-                        <span class="submit-label">Log in</span>
-                        <span class="submit-spinner" aria-hidden="true"></span>
-                    </button>
-
-                </form>
-
-                <p class="auth-footer-text">
-                    New to RideNest?
-                    <a href="{% url 'accounts:register' %}">Create an account</a>
-                </p>
-
-            </div>
-
+        {% if form.non_field_errors %}
+        <div class="minimal-alert" role="alert">
+            {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
         </div>
+        {% endif %}
+
+        <form method="post" novalidate class="minimal-form" id="login-form">
+            {% csrf_token %}
+
+            {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+            {% endif %}
+
+            {% for field in form %}
+
+            {% if field.field.widget.input_type == 'checkbox' %}
+
+            <label class="minimal-checkbox {% if field.errors %}has-error{% endif %}">
+                {{ field }}
+                <span>{{ field.label }}</span>
+            </label>
+
+            {% elif field.field.widget.input_type == 'password' %}
+
+            <div class="minimal-field {% if field.errors %}has-error{% endif %}">
+                <div class="minimal-input-shell">
+                    {{ field }}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    <button type="button" class="minimal-toggle" aria-label="Show password"
+                        aria-pressed="false" data-password-toggle>
+                        <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden>
+                            <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a20.6 20.6 0 0 1 5.06-5.94M9.9 4.24A10.6 10.6 0 0 1 12 4c7 0 11 7 11 7a20.6 20.6 0 0 1-3.22 4.32M14.12 14.12a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </button>
+                </div>
+                {% for error in field.errors %}<p class="minimal-error">{{ error }}</p>{% endfor %}
+            </div>
+
+            {% else %}
+
+            <div class="minimal-field {% if field.errors %}has-error{% endif %}">
+                <div class="minimal-input-shell">
+                    {{ field }}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                </div>
+                {% for error in field.errors %}<p class="minimal-error">{{ error }}</p>{% endfor %}
+            </div>
+
+            {% endif %}
+
+            {% endfor %}
+
+            <div class="minimal-row-between">
+                <a class="minimal-link" href="{% url 'accounts:password_reset' %}">Forgot password?</a>
+            </div>
+
+            <div class="minimal-actions">
+                <a class="minimal-btn-text" href="{% url 'accounts:register' %}">Create account</a>
+                <button class="minimal-btn-primary" type="submit" id="login-submit">
+                    <span class="submit-label">Next</span>
+                </button>
+            </div>
+
+        </form>
 
     </div>
 
@@ -260,7 +112,7 @@
 
         document.querySelectorAll('[data-password-toggle]').forEach(function (btn) {
             btn.addEventListener('click', function () {
-                var shell = btn.closest('.input-shell');
+                var shell = btn.closest('.minimal-input-shell');
                 var input = shell.querySelector('input');
                 var eyeOn = btn.querySelector('.icon-eye');
                 var eyeOff = btn.querySelector('.icon-eye-off');
