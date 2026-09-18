@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from .forms import (
     EmailOrUsernameAuthenticationForm,
+    HostRegistrationForm,
     MemberVerificationForm,
     ProfileUpdateForm,
     RegistrationForm,
@@ -14,17 +15,24 @@ from .forms import (
 from .models import MemberVerification
 
 
-def register(request):
+def _register(request, form_class, template_name):
     if request.user.is_authenticated:
         return redirect("core:home")
-    form = RegistrationForm(request.POST or None)
+    form = form_class(request.POST or None)
     if request.method == "POST" and form.is_valid():
         user = form.save()
         login(request, user)
         messages.success(request, "Your account has been created successfully.")
         return redirect("core:home")
-    return render(request, "accounts/register.html", {"form": form})
+    return render(request, template_name, {"form": form})
 
+
+def register(request):
+    return _register(request, RegistrationForm, "accounts/register.html")
+
+
+def register_host(request):
+    return _register(request, HostRegistrationForm, "accounts/register_host.html")
 
 class UserLoginView(LoginView):
     template_name = "accounts/login.html"

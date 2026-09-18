@@ -9,7 +9,7 @@ RideNest.{% endblock %}
 {% block content %}
 
 <section class="hero-section">
-  <div class="hero-media" style="background-image: url('{% static 'images/hero/ridenest.png' %}');" role="img"
+  <div class="hero-media" style="background-image: url('{% static "images/hero/ridenest.png" %}');" role="img"
     aria-label="Car and motorcycle on a mountain road in Nepal, available to rent through RideNest"></div>
   <div class="hero-overlay" aria-hidden="true"></div>
 
@@ -23,7 +23,7 @@ RideNest.{% endblock %}
       <div class="hero-buttons">
         <a href="{% url 'vehicles:marketplace' %}" class="btn btn-primary btn-lg">Browse vehicles <i
             class="bi bi-arrow-right" aria-hidden="true"></i></a>
-        <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-lg">Become a host</a>
+        <a href="{% url 'accounts:register_host' %}" class="btn btn-outline-primary btn-lg">Become a host</a>
       </div>
 
       <dl class="hero-stats" aria-label="RideNest highlights">

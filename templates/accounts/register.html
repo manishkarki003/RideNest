@@ -1,236 +1,343 @@
-{% block content %}
+{% extends "base.html" %}
 {% load static %}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
 
-<section class="host-register">
+{% block title %}Create your account | RideNest{% endblock %}
 
-    <!-- LEFT HERO -->
-    <aside class="host-hero">
+{% block content %}
+<section class="auth-page">
 
-        <div class="hero-overlay"></div>
+    <div class="auth-shell">
 
+        <!-- ============ LEFT: BRANDING PANEL ============ -->
+        <aside class="auth-brand">
 
-
-        <div class="hero-content">
-
-            <span class="hero-badge">
-                Become a RideNest Host
-            </span>
-
-            <h1>
-                Earn money from your vehicle while it sits idle.
-            </h1>
-
-            <p>
-                Join Nepal's growing vehicle rental marketplace.
-                List your vehicle once and start receiving bookings
-                from verified renters across the country.
-            </p>
-
-            <div class="hero-features">
-
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        ✓
-                    </div>
-
-                    <div>
-                        <h4>Verified Renters</h4>
-                        <p>Identity verified customers.</p>
-                    </div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        ✓
-                    </div>
-
-                    <div>
-                        <h4>Secure Payments</h4>
-                        <p>Fast and protected payouts.</p>
-                    </div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        ✓
-                    </div>
-
-                    <div>
-                        <h4>Nationwide Reach</h4>
-                        <p>Bookings from across Nepal.</p>
-                    </div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        ✓
-                    </div>
-
-                    <div>
-                        <h4>24/7 Support</h4>
-                        <p>Our team is always here to help.</p>
-                    </div>
-                </div>
-
+            <div class="auth-brand-bg" aria-hidden="true">
+                <div class="blob blob-a"></div>
+                <div class="blob blob-b"></div>
+                <div class="brand-grid"></div>
             </div>
 
-            <div class="earnings-card">
+            <div class="auth-brand-content">
 
-                <small>Average Monthly Earnings</small>
+                <a href="{% url 'vehicles:marketplace' %}" class="brand-logo brand">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                            <rect x="5" y="4" width="2.6" height="16" rx="1.3" fill="#fff" />
+                            <path d="M7.6 5.4 H11.2 A3 3 0 0 1 11.2 11.4 H7.6" fill="none" stroke="#fff"
+                                stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                            <rect x="16.4" y="7.4" width="2.6" height="12.6" rx="1.3" fill="#fff" />
+                            <polygon points="7.8,11.2 10.2,11.2 17.6,20 15.2,20" fill="#fff" />
+                        </svg>
+                    </span>
+                    <span class="brand-wordmark"><span class="brand-wordmark__ride">Ride</span><span
+                            class="brand-wordmark__nest">Nest</span></span>
+                </a>
 
-                <h2>Rs. 55,000</h2>
-
-                <p>Based on active RideNest hosts</p>
-
-                <div class="earn-stats">
-
-                    <div>
-                        <strong>50+</strong>
-                        <span>Vehicles</span>
-                    </div>
-
-                    <div>
-                        <strong>10+</strong>
-                        <span>Cities</span>
-                    </div>
-
-                    <div>
-                        <strong>4.9★</strong>
-                        <span>Rating</span>
-                    </div>
-
+                <div class="brand-copy">
+                    <h2>Rent smarter, travel further</h2>
+                    <p>
+                        Create your RideNest account to book verified cars, SUVs and
+                        motorcycles from trusted local owners across Nepal.
+                    </p>
                 </div>
 
-            </div>
+                <ul class="brand-features">
 
-        </div>
+                    <li>
+                        <span class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 12l2 2 4-4"></path>
+                                <circle cx="12" cy="12" r="9"></circle>
+                            </svg>
+                        </span>
+                        <div>
+                            <strong>Verified vehicle owners</strong>
+                            <span>Every listing manually reviewed</span>
+                        </div>
+                    </li>
 
-    </aside>
+                    <li>
+                        <span class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="10" width="16" height="10" rx="2"></rect>
+                                <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                            </svg>
+                        </span>
+                        <div>
+                            <strong>Secure booking</strong>
+                            <span>Protected payments, every time</span>
+                        </div>
+                    </li>
 
-    <!-- RIGHT SIDE -->
+                    <li>
+                        <span class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M12 7v5l3 3"></path>
+                            </svg>
+                        </span>
+                        <div>
+                            <strong>24/7 customer support</strong>
+                            <span>We're here whenever you need us</span>
+                        </div>
+                    </li>
 
-    <main class="register-side">
+                </ul>
 
-        <div class="register-card">
-
-            <div class="card-header">
-
-                <span class="mini-badge">
-                    Join RideNest
-                </span>
-
-                <h2>Create your account</h2>
-
-                <p>
-                    Register today and start your journey as a trusted RideNest host.
+                <p class="brand-switch-note">
+                    Want to list your own vehicle instead?
+                    <a href="{% url 'accounts:register_host' %}">Become a host</a>
                 </p>
 
             </div>
 
-            <form method="post" novalidate class="register-form">
+        </aside>
 
-                {% csrf_token %}
+        <!-- ============ RIGHT: REGISTRATION CARD ============ -->
+        <div class="auth-form-side">
+
+            <div class="auth-card auth-card-wide">
+
+                <div class="auth-card-header">
+                    <p class="auth-eyebrow">Join RideNest</p>
+                    <h1>Create your account</h1>
+                    <p class="auth-subtitle">Start booking vehicles in minutes</p>
+                </div>
 
                 {% if form.non_field_errors %}
-                <div class="form-errors">
-                    {{ form.non_field_errors }}
+                <div class="form-alert" role="alert">
+                    {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
                 </div>
                 {% endif %}
 
-                {% for field in form %}
+                <form method="post" novalidate class="auth-form" id="register-form">
+                    {% csrf_token %}
 
-                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <div class="form-row-2">
 
-                    {{ field.label_tag }}
-
-                    {{ field }}
-
-                    {% if field.help_text and field.name != "password1" %}
-                    <small class="field-help">
-                        {{ field.help_text|safe }}
-                    </small>
-                    {% endif %}
-
-                    {% if field.name == "password1" %}
-                    <div class="password-card">
-
-                        <div class="password-title">
-                            Password Requirements
+                        {% with field=form.full_name %}
+                        <div class="form-field {% if field.errors %}has-error{% endif %}">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            <div class="input-shell">
+                                <span class="input-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </span>
+                                {{ field }}
+                            </div>
+                            {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
                         </div>
+                        {% endwith %}
 
-                        <div class="password-help">
-                            {{ field.help_text|safe }}
+                        {% with field=form.username %}
+                        <div class="form-field {% if field.errors %}has-error{% endif %}">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            <div class="input-shell">
+                                <span class="input-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                        <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                    </svg>
+                                </span>
+                                {{ field }}
+                            </div>
+                            {% if field.help_text %}<p class="field-help">{{ field.help_text|safe }}</p>{% endif %}
+                            {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
                         </div>
+                        {% endwith %}
 
                     </div>
-                    {% endif %}
 
-                    {{ field.errors }}
-
-                </div>
-
-                {% endfor %}
-
-                <button type="submit" class="register-btn">
-
-                    <span>Create Host Account</span>
-
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-
-                        <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-
-                        <path d="M13 6L19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-
-                    </svg>
-
-                </button>
-
-                <div class="secure-info">
-
-                    <div class="secure-item">
-                        🔒 Your information is encrypted
+                    {% with field=form.email %}
+                    <div class="form-field {% if field.errors %}has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        <div class="input-shell">
+                            <span class="input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16v16H4z" fill="none" stroke="none"></path>
+                                    <path d="M22 6l-10 7L2 6"></path>
+                                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                </svg>
+                            </span>
+                            {{ field }}
+                        </div>
+                        {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
                     </div>
-
-                    <div class="secure-item">
-                        ✓ No listing fees
+                    {% endwith %}
+                    {% with field=form.phone_number %}
+                    <div class="form-field {% if field.errors %}has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        <div class="input-shell">
+                            <span class="input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z">
+                                    </path>
+                                </svg>
+                            </span>
+                            {{ field }}
+                        </div>
+                        {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
                     </div>
+                    {% endwith %}
 
-                    <div class="secure-item">
-                        ✓ Free account
+                    {% with field=form.address %}
+                    <div class="form-field {% if field.errors %}has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        <div class="input-shell input-shell-textarea">
+                            <span class="input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </span>
+                            {{ field }}
+                        </div>
+                        {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
                     </div>
+                    {% endwith %}
 
-                    <div class="secure-item">
-                        ✓ Secure registration
+                    {% with field=form.password1 %}
+                    <div class="form-field field-password {% if field.errors %}has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        <div class="input-shell">
+                            <span class="input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="4" y="10" width="16" height="10" rx="2"></rect>
+                                    <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                                </svg>
+                            </span>
+                            {{ field }}
+                            <button type="button" class="password-toggle" aria-label="Show password"
+                                aria-pressed="false" data-password-toggle>
+                                <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden>
+                                    <path
+                                        d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a20.6 20.6 0 0 1 5.06-5.94M9.9 4.24A10.6 10.6 0 0 1 12 4c7 0 11 7 11 7a20.6 20.6 0 0 1-3.22 4.32M14.12 14.12a3 3 0 1 1-4.24-4.24">
+                                    </path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        {% if field.help_text %}
+                        <div class="password-card">
+                            <div class="password-title">Password requirements</div>
+                            <div class="password-help">{{ field.help_text|safe }}</div>
+                        </div>
+                        {% endif %}
+                        {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
                     </div>
+                    {% endwith %}
 
-                </div>
+                    {% with field=form.password2 %}
+                    <div class="form-field field-password {% if field.errors %}has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        <div class="input-shell">
+                            <span class="input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="4" y="10" width="16" height="10" rx="2"></rect>
+                                    <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                                </svg>
+                            </span>
+                            {{ field }}
+                            <button type="button" class="password-toggle" aria-label="Show password"
+                                aria-pressed="false" data-password-toggle>
+                                <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden>
+                                    <path
+                                        d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a20.6 20.6 0 0 1 5.06-5.94M9.9 4.24A10.6 10.6 0 0 1 12 4c7 0 11 7 11 7a20.6 20.6 0 0 1-3.22 4.32M14.12 14.12a3 3 0 1 1-4.24-4.24">
+                                    </path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        {% if field.help_text %}<p class="field-help">{{ field.help_text|safe }}</p>{% endif %}
+                        {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+                    </div>
+                    {% endwith %}
 
-            </form>
+                    <button class="auth-submit" type="submit" id="register-submit">
+                        <span class="submit-label">Create account</span>
+                        <span class="submit-spinner" aria-hidden="true"></span>
+                    </button>
 
-            <div class="login-box">
+                </form>
 
-                <p>
+                <p class="auth-footer-text">
                     Already have an account?
+                    <a href="{% url 'accounts:login' %}">Log in</a>
                 </p>
-
-                <a href="{% url 'accounts:login' %}" class="login-link">
-
-                    Sign In
-
-                </a>
 
             </div>
 
         </div>
 
-    </main>
+    </div>
 
 </section>
+{% endblock %}
 
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        document.querySelectorAll('[data-password-toggle]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var shell = btn.closest('.input-shell');
+                var input = shell.querySelector('input');
+                var eyeOn = btn.querySelector('.icon-eye');
+                var eyeOff = btn.querySelector('.icon-eye-off');
+                var showing = input.type === 'text';
+
+                input.type = showing ? 'password' : 'text';
+                btn.setAttribute('aria-pressed', String(!showing));
+                btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+                eyeOn.hidden = !showing;
+                eyeOff.hidden = showing;
+            });
+        });
+
+        var form = document.getElementById('register-form');
+        var submitBtn = document.getElementById('register-submit');
+
+        if (form && submitBtn) {
+            form.addEventListener('submit', function () {
+                if (submitBtn.classList.contains('is-loading')) return;
+                submitBtn.classList.add('is-loading');
+                submitBtn.disabled = true;
+            });
+        }
+
+    });
+</script>
 {% endblock %}

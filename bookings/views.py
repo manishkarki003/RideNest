@@ -109,7 +109,6 @@ class BookingRequestView(LoginRequiredMixin, View):
                 if not (
                     locked_vehicle.is_active
                     and locked_vehicle.approval_status == Vehicle.ApprovalStatus.APPROVED
-                    and locked_vehicle.availability_status == Vehicle.AvailabilityStatus.AVAILABLE
                 ):
                     raise ValidationError(
                         "This vehicle is not currently available for booking."

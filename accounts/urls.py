@@ -8,11 +8,13 @@ from .views import (
     UserLogoutView,
     UserPasswordChangeView,
     register,
+    register_host,
 )
 
 app_name = "accounts"
 urlpatterns = [
     path("register/", register, name="register"),
+    path("register/host/", register_host, name="register_host"),
     path("login/", UserLoginView.as_view(), name="login"),
     path("logout/", UserLogoutView.as_view(), name="logout"),
     path("profile/", ProfileView.as_view(), name="profile"),

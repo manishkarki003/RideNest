@@ -11,12 +11,24 @@ class RegistrationForm(UserCreationForm):
         fields = ("full_name", "username", "email", "phone_number", "address")
         widgets = {"address": forms.Textarea(attrs={"rows": 3})}
 
+    role = User.Role.MEMBER
+
     def clean_email(self):
         email = self.cleaned_data["email"].lower()
         if User.objects.filter(email__iexact=email).exists():
             raise ValidationError("An account with this email address already exists.")
         return email
 
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = self.role
+        if commit:
+            user.save()
+        return user
+
+
+class HostRegistrationForm(RegistrationForm):
+    role = User.Role.OWNER
 
 class EmailOrUsernameAuthenticationForm(AuthenticationForm):
     username = forms.CharField(label="Username or email", widget=forms.TextInput(attrs={"autofocus": True}))

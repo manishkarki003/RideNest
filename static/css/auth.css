@@ -641,3 +641,51 @@
         margin-top:0;
     }
 }
+
+/* ============ REGISTRATION FORM EXTRAS ============ */
+
+.auth-card-wide{
+    max-width:560px;
+}
+
+.form-row-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.input-shell-textarea{
+    align-items:flex-start;
+}
+
+.input-shell-textarea textarea{
+    resize:vertical;
+    min-height:52px;
+    padding-top:14px;
+}
+
+.brand-switch-note{
+    margin-top:8px;
+    color:rgba(226,232,240,.78);
+    font-size:.92rem;
+}
+
+.brand-switch-note a{
+    color:#93c5fd;
+    font-weight:700;
+    text-decoration:none;
+}
+
+.brand-switch-note a:hover{
+    text-decoration:underline;
+}
+
+@media (max-width:640px){
+    .form-row-2{
+        grid-template-columns:1fr;
+    }
+}
+/* Fix the "Ride" wordmark being invisible on the dark hero panel */
+.auth-brand .brand-wordmark__ride{
+    color:#fff;
+}

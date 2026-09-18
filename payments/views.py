@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
@@ -85,6 +86,11 @@ class PaymentStatusView(LoginRequiredMixin, DetailView):
 
     model = Payment
     context_object_name = "payment"
+
+    def get_queryset(self):
+        return Payment.objects.filter(
+            Q(payer=self.request.user) | Q(booking__owner=self.request.user)
+        )
 
     def get(self, request, *args, **kwargs):
 

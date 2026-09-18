@@ -120,6 +120,7 @@ USE_TZ = True
 
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
+CRON_SECRET = os.environ.get("CRON_SECRET")
 SITE_URL = os.environ.get("SITE_URL", "http://127.0.0.1:8000")
 
 STATIC_URL = "static/"

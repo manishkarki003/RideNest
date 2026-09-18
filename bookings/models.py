@@ -93,11 +93,13 @@ class Booking(models.Model):
         return str(self.booking_reference).split("-")[0].upper()
 
     def _sync_vehicle_availability(self) -> None:
-        has_confirmed_booking = type(self).objects.filter(
+        today = timezone.localdate()
+        has_active_confirmed_booking = type(self).objects.filter(
             vehicle=self.vehicle,
             booking_status=self.Status.CONFIRMED,
+            return_date__gte=today,
         ).exists()
-        expected_status = Vehicle.AvailabilityStatus.RESERVED if has_confirmed_booking else Vehicle.AvailabilityStatus.AVAILABLE
+        expected_status = Vehicle.AvailabilityStatus.RESERVED if has_active_confirmed_booking else Vehicle.AvailabilityStatus.AVAILABLE
         if self.vehicle.availability_status != expected_status:
             self.vehicle.availability_status = expected_status
             self.vehicle.save(update_fields=["availability_status", "updated_at"])
