@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "RideNest Django vehicle rental system",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/manishkarki003/RideNest",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "f0addb51a006d963659b0e54e7b49c6b27367493"
+    }
+  },
+  "components": [
+    { "id": "browser", "type": "external", "label": "Renter / owner browser", "sublabel": "Responsive web UI", "pos": [40, 300], "size": [150, 68], "sources": [{ "path": "templates/base.html" }] },
+    { "id": "config", "type": "security", "label": "Django configuration", "sublabel": "config/settings.py + URLs", "pos": [250, 120], "size": [180, 68], "sources": [{ "path": "config/settings.py" }, { "path": "config/urls.py" }] },
+    { "id": "core", "type": "backend", "label": "Core pages", "sublabel": "Home and shared routing", "pos": [250, 300], "size": [180, 68], "sources": [{ "path": "core/views.py" }, { "path": "core/urls.py" }] },
+    { "id": "accounts", "type": "security", "label": "Accounts", "sublabel": "Auth, profiles, verification", "pos": [470, 120], "size": [190, 68], "sources": [{ "path": "accounts/models.py" }, { "path": "accounts/views.py" }] },
+    { "id": "vehicles", "type": "backend", "label": "Vehicles", "sublabel": "Listings and ownership", "pos": [470, 300], "size": [190, 68], "sources": [{ "path": "vehicles/models.py" }, { "path": "vehicles/views.py" }] },
+    { "id": "bookings", "type": "backend", "label": "Bookings", "sublabel": "Reservations and lifecycle", "pos": [690, 300], "size": [190, 68], "sources": [{ "path": "bookings/models.py" }, { "path": "bookings/views.py" }] },
+    { "id": "payments", "type": "backend", "label": "Payments", "sublabel": "Payment-ready service layer", "pos": [690, 120], "size": [190, 68], "sources": [{ "path": "payments/services.py" }, { "path": "payments/views.py" }] },
+    { "id": "reviews", "type": "backend", "label": "Reviews", "sublabel": "Ratings and feedback", "pos": [910, 300], "size": [170, 68], "sources": [{ "path": "reviews/models.py" }, { "path": "reviews/views.py" }] },
+    { "id": "database", "type": "database", "label": "SQLite / PostgreSQL", "sublabel": "Django ORM + migrations", "pos": [1130, 300], "size": [180, 68], "sources": [{ "path": "config/settings.py" }] },
+    { "id": "ops", "type": "cloud", "label": "Operations", "sublabel": "collectstatic + migrate", "pos": [910, 120], "size": [170, 68], "sources": [{ "path": "build_files.sh" }, { "path": "manage.py" }] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Django project", "wraps": ["config", "core", "accounts", "vehicles", "bookings", "payments", "reviews", "database", "ops"] }
+  ],
+  "connections": [
+    { "id": "browser-core", "from": "browser", "to": "core", "label": "HTTP requests", "variant": "emphasis", "labelDy": 52 },
+    { "id": "config-core", "from": "config", "to": "core", "label": "URL routing", "fromSide": "bottom", "toSide": "top", "labelDx": 105, "labelDy": 30 },
+    { "id": "core-vehicles", "from": "core", "to": "vehicles", "label": "marketplace routes", "labelDy": 52 },
+    { "id": "accounts-vehicles", "from": "accounts", "to": "vehicles", "label": "owner identity", "fromSide": "bottom", "toSide": "top", "labelDx": 105, "labelDy": 30 },
+    { "id": "vehicles-bookings", "from": "vehicles", "to": "bookings", "label": "vehicle reservations", "labelDy": 52 },
+    { "id": "bookings-payments", "from": "bookings", "to": "payments", "label": "payment status", "fromSide": "top", "toSide": "bottom", "labelDx": 105 },
+    { "id": "bookings-reviews", "from": "bookings", "to": "reviews", "label": "rental feedback", "labelDy": 52 },
+    { "id": "bookings-database", "from": "bookings", "to": "database", "label": "ORM persistence", "variant": "dashed", "fromSide": "bottom", "toSide": "bottom", "via": [[785, 430], [1220, 430]], "labelDy": 18 }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "User journey", "items": ["Browser enters through core routes", "Vehicle listings lead to authenticated bookings"] },
+    { "dot": "emerald", "title": "Domain modules", "items": ["Accounts, vehicles, bookings, payments, and reviews are separate Django apps", "Models persist through the Django ORM"] },
+    { "dot": "rose", "title": "Operations", "items": ["SQLite is present for local development", "build_files.sh runs collectstatic and migrations"] }
+  ]
+}

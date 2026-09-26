@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/public_vehicle_detail.css' %}?v=20260803">
+{% endblock %}
+
+{% block title %}{{ vehicle.name }} for rent | RideNest{% endblock %}
+
+{% block meta_description %}
+Rent {{ vehicle.name }} in {{ vehicle.pickup_address }} from Rs. {{ vehicle.rental_price_per_day }} per day.
+{% endblock %}
+
+{% block canonical %}
+<link rel="canonical" href="{{ canonical_url }}">
+{% endblock %}
+
+{% block open_graph %}
+<meta property="og:type" content="product">
+<meta property="og:title" content="{{ vehicle.name }} for rent | RideNest">
+<meta property="og:description" content="Rent {{ vehicle.name }} in {{ vehicle.pickup_address }}.">
+{% if og_image_url %}
+<meta property="og:image" content="{{ og_image_url }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<section class="container public-detail">
+
+    <!-- ============ BREADCRUMB ============ -->
+    <nav class="detail-breadcrumb" aria-label="Breadcrumb">
+        <a href="{% url 'vehicles:marketplace' %}">
+            Back to marketplace
+        </a>
+    </nav>
+
+    <!-- ============ HEADING ============ -->
+    <div class="public-detail-heading">
+        <div>
+            <p class="eyebrow">
+                {{ vehicle.get_vehicle_type_display }}
+            </p>
+
+            <h1>{{ vehicle.name }}</h1>
+
+            <p class="detail-subline">
+                {{ vehicle.brand }}
+                {{ vehicle.model }}
+                ·
+                {{ vehicle.manufacturing_year }}
+            </p>
+        </div>
+
+        <span class="availability available">
+            Available
+        </span>
+    </div>
+
+    <!-- ============ GALLERY ============ -->
+    <div class="public-gallery">
+        {% for vehicle_image in vehicle.images.all %}
+            <img
+                src="{{ vehicle_image.image.url }}"
+                alt="{{ vehicle.name }}"
+            >
+        {% empty %}
+            <div class="image-placeholder">
+                No vehicle image available
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="public-detail-layout">
+
+        <div class="detail-main">
+
+            <section class="detail-section">
+                <h2>About this vehicle</h2>
+
+                <p class="detail-description">
+                    {{ vehicle.description|linebreaksbr }}
+                </p>
+            </section>
+
+            <section class="detail-section">
+                <h2>Specifications</h2>
+
+                <dl class="public-specs">
+
+                    <div>
+                        <dt>Type</dt>
+                        <dd>{{ vehicle.get_vehicle_type_display }}</dd>
+                    </div>
+
+                    <div>
+                        <dt>Fuel</dt>
+                        <dd>{{ vehicle.get_fuel_type_display }}</dd>
+                    </div>
+
+                    <div>
+                        <dt>Transmission</dt>
+                        <dd>{{ vehicle.get_transmission_display }}</dd>
+                    </div>
+
+                    <div>
+                        <dt>Seats</dt>
+                        <dd>{{ vehicle.seats }}</dd>
+                    </div>
+
+                    <div>
+                        <dt>Mileage</dt>
+                        <dd>{{ vehicle.mileage }} km</dd>
+                    </div>
+
+                    <div>
+                        <dt>Engine</dt>
+                        <dd>{{ vehicle.engine_capacity }} cc</dd>
+                    </div>
+
+                    <div>
+                        <dt>Color</dt>
+                        <dd>{{ vehicle.color }}</dd>
+                    </div>
+
+                </dl>
+
+            </section>
+
+                        <section class="detail-section" id="reviews">
+                <h2>
+                    Reviews
+                    {% if review_count %}
+                        <span class="review-summary">{{ review_average }} ★ · {{ review_count }} review{{ review_count|pluralize }}</span>
+                    {% endif %}
+                </h2>
+
+                {% if reviewable_booking %}
+                    <a class="button" href="{% url 'reviews:create_review' reviewable_booking.booking_reference %}">
+                        Leave a review
+                    </a>
+                {% endif %}
+
+                {% if reviews %}
+                    <ul class="review-list">
+                        {% for review in reviews %}
+                            <li class="review-item">
+                                <div class="review-item-header">
+                                    <strong>{{ review.reviewer.full_name|default:review.reviewer.username }}</strong>
+                                    <span class="review-rating">{{ review.rating }} ★</span>
+                                </div>
+                                {% if review.comment %}
+                                    <p class="review-comment">{{ review.comment|linebreaksbr }}</p>
+                                {% endif %}
+                                <p class="review-date muted">{{ review.created_at|date:"M j, Y" }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="muted">No reviews yet for this vehicle.</p>
+                {% endif %}
+            </section>
+
+        </div>
+
+        <aside class="rental-summary">
+
+            <div class="rental-summary-inner">
+
+                <p class="eyebrow">Rental details</p>
+
+                <p class="price">
+                    Rs. {{ vehicle.rental_price_per_day }}
+                    <small>/ day</small>
+                </p>
+
+                <p>
+                    Security deposit:
+                    <strong>Rs. {{ vehicle.security_deposit }}</strong>
+                </p>
+
+                <p>
+                    Pickup location:
+                    <strong>{{ vehicle.pickup_address }}</strong>
+                </p>
+
+                <hr>
+
+                <p class="owner-label">Listed by</p>
+
+                <p>
+                    <strong>
+                        {{ vehicle.owner.full_name|default:vehicle.owner.username }}
+                    </strong>
+                </p>
+
+                <p class="muted">
+                    RideNest vehicle owner
+                </p>
+
+                {% if user.is_authenticated %}
+                    {% if user != vehicle.owner %}
+                        <a class="button"
+                           href="{% url 'bookings:request' vehicle.slug %}">
+                            Request booking
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a class="button"
+                       href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}">
+                        Log in to request
+                    </a>
+                {% endif %}
+
+            </div>
+
+        </aside>
+
+    </div>
+
+    {% if related_vehicles %}
+
+    <section class="related-section">
+
+        <h2>Related vehicles</h2>
+
+        <div class="market-card-grid">
+
+            {% for vehicle in related_vehicles %}
+
+                {% include "vehicles/_public_vehicle_card.html" %}
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+</section>
+
+<script type="application/ld+json">
+{{ vehicle_schema|safe }}
+</script>
+
+{% endblock %}

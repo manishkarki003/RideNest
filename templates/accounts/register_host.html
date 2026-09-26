@@ -1,0 +1,240 @@
+{% block content %}
+{% load static %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+<section class="host-register">
+
+    <!-- LEFT HERO -->
+    <aside class="host-hero">
+
+        <div class="hero-overlay"></div>
+
+
+
+        <div class="hero-content">
+
+            <span class="hero-badge">
+                Become a RideNest Host
+            </span>
+
+            <h1>
+                Earn money from your vehicle while it sits idle.
+            </h1>
+
+            <p>
+                Join Nepal's growing vehicle rental marketplace.
+                List your vehicle once and start receiving bookings
+                from verified renters across the country.
+            </p>
+
+            <div class="hero-features">
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <div>
+                        <h4>Verified Renters</h4>
+                        <p>Identity verified customers.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <div>
+                        <h4>Secure Payments</h4>
+                        <p>Fast and protected payouts.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <div>
+                        <h4>Nationwide Reach</h4>
+                        <p>Bookings from across Nepal.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <div>
+                        <h4>24/7 Support</h4>
+                        <p>Our team is always here to help.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="earnings-card">
+
+                <small>Average Monthly Earnings</small>
+
+                <h2>Rs. 55,000</h2>
+
+                <p>Based on active RideNest hosts</p>
+
+                <div class="earn-stats">
+
+                    <div>
+                        <strong>50+</strong>
+                        <span>Vehicles</span>
+                    </div>
+
+                    <div>
+                        <strong>10+</strong>
+                        <span>Cities</span>
+                    </div>
+
+                    <div>
+                        <strong>4.9★</strong>
+                        <span>Rating</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- RIGHT SIDE -->
+
+    <main class="register-side">
+
+        <div class="register-card">
+
+            <div class="card-header">
+
+                <span class="mini-badge">
+                    Join RideNest
+                </span>
+
+                <h2>Create your account</h2>
+
+                <p>
+                    Register today and start your journey as a trusted RideNest host.
+                </p>
+
+            </div>
+
+            <form method="post" novalidate class="register-form">
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+
+                {% for field in form %}
+
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+
+                    {{ field.label_tag }}
+
+                    {{ field }}
+
+                    {% if field.help_text and field.name != "password1" %}
+                    <small class="field-help">
+                        {{ field.help_text|safe }}
+                    </small>
+                    {% endif %}
+
+                    {% if field.name == "password1" %}
+                    <div class="password-card">
+
+                        <div class="password-title">
+                            Password Requirements
+                        </div>
+
+                        <div class="password-help">
+                            {{ field.help_text|safe }}
+                        </div>
+
+                    </div>
+                    {% endif %}
+
+                    {{ field.errors }}
+
+                </div>
+
+                {% endfor %}
+
+                <button type="submit" class="register-btn">
+
+                    <span>Create Host Account</span>
+
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+
+                        <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+
+                        <path d="M13 6L19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+
+                    </svg>
+
+                </button>
+
+                <div class="secure-info">
+
+                    <div class="secure-item">
+                        🔒 Your information is encrypted
+                    </div>
+
+                    <div class="secure-item">
+                        ✓ No listing fees
+                    </div>
+
+                    <div class="secure-item">
+                        ✓ Free account
+                    </div>
+
+                    <div class="secure-item">
+                        ✓ Secure registration
+                    </div>
+
+                </div>
+
+            </form>
+
+                        <div class="login-box">
+
+                <p>
+                    Already have an account?
+                </p>
+
+                <a href="{% url 'accounts:login' %}" class="login-link">
+
+                    Sign In
+
+                </a>
+
+                <p style="margin-top: 14px;">
+                    Just want to rent a vehicle?
+                    <a href="{% url 'accounts:register' %}" class="login-link">Sign up as a renter</a>
+                </p>
+
+            </div>
+        </div>
+
+    </main>
+
+</section>
+
+{% endblock %}
